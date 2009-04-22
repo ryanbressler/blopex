@@ -1,9 +1,9 @@
 #summary BLOPEX Petsc testing on Linux
-= Introduction =
+== Introduction ==
 
 How to test BLOPEX under Beta version of Petsc on Linux
 
-= Setup Petsc =  
+== Setup Petsc ==  
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
@@ -40,13 +40,11 @@ Petsc runs with either double or complex objects but not both.
 To test the blopex routines for double configure Petsc without the 
 option --with-scalar-type=complex. 
 
-
 After configuration is finished issue the command
-
+{{{
 >> make all test
-
-
-= Setup blopex_petsc =  
+}}}
+== Setup blopex_petsc ==  
 
 Source for blopex_abstract and blopex_petsc must be present on your system.
 Either obtained via tarballs or svn repository.
@@ -64,17 +62,18 @@ Then, some adjustments to the makefiles for blopex_petsc are needed.
 
 The ../blopex_petsc/Makefile.inc must specify the location of petsc_abstract
 For example:
-
+{{{
 LOBPCG_ROOT_DIR = ../../blopex_abstract
-
+}}}
 when blopex_abstract and petsc_abstract directories are defined under the same directory. 
 
 Note that ../blopex_petsc/driver/Makefile, ../blopex_petsc/driver_fiedler/Makefile, and 
-../blopex_petsc/petsc-interface must have an include for the Petsc variable definitions.   
+../blopex_petsc/petsc-interface must have an include for the Petsc variable definitions.
+   
 For the Beta version use
-
+{{{
 include ${PETSC_DIR}/conf/variables
-
+}}}
 This change has already been implemented in the tarball. 
 
 note:  ${CLINKER}, ${PETSC_COMPILE_SINGLE}, and ${PETSC_KSP_LIB} are set by this include. 
@@ -82,7 +81,7 @@ note:  ${CLINKER}, ${PETSC_COMPILE_SINGLE}, and ${PETSC_KSP_LIB} are set by this
 After running make, executables for driver and driver_fiedler are created in their 
 respective directories.  
 
------ Execution of Tests -----
+== Execution of Tests ==
 
 There are two test drivers located in subdirectories of blopex_petsc:
 driver an driver_fiedler.  The executables for these are in directories
@@ -93,17 +92,17 @@ if Petsc is configured for complex (this is controlled by PETSC_USE_COMPLEX prep
  variable) or lobpcg_solve_doube if Petsc is configured for double. 
 
 For example:
-
+{{{
 >> mpirun -np 2 driver -n_eigs 3 -itr 20 
 or 
 >> ./driver -n_eigs 3 -itr 20
-
+}}}
 driver_fiedler accepts as input matrices in Petsc format. 
 
 For example:
-
+{{{
 >> ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -itr 20
-
+}}}
 The option -matrix specifies the matrix to solve.  
 The initial eigenvectors are generated randomly. 
 
