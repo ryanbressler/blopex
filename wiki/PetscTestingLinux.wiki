@@ -1,9 +1,11 @@
 #summary BLOPEX Petsc testing on Linux
-== Introduction ==
+
+
+= Introduction =
 
 How to test BLOPEX under Beta version of Petsc on Linux
 
-== Setup Petsc ==  
+= Setup Petsc =  
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
@@ -44,7 +46,7 @@ After configuration is finished issue the command
 {{{
 >> make all test
 }}}
-== Setup blopex_petsc ==  
+= Setup blopex_petsc =  
 
 Source for blopex_abstract and blopex_petsc must be present on your system.
 Either obtained via tarballs or svn repository.
@@ -81,7 +83,7 @@ note:  ${CLINKER}, ${PETSC_COMPILE_SINGLE}, and ${PETSC_KSP_LIB} are set by this
 After running make, executables for driver and driver_fiedler are created in their 
 respective directories.  
 
-== Execution of Tests ==
+= Execution of Tests =
 
 There are two test drivers located in subdirectories of blopex_petsc:
 driver an driver_fiedler.  The executables for these are in directories
