@@ -1,5 +1,5 @@
 #summary BLOPEX Petsc testing on Linux
-
+<wiki:toc max_depth="1" />
 
 = Introduction =
 
@@ -117,10 +117,10 @@ We have modified these programs to  also support complex.
 The complex versions are included in the .../blopex_petsc directory along with 
 PetscWriteReadExample.m to illustrate how to use them. 
 
-The double files are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
+The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
 and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
 
-The complex files are complex versions of the L and DL double matrices (with imag part zero) 
+The *complex files* are complex versions of the L and DL double matrices (with imag part zero) 
 plus test_complex1.petsc (40x40 134 nz hpd random),
 test_complex2.petsc (1000x1000 50786 nz hpd random) and 
 test_complex3 (10876 nz hpd random). 
