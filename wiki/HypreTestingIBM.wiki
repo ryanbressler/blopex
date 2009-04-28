@@ -1,40 +1,48 @@
-#summary One-sentence summary of this page.
+#summary BLOPEX Hypre testing on Bluefire (IBM)
+<wiki:toc max_depth="1" />
+
+= Introduction =
+
+How to test BLOPEX under Beta version of Hypre on Bluefire (IBM)
+
+= Setup Hypre =  
 
 Goto https://computation.llnl.gov/casc/hypre/software.html and download hypre. 
 For example the latest beta version of hypre is hypre-2.4.0b.tar.gz
 
 Extract hypre files from download file.
-
+{{{
 be1105en$ gunzip -c hypre-2.4.0b.tar.gz | tar -xof -
-
+}}}
 Copy the BLOPEX modifications tar file hypre_lobpcg_modification.tgz to
-
+{{{
 be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/
-
+}}}
 Change working directory to hypre source code directory.
-
+{{{
 be1105en$ cd hypre-2.4.0b
 be1105en$ pwd
 /blhome/dmccuan/hypre-2.4.0b/src
-
+}}}
 Install the logpcg modifications.
-
+{{{
 be1105en$ gunzip -c hypre_lobpcg_modifications.tgz | tar -xof -
-
+}}}
 Install hypre with standard setup.  
 Note: this will compiles the BLOPEX source.
 Note: the ./nopoe is required for IBM platforms (see Hypre user's manual, Chapter 7.2).
-
-
+{{{
 be1105en$ ./nopoe ./configure
 ........  lots of output
 
 be1105en$ make
 ........  lots of output
+}}}
 
+= Compile Tests =
 Shift to test directory execute make to compile and link test cases.
 This creates executables struct and ij.
-
+{{{
 be1105en$ cd test
 be1105en$ pwd
 /blhome/dmccuan/hypre-2.4.0b/src/test
@@ -45,10 +53,12 @@ Building new_ij ...
         mpcc -O3 -qstrict -blpdata -I. -I./.. -I/blhome/dmccuan/hypre-2.0.0/src/hypre/include   -DHYPRE_TIMING -DHYPRE_FORTRAN -DHAVE_CONFIG_H -c sstruct.c 
 ......
 Target "all" is up to date.
-
+}}}
+= Execution of Tests =
 Bluefire must execute mpi jobs unders the Load Sharing Facility (LSF).  
-Jobs are submitted via command bsub.  The easiest way to do this is to setup a script as follows
-
+Jobs are submitted via command bsub.  The easiest way to do this is to setup a script as follows.  
+Note: You must have a project number to do this.
+{{{
 be1105en$ cat mpi_struct.lsf
 #!/bin/csh
 #
@@ -68,24 +78,24 @@ be1105en$ cat mpi_struct.lsf
 # set this env for launch as default binding
 setenv TARGET_CPU_LIST "-1"
  mpirun.lsf /usr/local/bin/launch ./struct -solver 10 -n 64 64 64 -P 4 4 4 -lobpcg -pcgitr 0
-
- And then execute it as follows:
- 
+}}}
+And then execute it as follows:
+{{{
 be1105en$ bsub < mpi_struct.lsf
 Job <271766> is submitted to queue <share>.
-
+}}}
 Jobs can be monitored via command bjobs as follows:
-
+{{{
 be1105en$ bjobs
 JOBID   USER    STAT  QUEUE      FROM_HOST   EXEC_HOST   JOB_NAME   SUBMIT_TIME
 271793  dmccuan PEND  share      be1105en                mpi_ij     Apr 28 16:13
-
+}}}
 Output is returned to current directory in files as defined in the script.
-
+{{{
 be1105en$ ls -l mpi_struct*
 -rw-r--r--    1 dmccuan  univ            431 Apr 28 16:12 mpi_struct.271766.err
 -rw-r--r--    1 dmccuan  univ          15929 Apr 28 16:12 mpi_struct.271766.out
 -rw-r--r--    1 dmccuan  univ            776 Apr 28 16:05 mpi_struct.lsf
-
+}}}
 
  
