@@ -51,7 +51,7 @@ After configuration is finished issue the command
 Source for blopex_abstract and blopex_petsc must be present on your system.
 Either obtained via tarballs or svn repository.
 
-I have setup a tarball called blopex.tar.gz that contains the new blopex and 
+I have setup a tarball called blopex.tar.gz under the downloads tab that contains the new blopex and 
 interfaces which has been modified for complex arithematic.  This creates 
 source under directory work/trunk.
 
