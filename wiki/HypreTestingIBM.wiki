@@ -3,7 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Hypre on Bluefire (IBM)
+How to test BLOPEX under Beta version of Hypre on Bluefire (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic. 
 
 = Setup Hypre =  
 
