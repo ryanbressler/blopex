@@ -14,6 +14,8 @@ complex additions to blopex_abstract.  It is similar to blopex_serial_double but
 
 The serial_driver does not require installation of Petsc or Hypre. 
 
+This interface is for does not utilize is for basic testing of the BLOPEX code and does not does not utilize mpirun. 
+
 = Compile/Link serial_driver = 
 
 For the following assume all BLOPEX source is installed uner directory BLOPEX.
