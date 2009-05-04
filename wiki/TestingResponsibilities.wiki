@@ -1,23 +1,5 @@
-#Responsibilities for testing of BLOPEX
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-<html>
-<body>
-<h1>Blopex Testing</h1>
-<hr/>
-<p>
-<strong><big>Resposibilities for testing</big></strong><br/><br/>
-
+= Responsibilities for testing of BLOPEX =
+ 
 <table border="1">
 <tr> 
 <td> </td><td> Environment </td><td>Interface</td>
@@ -38,37 +20,15 @@ Add your content here.  Format your content with:
 <tr>
 <td>Eugene</td><td>XVIA</td><td>Petsc,Hypre,Matlab,effect of Scaling on C=chol(A)</td>
 </tr>
-
 </table>
 
-<br/>                                        
+
+                                       
 Depending on system availability execute tests under the following:
-<br/>
-<DL>
-<DT>Compilers 
-<DD>gcc, Intel, xlc
-<DD>with cpu optimized options
-<DT>
-Libraries
-<DD>Lapack/Blas,  ACML for AMD, MKL for Intel
-</DL>
-
-<strong>Notes:</strong>   <br/> <br/>
-
-Under html://math.ucdenver.edu/~dmccuan/testing are 3 files<br/>
- <DL>
- <DT>blopex.tar.gz
- <DD>This has the new blopex release changed for complex
- <DD>It is the same files as in SVN.
- <DT>Petsc_Tesing.txt
- <DD>This is documentation for testing the new release
- <DD>of Blopex swith the Beta release of Petsc
- <DT>hypre_lobpcg_modifications.tgz
- <DD>This is a Tarball that Ilya setup containing new
- files for Hypre.  It should install over directories
- in Hypre src subdirectory.  Move to the hypre ../src
- directory and install with <b>gunzip -c hypre_lobpcg_modifications.tgz | tar -xof -</b>
- </DL>
-</p>
-</body>
-</html>
+  * Compilers 
+    # gcc, Intel, xlc
+    # same with cpu optimized options where possible
+  * Libraries
+    # Lapack/Blas
+    # ACML for AMD
+    # MKL for Intel
