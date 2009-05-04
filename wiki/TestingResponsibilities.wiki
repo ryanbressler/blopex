@@ -1,5 +1,6 @@
-# Responsibilities for testing of BLOPEX
+#summary Responsibilities for testing of BLOPEX
 
+== Responsibilities for testing of BLOPEX ==
 
 <table border="1">
 <tr> 
