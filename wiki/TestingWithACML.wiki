@@ -7,9 +7,9 @@ This is included as an example of the kinds of errors that can occur and how to 
 First find the acml library:
 {{{
 >cd ../blopex_serial_complex
->locate libacml.a
+>locate libacml.so
 ....
-/opt/acml3.1.0/gnu64/lib/libacml.a
+/opt/acml3.1.0/gnu64/lib/libacml.so
 ....
 }}}
 Replace LAPACKLIB in Makefile.inc
@@ -40,7 +40,7 @@ Make gets error:
 /usr/bin/ld: warning: libacml_mv.so, needed by /opt/acml3.1.0/gnu64/lib/libacml.so, not found (try using -rpath or -rpath-link)
 }}}
 
-Note: libacml_mv.so is in same directory as libacml.a
+Note: libacml_mv.so is in same directory as libacml.so
 
 Change LAPACKLIB to:
 {{{
@@ -97,6 +97,8 @@ where the find command searches the directory /usr. This pathname can then be ad
 
 -L/usr/lib/gcc/i586-mandrake-linux-gnu/3.4.3 -lg2c
 }}}
+
+_Note: I would have though that supplying location of libg2c.so would be sufficient, but this is not true.  For some reason it wants libg2c.a, although later during execution we will have to supply location of libg2c.so._
 
 Locate libg2c.a in /fc6/usr/lib/gcc/x86_64-redhat-linux/3.4.6
 
