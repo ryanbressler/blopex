@@ -1,4 +1,4 @@
-#summary BLOPEX Complex Serial testing on IBM
+#summary BLOPEX Complex Serial testing on IBM Bluefire
 
 <wiki:toc max_depth="1" />
 
