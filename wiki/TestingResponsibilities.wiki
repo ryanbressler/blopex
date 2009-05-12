@@ -20,7 +20,7 @@
 </tr>
 
 <tr>
-<td>Eugene</td><td>XVIA/XVIB</td><td>Petsc,Hypre,Matlab,effect of Scaling on C=chol(A)</td>
+<td>Eugene</td><td>XVIA / XVIB</td><td>Petsc,Hypre,Matlab,effect of Scaling on C=chol(A)</td>
 </tr>
 </table>
 
