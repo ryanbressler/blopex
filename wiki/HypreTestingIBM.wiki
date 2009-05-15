@@ -20,9 +20,9 @@ be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/
 }}}
 Change working directory to hypre source code directory.
 {{{
-be1105en$ cd hypre-2.4.0b
+be1105en$ cd hypre-2.4.0b/src
 be1105en$ pwd
-/blhome/dmccuan/hypre-2.4.0b 
+/blhome/dmccuan/hypre-2.4.0b/src
 }}}
 Install the logpcg modifications.
 {{{
