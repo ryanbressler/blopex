@@ -28,10 +28,11 @@ Install the logpcg modifications.
 {{{
 be1105en$ gunzip -c hypre_lobpcg_modifications.tgz | tar -xof -
 }}}
-Install hypre with standard setup.  
+Shift to the src subdirectory and install hypre with standard setup.  
 Note: this will compiles the BLOPEX source.
 Note: the ./nopoe is required for IBM platforms (see Hypre user's manual, Chapter 7.2).
 {{{
+bell05en$ cd src
 be1105en$ ./nopoe ./configure
 ........  lots of output
 
