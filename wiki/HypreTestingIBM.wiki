@@ -22,7 +22,7 @@ Change working directory to hypre source code directory.
 {{{
 be1105en$ cd hypre-2.4.0b
 be1105en$ pwd
-/blhome/dmccuan/hypre-2.4.0b/src
+/blhome/dmccuan/hypre-2.4.0b 
 }}}
 Install the logpcg modifications.
 {{{
