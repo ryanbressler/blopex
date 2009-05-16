@@ -1,4 +1,4 @@
-#summary BLOPEX Hypre testing for Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
+#summary BLOPEX Hypre 2.4.0b testing for Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
 <wiki:toc max_depth="1" />
 
 = Introduction =
