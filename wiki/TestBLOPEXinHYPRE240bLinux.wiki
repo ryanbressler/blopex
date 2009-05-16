@@ -1,4 +1,4 @@
-#summary BLOPEX Hypre 2.4.0b testing for Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
+#summary BLOPEX in Hypre 2.4.0b testing for Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
 <wiki:toc max_depth="1" />
 
 = Introduction =
@@ -44,6 +44,21 @@ and BoomerAMG (default) preconditioner.
 {{{
 $ mpirun -np 2 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
+Eigenvalue lambda   7.00663900604048e-03
+Eigenvalue lambda   1.40078232353966e-02
+Eigenvalue lambda   1.40078232353974e-02
+........
+Eigenvalue lambda   3.96606622240182e-02
+Eigenvalue lambda   3.96606622268822e-02
+Eigenvalue lambda   3.96606622275167e-02
+Residual   3.11322657629586e-09
+Residual   2.15473103267669e-09
+Residual   2.52511985320079e-09
+........
+Residual   9.76997940917496e-09
+Residual   7.18751263543368e-09
+Residual   7.84529136335655e-09
+
 35 iterations
 =============================================
 Solve phase times:
@@ -57,9 +72,23 @@ LOBPCG Solve:
 
 Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
 {{{
-
 $ mpirun -np 4 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
 ........
+Eigenvalue lambda   7.00663900604047e-03
+Eigenvalue lambda   1.40078232353951e-02
+Eigenvalue lambda   1.40078232353976e-02
+........
+Eigenvalue lambda   3.96606622273073e-02
+Eigenvalue lambda   3.96606622274270e-02
+Eigenvalue lambda   3.96606622309705e-02
+Residual   3.82339245841408e-09
+Residual   3.16097555887773e-09
+Residual   3.87442820543904e-09
+........
+Residual   8.06351772888438e-09
+Residual   9.40532480087339e-09
+Residual   9.72355853713388e-09
+
 43 iterations
 =============================================
 Solve phase times:
@@ -73,6 +102,21 @@ LOBPCG Solve:
 
 $ mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
 ........
+Eigenvalue lambda   7.00663900604041e-03
+Eigenvalue lambda   1.40078232353957e-02
+Eigenvalue lambda   1.40078232353966e-02
+........
+Eigenvalue lambda   3.96606622272988e-02
+Eigenvalue lambda   3.96606622273095e-02
+Eigenvalue lambda   3.96606622276261e-02
+Residual   3.70085907256198e-09
+Residual   4.00319530890741e-09
+Residual   4.20084850498391e-09
+........
+Residual   6.54338573150323e-09
+Residual   8.05614030452242e-09
+Residual   8.13140916860350e-09
+
 34 iterations
 =============================================
 Solve phase times:
@@ -86,6 +130,21 @@ LOBPCG Solve:
 
 $ mpirun -np 12 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
+Eigenvalue lambda   7.00663900603955e-03
+Eigenvalue lambda   1.40078232353956e-02
+Eigenvalue lambda   1.40078232353959e-02
+........
+Eigenvalue lambda   3.96606622273043e-02
+Eigenvalue lambda   3.96606622273095e-02
+Eigenvalue lambda   3.96606622273160e-02
+Residual   1.16582909260867e-09
+Residual   8.54372572267420e-09
+Residual   1.37677311213383e-09
+........
+Residual   7.99361652917548e-09
+Residual   9.46390622434787e-09
+Residual   8.40211141630243e-09
+
 35 iterations
 =============================================
 Solve phase times:
@@ -105,6 +164,21 @@ and SMG (default) preconditioner.
 {{{
 $ mpirun -np 2 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
+Eigenvalue lambda   5.26415298041384e-03
+Eigenvalue lambda   7.04298218934260e-03
+Eigenvalue lambda   1.00065253429593e-02
+........
+Eigenvalue lambda   2.40088938033945e-02
+Eigenvalue lambda   2.56946369566709e-02
+Eigenvalue lambda   2.56946375462781e-02
+Residual   1.91399972357727e-07
+Residual   8.43650131622707e-08
+Residual   9.54941149259199e-07
+........
+Residual   6.74309482918504e-07
+Residual   9.40286337953519e-07
+Residual   8.12690613252084e-06
+
 100 iterations
 =============================================
 Solve phase times:
@@ -116,10 +190,25 @@ PCG Solve:
   cpu MFLOPS      = 0.000000
 }}}
 
-Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
+Below are the similar runs and corresponding timings on 4 and 8 cores:
 {{{
 $ mpirun -np 4 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
+Eigenvalue lambda   4.82051933106361e-03
+Eigenvalue lambda   5.26877698427400e-03
+Eigenvalue lambda   6.01579864548973e-03
+........
+Eigenvalue lambda   1.54068271107100e-02
+Eigenvalue lambda   1.67625994994826e-02
+Eigenvalue lambda   1.70492925774638e-02
+Residual   4.08418657958395e-07
+Residual   4.92680173873185e-07
+Residual   1.03486960721607e-07
+........
+Residual   6.52648397464193e-07
+Residual   6.24953005793164e-07
+Residual   5.98921764124362e-07
+
 22 iterations
 =============================================
 Solve phase times:
@@ -133,6 +222,21 @@ PCG Solve:
 
 $ mpirun -np 8 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
+Eigenvalue lambda   4.70859546765247e-03
+Eigenvalue lambda   4.82110245131167e-03
+Eigenvalue lambda   5.00860940405184e-03
+........
+Eigenvalue lambda   1.18222874321917e-02
+Eigenvalue lambda   1.20097935187726e-02
+Eigenvalue lambda   1.20097949954929e-02
+Residual   2.13045786909251e-07
+Residual   4.35535114126933e-07
+Residual   3.29530511965658e-07
+........
+Residual   9.25638794987906e-07
+Residual   9.74474408843610e-07
+Residual   7.68618728306610e-07
+
 97 iterations
 =============================================
 Solve phase times:
@@ -141,19 +245,6 @@ PCG Solve:
   wall clock time = 3766.980000 seconds
   wall MFLOPS     = 0.000000
   cpu clock time  = 3740.350000 seconds
-  cpu MFLOPS      = 0.000000
-
-
-$ mpirun -np 12 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
-........
-9 iterations
-=============================================
-Solve phase times:
-=============================================
-PCG Solve:
-  wall clock time = 2236.490000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 2138.660000 seconds
   cpu MFLOPS      = 0.000000
 }}} 
 
@@ -164,30 +255,60 @@ In all the tests the desired tolerance for residual norms (1e-6) was achieved fo
 To test Hypre's SStruct interface we use the default input file sstuct.in.default (can be found in src/test/TEST_sstruct and
 copied to src/test). We compute 10 smallest eigenpairs using 2 cores, random initial guess and SMG preconditioner:
 {{{
-$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 1
+$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10
 ........
+Eigenvalue lambda   1.34880848246863e+00
+Eigenvalue lambda   1.36560847743438e+00
+Eigenvalue lambda   1.47908699641544e+00
+........
+Eigenvalue lambda   1.81237285972004e+00
+Eigenvalue lambda   1.82920488646823e+00
+Eigenvalue lambda   1.84668108359500e+00
+Residual   8.63315860537788e-07
+Residual   7.12441393056327e-07
+Residual   8.01558894158301e-07
+........
+Residual   9.25493675135675e-07
+Residual   8.43603987608139e-07
+Residual   1.01253511015489e-06
+
 100 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 29.550000 seconds
+  wall clock time = 22.330000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 29.480000 seconds
+  cpu clock time  = 22.340000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 Compute 10 smallest eigenpairs using 2 cores, random initial guess and PFMG preconditioner:
 {{{
-$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 11 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 1
+$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 11 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10
 ........
+Eigenvalue lambda   1.34880848246839e+00
+Eigenvalue lambda   1.36560847743322e+00
+Eigenvalue lambda   1.47908699640858e+00
+........
+Eigenvalue lambda   1.81237285962400e+00
+Eigenvalue lambda   1.82920488646689e+00
+Eigenvalue lambda   1.84668108358911e+00
+Residual   7.70861397184120e-07
+Residual   7.60135735509432e-07
+Residual   9.62472434545365e-07
+........
+Residual   9.97971662032563e-07
+Residual   9.98086843726105e-07
+Residual   2.13094634006495e-06
+
 100 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 6.230000 seconds
+  wall clock time = 5.300000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 6.220000 seconds
+  cpu clock time  = 5.300000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
