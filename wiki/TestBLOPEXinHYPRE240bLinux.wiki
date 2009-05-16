@@ -156,37 +156,37 @@ LOBPCG Solve:
   cpu MFLOPS      = 0.000000
 }}}
 
-In all the tests the desired tolerance for residual norms (1e-8) was achieved for each eigenpair.
+In all the tests the desired tolerance for residual norms (1e-8) was achieved at each eigenpair.
 
 = Execution of Tests for Hypre's Struct interface =
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and SMG (default) preconditioner.
 {{{
-$ mpirun -np 2 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+$ $ mpirun -np 2 ./struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   5.26415298041384e-03
-Eigenvalue lambda   7.04298218934260e-03
-Eigenvalue lambda   1.00065253429593e-02
+Eigenvalue lambda   7.00663900604137e-03
+Eigenvalue lambda   1.40078232354006e-02
+Eigenvalue lambda   1.40078232354045e-02
 ........
-Eigenvalue lambda   2.40088938033945e-02
-Eigenvalue lambda   2.56946369566709e-02
-Eigenvalue lambda   2.56946375462781e-02
-Residual   1.91399972357727e-07
-Residual   8.43650131622707e-08
-Residual   9.54941149259199e-07
+Eigenvalue lambda   3.96606622278755e-02
+Eigenvalue lambda   3.96606622283022e-02
+Eigenvalue lambda   3.96606622286556e-02
+Residual   7.56594294724381e-08
+Residual   3.77279806460283e-07
+Residual   7.15222192077976e-07
 ........
-Residual   6.74309482918504e-07
-Residual   9.40286337953519e-07
-Residual   8.12690613252084e-06
+Residual   6.76919987150030e-07
+Residual   6.36262557074980e-07
+Residual   6.80569313188676e-07
 
-100 iterations
+38 iterations
 =============================================
 Solve phase times:
 =============================================
 PCG Solve:
-  wall clock time = 1724.290000 seconds
+  wall clock time = 452.640000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 1723.820000 seconds
+  cpu clock time  = 452.400000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
@@ -194,61 +194,52 @@ Below are the similar runs and corresponding timings on 4 and 8 cores:
 {{{
 $ mpirun -np 4 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   4.82051933106361e-03
-Eigenvalue lambda   5.26877698427400e-03
-Eigenvalue lambda   6.01579864548973e-03
+Eigenvalue lambda   7.00663900604177e-03
+Eigenvalue lambda   1.40078232353991e-02
+Eigenvalue lambda   1.40078232354044e-02
 ........
-Eigenvalue lambda   1.54068271107100e-02
-Eigenvalue lambda   1.67625994994826e-02
-Eigenvalue lambda   1.70492925774638e-02
-Residual   4.08418657958395e-07
-Residual   4.92680173873185e-07
-Residual   1.03486960721607e-07
+Eigenvalue lambda   3.96606622284663e-02
+Eigenvalue lambda   3.96606622288324e-02
+Eigenvalue lambda   3.96606622321093e-02
+Residual   1.45106762486572e-07
+Residual   2.74878942841427e-07
+Residual   4.88437842422526e-07
 ........
-Residual   6.52648397464193e-07
-Residual   6.24953005793164e-07
-Residual   5.98921764124362e-07
+Residual   9.57985718234993e-07
+Residual   7.13935485122067e-07
+Residual   8.78169811413180e-07
 
-22 iterations
+29 iterations
 =============================================
 Solve phase times:
 =============================================
 PCG Solve:
-  wall clock time = 1654.360000 seconds
+  wall clock time = 238.930000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 1560.460000 seconds
+  cpu clock time  = 238.900000 seconds
   cpu MFLOPS      = 0.000000
 
-
-$ mpirun -np 8 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+$ mpirun -np 8 ./struct -lobpcg -P 8 1 1 -n 8 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   4.70859546765247e-03
-Eigenvalue lambda   4.82110245131167e-03
-Eigenvalue lambda   5.00860940405184e-03
+Eigenvalue lambda   7.00663900604125e-03
+Eigenvalue lambda   1.40078232353979e-02
+Eigenvalue lambda   1.40078232354031e-02
 ........
-Eigenvalue lambda   1.18222874321917e-02
-Eigenvalue lambda   1.20097935187726e-02
-Eigenvalue lambda   1.20097949954929e-02
-Residual   2.13045786909251e-07
-Residual   4.35535114126933e-07
-Residual   3.29530511965658e-07
+Eigenvalue lambda   3.96606622279464e-02
+Eigenvalue lambda   3.96606622282876e-02
+Eigenvalue lambda   3.96606622288330e-02
+Residual   9.75486455152180e-08
+Residual   2.70336730473921e-07
+Residual   4.31824092087032e-07
 ........
-Residual   9.25638794987906e-07
-Residual   9.74474408843610e-07
-Residual   7.68618728306610e-07
-
-97 iterations
-=============================================
-Solve phase times:
-=============================================
-PCG Solve:
-  wall clock time = 3766.980000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 3740.350000 seconds
-  cpu MFLOPS      = 0.000000
+Residual   9.50887547266384e-07
+Residual   8.41228947639852e-07
+Residual   7.30405123841645e-07
 }}} 
 
-In all the tests the desired tolerance for residual norms (1e-6) was achieved for each eigenpair.
+In all the tests the desired tolerance for residual norms (1e-6) was achieved at each eigenpair.
+
+Note: dimensions _-n nx ny nz_ in the driver's parameter list, are assumed to be per processor, while the processors topology is defined by _-P Px Py Pz_.  
 
 = Execution of Tests for Hypre's SStruct interface =
 
@@ -312,4 +303,4 @@ LOBPCG Solve:
   cpu MFLOPS      = 0.000000
 }}}
 
-For both cases the desired tolerance (1e-6) for residual norms was achieved.
+For both cases the desired tolerance (1e-6) for residual norms was achieved at each eigenpair.
