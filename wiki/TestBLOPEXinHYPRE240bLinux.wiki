@@ -1,0 +1,194 @@
+#summary BLOPEX Hypre testing for Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
+<wiki:toc max_depth="1" />
+
+= Introduction =
+
+Testing BLOPEX in Hypre 2.4.0b. BLOPEX LOBPCG computes a number of smallest eigenpairs utilizing Hypre's IJ, Struct and SStruct interfaces. System configuration:
+  * Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM;
+  * Open MPI version 1.2.4;
+  * Compiler version gcc (GCC) 4.3.2 20081105 (Red Hat 4.3.2-7);
+  * LAPACK version 3.1.1 
+
+= Setup Hypre =  
+
+Goto https://computation.llnl.gov/casc/hypre/software.html and download hypre. 
+Currently the latest beta version of hypre is hypre-2.4.0b.tar.gz
+
+Extract hypre files from download file.
+{{{
+$ tar -zxvf hypre-2.4.0b.tar.gz
+}}}
+Change working directory to hypre source code directory.
+{{{
+$ cd hypre-2.4.0b
+}}}
+Install hypre with standard setup.  
+Note: this will compile the BLOPEX source.
+{{{
+$ configure
+........  lots of output
+
+$ make
+........  lots of output
+}}}
+Shift to test directory. Execute make to compile and link test cases.
+This creates executables ij, struct and sstruct.
+{{{
+$ cd test
+$ make
+}}}
+
+= Execution of Tests for Hypre's IJ interface =
+Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
+and BoomerAMG (default) preconditioner. 
+{{{
+$ mpirun -np 2 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+35 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 334.070000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 333.760000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
+{{{
+
+$ mpirun -np 4 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
+........
+43 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 175.810000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 175.810000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+$ mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
+........
+34 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 113.460000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 113.470000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+$ mpirun -np 12 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+35 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 188.470000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 185.710000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+In all the tests the desired tolerance for residual norms (1e-8) was achieved for each eigenpair.
+
+= Execution of Tests for Hypre's Struct interface =
+Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
+and SMG (default) preconditioner.
+{{{
+$ mpirun -np 2 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+100 iterations
+=============================================
+Solve phase times:
+=============================================
+PCG Solve:
+  wall clock time = 1724.290000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 1723.820000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
+{{{
+$ mpirun -np 4 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+22 iterations
+=============================================
+Solve phase times:
+=============================================
+PCG Solve:
+  wall clock time = 1654.360000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 1560.460000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+$ mpirun -np 8 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+97 iterations
+=============================================
+Solve phase times:
+=============================================
+PCG Solve:
+  wall clock time = 3766.980000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 3740.350000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+$ mpirun -np 12 ./struct -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+9 iterations
+=============================================
+Solve phase times:
+=============================================
+PCG Solve:
+  wall clock time = 2236.490000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 2138.660000 seconds
+  cpu MFLOPS      = 0.000000
+}}} 
+
+In all the tests the desired tolerance for residual norms (1e-6) was achieved for each eigenpair.
+
+= Execution of Tests for Hypre's SStruct interface =
+
+To test Hypre's SStruct interface we use the default input file sstuct.in.default (can be found in src/test/TEST_sstruct and
+copied to src/test). We compute 10 smallest eigenpairs using 2 cores, random initial guess and SMG preconditioner:
+{{{
+$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 1
+........
+100 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 29.550000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 29.480000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+Compute 10 smallest eigenpairs using 2 cores, random initial guess and PFMG preconditioner:
+{{{
+$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 11 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 1
+........
+100 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 6.230000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 6.220000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+For both cases the desired tolerance (1e-6) for residual norms was achieved.
