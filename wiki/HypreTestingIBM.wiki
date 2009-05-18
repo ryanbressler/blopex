@@ -3,7 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Hypre on Bluefire (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic. 
+How to test BLOPEX under Beta version of Hypre on Bluefire (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic.  The test uses BLOPEX with code for both double and complex arithematic.  
 
 = Setup Hypre =  
 
@@ -98,4 +98,85 @@ be1105en$ ls -l mpi_struct*
 -rw-r--r--    1 dmccuan  univ            776 Apr 28 16:05 mpi_struct.lsf
 }}}
 
+= Test Results =
+
+The test is executed on UCAR Bluefire system in April 2009.  This is an AIX operating system and the IBM XL C/C++ compiler (xlc) and IBM version of lapack libraries are used.  
+
+== STRUCT test ===
+
+./struct -solver 10 -n 64 64 64 -P 4 4 4 -lobpcg -pcgitr 0
+
+The eigenvalues computed are
+{{{
+Eigenvalue lambda       Residual              
+4.4827998188625719e-04  3.4605760440036511e-07
+}}}
+
+BLOPEX execution times
+{{{
+6 iterations
+PCG Solve:
+  wall clock time = 9.470000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 9.028213 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+Job execution times
+{{{
+Resource usage summary:
+
+    CPU time   :   1323.34 sec.
+    Max Memory :        29 MB
+    Max Swap   :        24 MB
+
+    Max Processes  :         6
+    Max Threads    :        10
+}}}
+
+== IJ test ==
+
+./ij -lobpcg -n 50 50 50 -pcgitr 0 -vrand 96 -seed 1
+
+The first 10 eigenvalues computed are
+
+{{{ 
+Eigenvalue lambda       Residual              
+1.1380027577735664e-02  4.8953248756283098e-09
+2.2745665707950596e-02  5.3347793118004116e-09
+2.2745665707953416e-02  4.9061578272060589e-09
+2.2745665707955796e-02  5.0516150816646865e-09
+3.4111303838161001e-02  3.4990279741859855e-09
+3.4111303838166282e-02  1.9479807632388333e-09
+3.4111303838168891e-02  3.5753876490713000e-09
+4.1640485684018340e-02  7.9576179689033350e-10
+4.1640485684021476e-02  8.6006747881411309e-10
+4.1640485684025182e-02  8.4367991930050566e-09
+4.5476941968386475e-02  2.4535743998412773e-09
+5.3006123814229637e-02  6.5343884561675320e-09
+5.3006123814233037e-02  4.9558820820555858e-09
+5.3006123814234606e-02  9.8469808900638760e-09
+}}}
+
+BLOPEX execution times
+{{{
+100 iterations
+LOBPCG Solve:
+  wall clock time = 120.390000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 118.929832 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
+Job execution times
+{{{
+Resource usage summary:
+
+    CPU time   :   1201.16 sec.
+    Max Memory :      1271 MB
+    Max Swap   :      1279 MB
+
+    Max Processes  :        16
+    Max Threads    :       120
+}}}
  
