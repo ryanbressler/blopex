@@ -107,44 +107,17 @@ respective directories.
 
 = Execution of Tests =
 
-There are two test drivers located in subdirectories of blopex_petsc:
-driver an driver_fiedler.  The executables for these are in directories
-../blopex_petsc/driver and ../blopex_petsc/driver_fiedler.
+See wiki PetscTestingLinux for descriptions of test programs.
 
-driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
-if Petsc is configured for complex (this is controlled by PETSC_USE_COMPLEX preprocessor
- variable) or lobpcg_solve_doube if Petsc is configured for double. 
+Frost executes mpi jobs under the cobalt batch system.
+Jobs are submitted via command cqsub.  
 
-To execute jobs us
-
-For example:
+For example to submist struct from the change to the .../src/test subdirectory and issue command:
 {{{
->> mpirun -np 2 driver -n_eigs 3 -itr 20 
-or 
->> ./driver -n_eigs 3 -itr 20
+cqsub -n 64 -t 00:10:00 -q debug ./struct ...etc...
 }}}
-driver_fiedler accepts as input matrices in Petsc format. 
 
-For example:
-{{{
->> ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -itr 20
-}}}
-The option -matrix specifies the matrix to solve.  
-The initial eigenvectors are generated randomly. 
+A batch job number is returned (say 894111).  Output is returned to current directory.
+Output consists of 894111.cobaltlog, 894111.error, and 894111.output
 
-The matrix file is in a Petsc format.  
-These can be setup via some Matlab programs in the PETSc socket interface to Matlab; 
-`PetscBinaryRead.m` and `PetscBinaryWrite.m`.  
-These programs read and write Matlab matrices and vectors to files formated for Petsc. 
-The version from Petsc only supports double.   
-We have modified these programs to  also support complex.  
-The complex versions are included in the .../blopex_petsc directory along with 
-`PetscWriteReadExample.m` to illustrate how to use them. 
-
-The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
-and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
-
-The *complex files* are complex versions of the L and DL double matrices (with imag part zero) 
-plus test_complex1.petsc (40x40 134 nz hpd random),
-test_complex2.petsc (1000x1000 50786 nz hpd random) and 
-test_complex3 (10876 nz hpd random). 
+See http://www.cisl.ucar.edu/docs/frost/cbr.jsp for details.
