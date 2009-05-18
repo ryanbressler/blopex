@@ -1,4 +1,4 @@
-#summary BLOPEX Petsc testing on Linux
+#summary BLOPEX Complex Petsc testing on Linux
 <wiki:toc max_depth="1" />
 
 = Introduction =
