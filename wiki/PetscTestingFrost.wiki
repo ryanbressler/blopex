@@ -1,4 +1,4 @@
-#summary BLOPEX Petsc testing on UCAR Frost (IBM)
+#summary BLOPEX Complex Petsc testing on UCAR Frost (IBM)
 <wiki:toc max_depth="2" />
 
 = Introduction =
