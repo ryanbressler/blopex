@@ -1,4 +1,4 @@
-#summary BLOPEX Complex serial driver testing with ACML libraries
+#summary BLOPEX Complex Serial testing with ACML libraries
 <wiki:toc max_depth="1" />
 
 = Introduction =
