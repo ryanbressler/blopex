@@ -1,4 +1,4 @@
-#summary BLOPEX Hypre testing on IBM Bluefire
+#summary BLOPEX Hypre 2.4.0b testing on UCAR Bluefire (IBM)
 <wiki:toc max_depth="1" />
 
 = Introduction =
