@@ -121,3 +121,81 @@ A batch job number is returned (say 894111).  Output is returned to current dire
 Output consists of 894111.cobaltlog, 894111.error, and 894111.output
 
 See http://www.cisl.ucar.edu/docs/frost/cbr.jsp for details.
+
+= Test Results =
+
+The tests were executed on UCAR Frost system in May 2009.  This is an Linux operating system and the IBM blrts_xlc compiler was used.   
+
+== driver_fiedler  L-matrix-complex.petsc ==
+
+cqsub -n 32 -t 00:10:00 ./driver_fiedler -matrix L-matrix-complex.petsc -n_eigs 3 -tol 1e-6 -itr 100
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+3.2405735916818225e-06  1.9104398003429047e-07
+9.4602276110268679e-06  1.5720358098795360e-07
+2.0138116290393120e-05  4.9455789576037760e-07
+
+9 iterations
+Solution process, seconds: 8.418286e+01
+}}}
+
+== driver_fiedler  DL-matrix-complex.petsc ==
+
+cqsub -n 32 -t 00:10:00 ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -tol 1e-6 -itr 100
+
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+4.0146562896021974e-05  4.0097605284112998e-06
+4.0189568320721522e-05  3.4396113767381132e-06
+4.0221973659885288e-05  3.7112788514828566e-06
+
+100 iterations
+Solution process, seconds: 3.246532e+00
+}}}
+
+== driver_fiedler  test_complex1.petsc ==
+
+cqsub -n 32 -t 00:10:00 ./driver_fiedler -matrix test_complex1.petsc -n_eigs 3 -tol 1e-5 -itr 20
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+9.3173086234145286e-01  2.5725883485556160e-03
+9.4332184726599988e-01  1.6830353120371466e-03
+9.4657160713854049e-01  4.3499844941039976e-03
+
+20 iterations
+}}}
+
+== driver_fiedler  test_complex2.petsc ==
+
+cqsub -n 32 -t 00:10:00 ./driver_fiedler -matrix test_complex2.petsc -n_eigs 3 -tol 1e-5 -itr 20
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+5.8390022119870444e-01  6.7837246604296915e-03
+5.9280909291700978e-01  4.3844625848419149e-03
+5.9577297841498866e-01  8.6492165993893883e-03
+
+20 iterations
+}}}
+
+== driver_fiedler  test_complex3.petsc ==
+
+cqsub -n 32 -t 00:10:00 -q debug ./driver_fiedler -matrix test_complex3.petsc -n_eigs 3 -tol 1e-5 -itr 20
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+9.6192000894983607e+01  3.9241687572818332e-02
+9.6234214127818561e+01  1.0539584453860490e-01
+9.6288534468695900e+01  5.5469859617371227e-02
+
+20 iterations
+Solution process, seconds: 3.407860e-01
+}}}
