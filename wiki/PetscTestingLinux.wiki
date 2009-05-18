@@ -110,12 +110,12 @@ The initial eigenvectors are generated randomly.
 
 The matrix file is in a Petsc format.  
 These can be setup via some Matlab programs in the PETSc socket interface to Matlab; 
-PetscBinaryRead.m and PetscBinaryWrite.m.  
+`PetscBinaryRead.m` and `PetscBinaryWrite.m`.  
 These programs read and write Matlab matrices and vectors to files formated for Petsc. 
 The version from Petsc only supports double.   
 We have modified these programs to  also support complex.  
 The complex versions are included in the .../blopex_petsc directory along with 
-PetscWriteReadExample.m to illustrate how to use them. 
+`PetscWriteReadExample.m` to illustrate how to use them. 
 
 The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
 and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
