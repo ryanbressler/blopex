@@ -4,7 +4,7 @@
 = Introduction =
 
 Trials and Tribulations of testing blopex_serial_complex with acml library.
-Done in math on 5/6/2009.  
+This was done on math.cudenver.edu on 5/6/2009.  
 
 This is included as an example of the kinds of errors that can occur and how to resolve them.  In particular the location of and modifications for the acml libraries.  If you are only concerned about the end result just review the summary section.  If you encounter problem review the section `How you get to the summary`.
 
@@ -23,21 +23,21 @@ LAPACKLIB = -L/opt/acml3.1.0/gnu64/lib -lacml -lacml_mv -lm  -L/fc6/usr/lib/gcc/
 
 Set LD_LIBRARY_PATH
 {{{
->export LD_LIBRARY_PATH=/opt/acml3.1.0/gnu64/lib:/fc6/usr/lib64
+> export LD_LIBRARY_PATH=/opt/acml3.1.0/gnu64/lib:/fc6/usr/lib64
 }}}
 
 Execute the test.
 {{{
->cd driver
->./serial_driver L test2a.txt test2x.txt
+> cd driver
+> ./serial_driver L test2a.txt test2x.txt
 }}}
 
 = How you get to the summary = 
 
 First find the acml library:
 {{{
->cd ../blopex_serial_complex
->locate libacml.so
+> cd ../blopex_serial_complex
+> locate libacml.so
 ....
 /opt/acml3.1.0/gnu64/lib/libacml.so
 ....
@@ -149,7 +149,7 @@ Get error:
 }}}
 Locate libacml.so
 {{{
->locate libacml.so
+> locate libacml.so
 ...
 /opt/acml3.1.0/gnu64/lib/libacml.so
 ...
@@ -166,14 +166,14 @@ Get error:
 }}}
 Locate libacml.so
 {{{
->locate libg2c.so.0
+> locate libg2c.so.0
 ...
 /fc6/usr/lib/libg2c.so.0
 ...
 }}}
 Set LD_LIBRARY_PATH
 {{{
->export LD_LIBRARY_PATH=/opt/acml3.1.0/gnu64/lib:/fc6/usr/lib64
+> export LD_LIBRARY_PATH=/opt/acml3.1.0/gnu64/lib:/fc6/usr/lib64
 }}}
 Execute the test again.
 
