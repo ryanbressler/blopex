@@ -3,7 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Petsc on Linux
+How to test BLOPEX under Beta version of Petsc on IBM Linux system Frost.
 
 = Setup Petsc =  
 
@@ -16,25 +16,47 @@ To install files issue command:
 >> gunzip -c petsc-dev.tar.gz | tar -xof -
 }}}
 This creates files in directory petsc-dev.  
-Now two environment variables must be setup:
+
+A special config file is needed. Copy it to the petsc config directory as follows:
 {{{
->> PETSC_DIR=/home/grads/dmccuan/petsc-dev
->> export PETSC_DIR
->> PETSC_ARCH=linux-gnu-c-debug
->> export PETSC_ARCH
+>> cd petsc-dev
+>> cp /contrib/bgl/petsc/petsc-3.0.0-p4/bgl-ibm-goto_lapack.py config/
 }}}
+
+Now we need to install a patch for the Frost system to Petsc.
+{{{
+>> patch -p0 < /contrib/bgl/petsc/petsc-3.0.0-p4/petsc-3.0.0-p4.patch 
+patching file ./src/sys/viewer/impls/socket/socket.h
+}}}
+
+Configure Petsc as follows:
+{{{
+>> ./config/bgl-ibm-goto_lapack.py --with-shared --with-scalar-type=complex --with-debugging=1
+ 
+=================================================================================
+             Configuring PETSc to compile on your system                         
+=================================================================================
+.....
+PETSc:
+  **
+  ** Before running "make" your PETSC_ARCH must be specified with:
+  **  ** setenv PETSC_ARCH bgl-ibm-goto-O3_440d (csh/tcsh)
+  **  ** PETSC_ARCH=bgl-ibm-goto-O3_440d; export PETSC_ARCH (sh/bash)
+  **
+  **
+  ** Before running "make" your PETSC_DIR must be specified with:
+  **  ** setenv PETSC_DIR /home/dmccuan/petsc-3.0.0-p4 (csh/tcsh)
+  **  ** PETSC_DIR=/home/dmccuan/petsc-3.0.0-p4; export PETSC_DIR (sh/b
+....
+}}}
+Now two environment variables must be setup as specified in the configuration run. Note by default we are running under the csh shell.
+{{{
+>> setenv PETSC_ARCH bgl-ibm-goto-O3_440d  
+> setenv PETSC_DIR /home/dmccuan/petsc-3.0.0-p4 
+}}}
+
 We will also need these set when compiling the blopex_petsc interface.   
-To avoid setting everytime you logon you can put them in your .bashrc 
-file as follows:
-{{{
-export PETSC_DIR=/home/grads/dmccuan/petsc-dev
-export PETSC_ARCH=linux-gnu-c-debug
-}}}
-The next step is to configure Petsc.  Shift to the Petsc directory and 
-issue command
-{{{
->> ./config/configure.py  --with-shared --with-scalar-type=complex
-}}}
+
 Since we are not using the source for blopex included in Petsc we don't need the 
 options --download-blopex=1 or --download-hypre=1.  
 
@@ -92,6 +114,8 @@ driver an driver_fiedler.  The executables for these are in directories
 driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
 if Petsc is configured for complex (this is controlled by PETSC_USE_COMPLEX preprocessor
  variable) or lobpcg_solve_doube if Petsc is configured for double. 
+
+To execute jobs us
 
 For example:
 {{{
