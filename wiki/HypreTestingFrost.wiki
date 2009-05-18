@@ -1,9 +1,9 @@
-#summary BLOPEX Hypre 2.4.0b testing on UCAR Bluefire (IBM)
+#summary BLOPEX Hypre 2.4.0b testing on UCAR Frost (IBM)
 <wiki:toc max_depth="1" />
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Hypre on Bluefire (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic.  The test uses BLOPEX with code for both double and complex arithematic.  
+How to test BLOPEX under Beta version of Hypre on Frost (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic.  The test uses BLOPEX with code for both double and complex arithematic.  
 
 = Setup Hypre =  
 
