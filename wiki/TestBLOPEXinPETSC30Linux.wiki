@@ -1,4 +1,4 @@
-#summary BLOPEX in PETSCc Release Version 3.0 testing for Linux
+#summary BLOPEX in PETSc Release Version 3.0 testing for Linux
 <wiki:toc max_depth="1" />
 
 = Introduction =
