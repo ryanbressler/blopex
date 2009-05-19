@@ -1,0 +1,138 @@
+#summary BLOPEX in PETSCc Release Version 3.0 testing for Linux
+<wiki:toc max_depth="1" />
+
+= Introduction =
+
+Testing BLOPEX in PETSc Release Version 3.0. BLOPEX LOBPCG computes a number of smallest eigenpairs to the required tolerance of the residual norms. System configuration:
+  * Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM;
+  * Open MPI version 1.2.4;
+  * Compiler version gcc (GCC) 4.3.2 20081105 (Red Hat 4.3.2-7);
+  * LAPACK version 3.1.1 
+
+= Setup PETSc =  
+
+Goto http://www.mcs.anl.gov/petsc/petsc-2/download/index.html and download PETSc Release Version 3.0 in the tarball petsc-3.0.0-p5.tar.gz (full distribution including all current patches).
+
+Extract PETSc files from download file.
+{{{
+$ tar -zxvf petsc-3.0.0-p5.tar.gz
+}}}
+This creates files in directory  petsc-3.0.0-p5. Change working directory to petsc-3.0.0-p5.
+{{{
+$ cd petsc-3.0.0-p5
+}}}
+Setup environment variables PETSC_DIR (points to the location of the PETSc installation that is used) and PETSC_ARCH (specifies the configuration that should currently be used)
+{{{
+$ PETSC_DIR=/home/....../petsc-3.0.0-p5
+$ export PETSC_DIR
+$ PETSC_ARCH=linux-gnu-c-debug
+$ export PETSC_ARCH
+}}}
+Note: one might want to set PETSC_DIR and PETSC_ARCH variables in the .bashrc file.
+
+Now configure PETSc: 
+{{{
+$ ./config/configure.py --with-mpi-dir=/usr/include/openmpi --download-hypre=1 --download-blopex=1
+}}}
+The command line parameters specify the path to the existing MPI directory and issue the command to download (and compile) hypre and BLOPEX during configuration process.
+
+After configuration is finished issue the command
+{{{
+$ make all test
+}}}
+which builds PETSc libraries and runs sample tests to make sure the installation was correct.
+
+= Execution of Tests for PETSc driver =
+To execute tests shift from ${PETSC_DIR} to ${PETSC_DIR}\src\contrib\blopex\driver
+and run the makefile:
+{{{
+make driver
+}}}
+This will create the executable driver which finds a specified (in the command line) number of smallest eigenpairs of 3-D 7-point Laplacian. 
+
+Use 2 cores, find 10 first eigenpairs, random initial guess: 
+{{{
+$ mpirun -np 2 driver -n_eigs 10 -tol 1e-6 -itr 200
+........
+Eigenvalue lambda 2.4304215831301590e-01
+Eigenvalue lambda 4.7952103987965222e-01
+Eigenvalue lambda 4.7952103987965766e-01
+Eigenvalue lambda 4.7952103987970601e-01
+Eigenvalue lambda 7.1599992143805746e-01
+Eigenvalue lambda 7.1599992144619695e-01
+Eigenvalue lambda 7.1599992144630398e-01
+Eigenvalue lambda 8.5230663763016457e-01
+Eigenvalue lambda 8.5230663763709180e-01
+Eigenvalue lambda 8.5230663765184977e-01
+Residual 1.3183602919392247e-07
+Residual 5.9979439430902086e-07
+Residual 5.4559315359147639e-07
+Residual 4.9379920928183627e-07
+Residual 4.8109848170987495e-07
+Residual 8.3978161394734631e-07
+Residual 4.4588467532366059e-07
+Residual 9.3239422434229350e-07
+Residual 6.1192221873950216e-07
+Residual 5.6269915469891603e-07
+
+16 iterations
+Solution process, seconds: 6.937249e-01
+}}}
+
+Below are the similar runs and corresponding timings on 4 and 8 cores:
+{{{
+$ mpirun -np 4 driver -n_eigs 10 -tol 1e-6 -itr 200	
+........
+Eigenvalue lambda 2.4304215831301609e-01
+Eigenvalue lambda 4.7952103987964723e-01
+Eigenvalue lambda 4.7952103987964978e-01
+Eigenvalue lambda 4.7952103987965394e-01
+Eigenvalue lambda 7.1599992144629654e-01
+Eigenvalue lambda 7.1599992144633229e-01
+Eigenvalue lambda 7.1599992144649582e-01
+Eigenvalue lambda 8.5230663765087544e-01
+Eigenvalue lambda 8.5230663765162695e-01
+Eigenvalue lambda 8.5230663765199566e-01
+Residual 1.2256928335876460e-07
+Residual 1.3071948135818169e-07
+Residual 2.5432995894762794e-07
+Residual 5.5951055706474378e-07
+Residual 7.8480018308669574e-07
+Residual 6.0482968637130697e-07
+Residual 7.4292163959793628e-07
+Residual 5.9108874197533204e-07
+Residual 7.3861840655450680e-07
+Residual 8.6358994247931617e-07
+
+18 iterations
+Solution process, seconds: 6.384690e-01
+
+
+$ mpirun -np 8 driver -n_eigs 10 -tol 1e-6 -itr 200	
+........
+Eigenvalue lambda 2.4304215831301576e-01
+Eigenvalue lambda 4.7952103987947231e-01
+Eigenvalue lambda 4.7952103987964712e-01
+Eigenvalue lambda 4.7952103987968475e-01
+Eigenvalue lambda 7.1599992143712676e-01
+Eigenvalue lambda 7.1599992144629865e-01
+Eigenvalue lambda 7.1599992144654767e-01
+Eigenvalue lambda 8.5230663761501368e-01
+Eigenvalue lambda 8.5230663765206005e-01
+Eigenvalue lambda 8.5230663766406078e-01
+Residual 6.6323381207132957e-08
+Residual 8.6605306870725818e-07
+Residual 1.8141975011743287e-07
+Residual 4.8510079450305450e-07
+Residual 5.7420349692513640e-07
+Residual 2.3112126978246296e-07
+Residual 8.2666208625825311e-07
+Residual 7.6332717301989761e-07
+Residual 8.8315729385366315e-07
+Residual 7.4510612980311595e-07
+
+18 iterations
+Solution process, seconds: 7.573450e-01
+}}}
+
+In all the tests the desired tolerance for residual norms (1e-6) was achieved at each eigenpair.
