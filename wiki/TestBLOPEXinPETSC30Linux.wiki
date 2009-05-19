@@ -42,7 +42,8 @@ $ make all test
 }}}
 which builds PETSc libraries and runs sample tests to make sure the installation was correct.
 
-= Execution of Tests for PETSc driver =
+= Execution of Tests  =
+==Tests for PETSc driver==
 To execute tests shift from ${PETSC_DIR} to ${PETSC_DIR}\src\contrib\blopex\driver
 and run the makefile:
 {{{
@@ -52,7 +53,7 @@ This will create the executable driver which finds a specified (in the command l
 
 Use 2 cores, find 10 first eigenpairs, random initial guess: 
 {{{
-$ mpirun -np 2 driver -n_eigs 10 -tol 1e-6 -itr 200
+$ mpirun -np 2 ./driver -n_eigs 10 -tol 1e-6 -itr 200
 ........
 Eigenvalue lambda 2.4304215831301590e-01
 Eigenvalue lambda 4.7952103987965222e-01
@@ -81,7 +82,7 @@ Solution process, seconds: 6.937249e-01
 
 Below are the similar runs and corresponding timings on 4 and 8 cores:
 {{{
-$ mpirun -np 4 driver -n_eigs 10 -tol 1e-6 -itr 200	
+$ mpirun -np 4 ./driver -n_eigs 10 -tol 1e-6 -itr 200	
 ........
 Eigenvalue lambda 2.4304215831301609e-01
 Eigenvalue lambda 4.7952103987964723e-01
@@ -108,7 +109,7 @@ Residual 8.6358994247931617e-07
 Solution process, seconds: 6.384690e-01
 
 
-$ mpirun -np 8 driver -n_eigs 10 -tol 1e-6 -itr 200	
+$ mpirun -np 8 ./driver -n_eigs 10 -tol 1e-6 -itr 200	
 ........
 Eigenvalue lambda 2.4304215831301576e-01
 Eigenvalue lambda 4.7952103987947231e-01
@@ -136,3 +137,145 @@ Solution process, seconds: 7.573450e-01
 }}}
 
 In all the tests the desired tolerance for residual norms (1e-6) was achieved at each eigenpair.
+
+==Tests for PETSc driver_fiedler==
+
+To execute tests shift to ${PETSC_DIR}\src\contrib\blopex\driver_fiedler
+and run the makefile:
+{{{
+make driver_fiedler
+}}}
+This will create the executable driver_fiedler which finds a specified (in the command line) number of smallest eigenpairs of the matrix provided in the input file (passed through -matrix option of the command line). In order to run tests for driver_fiedler one needs to make sure that the input file(s) are present in the ...\src\contrib\blopex\driver_fiedler directory.
+
+For our tests we use L-matrix-double.petsc (65536x65536 diagonal values 0-4) and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4). The files provide matrices in PETSc format. One can obtain them by checking out the current BLOPEX source code from http://code.google.com/p/blopex/ - in the blopex_petsc/driver_fiedler directory.  
+
+We first run driver_fiedler for the matrix provided in _L-matrix-double.petsc_.
+
+Use 2 cores, find 10 first eigenpairs, random initial guess: 
+{{{
+$ mpirun -np 2 ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 10 -tol 1e-6 -itr 200
+........
+Eigenvalue lambda 3.2405768262489162e-06
+Eigenvalue lambda 9.4602290898963036e-06
+Eigenvalue lambda 2.0138053880582385e-05
+Eigenvalue lambda 2.3958326669352264e-05
+Eigenvalue lambda 2.7851501888639641e-05
+Eigenvalue lambda 3.0573314132120754e-05
+Eigenvalue lambda 3.0661937852478048e-05
+Eigenvalue lambda 3.3856520783869970e-05
+Eigenvalue lambda 3.5356691277536724e-05
+Eigenvalue lambda 3.6961282276333839e-05
+Residual 5.9690394531698627e-07
+Residual 8.6378686291676788e-07
+Residual 2.3666433686355192e-07
+Residual 3.9337289375140117e-07
+Residual 5.1936444112870076e-07
+Residual 5.5836143273234891e-07
+Residual 5.2964619345785693e-07
+Residual 5.3972416498166818e-07
+Residual 8.8196929246981103e-07
+Residual 6.4863234848498941e-07
+
+26 iterations
+Solution process, seconds: 7.867606e+02
+}}}
+
+Below are the similar runs and corresponding timings on 4 and 8 cores:
+{{{
+$ mpirun -np 4 ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 10 -tol 1e-6 -itr 200
+........
+Eigenvalue lambda 3.2405734692307379e-06
+Eigenvalue lambda 9.4602351936660370e-06
+Eigenvalue lambda 2.0138055468855037e-05
+Eigenvalue lambda 2.3958331984784186e-05
+Eigenvalue lambda 2.7851501139206116e-05
+Eigenvalue lambda 3.0573318597981141e-05
+Eigenvalue lambda 3.0661944214603311e-05
+Eigenvalue lambda 3.3856516470362675e-05
+Eigenvalue lambda 3.5356655501822301e-05
+Eigenvalue lambda 3.6961344523768659e-05
+Residual 4.4789579136334083e-07
+Residual 9.2333849129680743e-07
+Residual 2.9503489444645887e-07
+Residual 7.3564733188528120e-07
+Residual 3.8399757736020965e-07
+Residual 5.2877288885347509e-07
+Residual 6.9591942218166180e-07
+Residual 6.4698120906267475e-07
+Residual 7.4099434452242377e-07
+Residual 8.7424480127267835e-07
+
+27 iterations
+Solution process, seconds: 4.877129e+02
+
+
+$ mpirun -np 8 ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 10 -tol 1e-6 -itr 200	
+........
+Eigenvalue lambda 3.2405756774021388e-06
+Eigenvalue lambda 9.4602326453085735e-06
+Eigenvalue lambda 2.0138066307769655e-05
+Eigenvalue lambda 2.3958330209060284e-05
+Eigenvalue lambda 2.7851529539876912e-05
+Eigenvalue lambda 3.0573330092901635e-05
+Eigenvalue lambda 3.0661950722208523e-05
+Eigenvalue lambda 3.3856548176989874e-05
+Eigenvalue lambda 3.5356665997127034e-05
+Eigenvalue lambda 3.6961288581714983e-05
+Residual 2.9450843503652977e-07
+Residual 9.5175004970948052e-07
+Residual 8.1326652381551751e-07
+Residual 7.8931677086003327e-07
+Residual 8.4516110791908858e-07
+Residual 8.7364491923375588e-07
+Residual 7.1567217914972564e-07
+Residual 6.3510578793863129e-07
+Residual 6.6514586012584391e-07
+Residual 6.8152593031236764e-07
+
+22 iterations
+Solution process, seconds: 2.484992e+02
+}}}
+
+In all the tests the desired tolerance for residual norms (1e-6) was achieved at each eigenpair.
+
+Now we run similar tests for the matrix provided in _DL-matrix-double.petsc_. Use 2, 4 and 8 cores to find first 3 eigenpairs, the initial guess is random, 100 iterations:
+
+{{{
+$ mpirun -np 2 ./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3 -tol 1e-6 -itr 100
+
+Eigenvalue lambda 4.0146737422344865e-05
+Eigenvalue lambda 4.0189696215318528e-05
+Eigenvalue lambda 4.0222121926433389e-05
+Residual 4.2255997814547303e-06
+Residual 3.6478813725532972e-06
+Residual 3.9540969799958424e-06
+
+100 iterations
+Solution process, seconds: 1.096180e+01
+
+
+$ mpirun -np 4 ./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3 -tol 1e-6 -itr 100
+
+Eigenvalue lambda 4.0146829375144881e-05
+Eigenvalue lambda 4.0189781241342334e-05
+Eigenvalue lambda 4.0222251817389663e-05
+Residual 4.9084309631485366e-06
+Residual 4.1964326098766522e-06
+Residual 4.4807952509380482e-06
+
+100 iterations
+Solution process, seconds: 5.945665e+00
+
+
+$ mpirun -np 8 ./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3 -tol 1e-6 -itr 100
+
+Eigenvalue lambda 4.0147125247326027e-05
+Eigenvalue lambda 4.0190006140340819e-05
+Eigenvalue lambda 4.0222502675617157e-05
+Residual 3.3615193337144711e-06
+Residual 2.8366516045747933e-06
+Residual 3.0084484134423990e-06
+
+100 iterations
+Solution process, seconds: 3.914448e+00
+}}}
