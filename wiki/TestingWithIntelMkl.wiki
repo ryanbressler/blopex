@@ -159,13 +159,12 @@ I found there are three folds 32, 64 and em64t in lib. Since the error is “inc
 
 *Change Lapack to
 {{{
-LAPACKLIB =-L/opt/intel/pack
-mkl/10.1.1.019/lib/em64t -lmkl_lapack -lmkl -lguide -lpthread
+LAPACKLIB =-L/opt/intel/mkl/10.1.1.019/lib/em64t -lmkl_lapack -lmkl -lguide -lpthread
 }}}
 
 *Get errors again:
 {{{
-n function `lobpcg_ComputeResidualNorms':
+in function `lobpcg_ComputeResidualNorms':
 
 lobpcg.c:(.text+0x660): undefined reference to `sqrt'
 
@@ -197,8 +196,7 @@ The -lm to pickup C math routines is explicitly needed.
 
 *Change Lapack to
 {{{
-LAPACKLIB =-L/opt/intel/pack
-mkl/10.1.1.019/lib/em64t -lmkl_lapack -lmkl -lguide -lpthread -lm
+LAPACKLIB =-L/opt/intel/mkl/10.1.1.019/lib/em64t -lmkl_lapack -lmkl -lguide -lpthread -lm
 }}}
 
 Note: Do not foget to set LD_LIBRARY_PATH=/opt/intel/mkl/10.1.1.019/lib/em64t
