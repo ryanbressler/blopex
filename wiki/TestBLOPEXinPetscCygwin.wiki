@@ -85,7 +85,7 @@ Solution process, seconds: 3.446193e-01
 driver_fiedler accepts as input matrices in Petsc format. 
 For our tests we use  L-matrix-double.petsc (65536x65536 diagonal values 0-4) and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4). One can obtain them by checking out the current BLOPEX source code from http://code.google.com/p/blopex/ - in the blopex_petsc/driver_fiedler directory.
 
-We first run driver_fiedler for the matrix provided in _L -matrix-double.petsc_.
+We first run driver_fiedler for the matrix provided in _L-matrix-double.petsc_.
 	
 Find 5  first eigenpairs, 100 iterations,random initial guess: 
 {{{
