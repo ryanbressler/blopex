@@ -112,15 +112,15 @@ See wiki PetscTestingLinux for descriptions of test programs.
 Frost executes mpi jobs under the cobalt batch system.
 Jobs are submitted via command cqsub.  
 
-For example to submist struct from the change to the .../src/test subdirectory and issue command:
+For example to submit driver_fiedler change to the .../blopex_petsc/driver_fiedler subdirectory and issue command:
 {{{
-cqsub -n 64 -t 00:10:00 -q debug ./struct ...etc...
+cqsub -n 32 -t 00:10:00 ./driver_fiedler ...etc...
 }}}
 
 A batch job number is returned (say 894111).  Output is returned to current directory.
 Output consists of 894111.cobaltlog, 894111.error, and 894111.output
 
-See http://www.cisl.ucar.edu/docs/frost/cbr.jsp for details.
+Job execution can be monitored via command cqstat; see http://www.cisl.ucar.edu/docs/frost/cbr.jsp for details.
 
 = Test Results =
 
