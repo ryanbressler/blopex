@@ -15,7 +15,7 @@ be1105en$ gunzip -c hypre-2.4.0b.tar.gz | tar -xof -
 }}}
 Copy the BLOPEX modifications tar file hypre_lobpcg_modification.tgz to
 {{{
-be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/
+be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/src
 }}}
 Change working directory to hypre source code directory.
 {{{
