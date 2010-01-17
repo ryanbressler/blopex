@@ -3,8 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Hypre on Frost (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic.  The test uses BLOPEX with code for both double and complex arithematic.  
-
+How to test BLOPEX under Beta version of Hypre on Frost (IBM).  Hypre does not support complex arithematic, so this test is only for double precision arithematic.   
 = Setup Hypre =  
 
 Follow the instructions in wiki HypreTestingIBM.
