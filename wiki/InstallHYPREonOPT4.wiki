@@ -48,7 +48,7 @@ ex10: ex10.o
 $(CXX) -o $@ $^ $(LFLAGS)
 }}}
 
-Be sure to delete these two lines. Now you are ready to exit Makefile with saving, and then you should  be in the right directory, so just type make and you will compile the examples. To execute the compiled examples, you can find instructions in the .c file for each example. To find the instructions for EX1, type:
+Be sure to delete these two lines. Now you are ready to exit Makefile with saving, and then you should  be in the right directory, so just type {{{make}}} and you will compile the examples. To execute the compiled examples, you can find instructions in the .c file for each example. To find the instructions for EX1, type:
 
 {{{$ nano ex1.c}}}
 
