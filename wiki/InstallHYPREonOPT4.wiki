@@ -1,0 +1,61 @@
+#summary One-sentence summary of this page.
+#labels hypre,opt4,fedora
+
+= Introduction =
+
+Installing and running HYPRE 2.4.0b on OPT4.
+
+OPT4 is a computer with the following specs: Fedora 10 OS, Two Dual Core AMD Opteron 275 CPUs, 16GB RAM.
+
+
+= Details =
+
+First download the compressed file:
+You can download from the official HYPRE web site, or you can download directly version 2.4.0b with the following command:
+
+{{{$ wget https://computation.llnl.gov/casc/hypre/download/hypre-2.4.0b.tar.gz}}}
+
+Unzip the compressed file:
+
+{{{$ gunzip -c hypre-2.4.0b.tar.gz | tar -xof -}}}
+
+You can rename the HYPRE directory at this point.
+
+Go to the HYPRE directory and type the following to configure HYPRE:
+
+{{{
+$ cd src
+$ ./configure
+$ make
+}}}
+
+Now to run the examples:
+
+{{{$ cd src/examples}}}
+
+I ran into two problems when I first tried to do this.
+
+First, when I ran make to compile the examples, I received an error that said could not find lg2c. Lg2c is a Fortran library, and a Fortran library is needed by gcc because blas and lapack were originally written in Fortran. To fix the problem on OPT4, edit the make file:
+
+{{{$nano Makefile}}}
+
+Then on line 27 you see a reference to lg2c. Replace the word {{{-lg2c}}} with {{{-lgfortran}}}. Apparently OPT4 uses a different Fortran library, probably has to do with which distribution of Linux you are using.
+
+The second error is also in the Makefile, so keep this open. EX10 makes reference to {{{$(CXX)}}}, which is defined in the Makefile header to point to mpiCC, which is a C++ MPI compiler. This file cannot be found. Perhaps we just need to set a path to this program. OPT4 is broken at the moment, so I have not tried to get this to work. Just delete the references to EX10 in the Makefile, and then you should be able to compile examples 1-9 without problems. The two references you need to delete are in the line where it says {{{ALLLPROGS = ex1 ex2 ... ex10}}}. Delete the {{{ex10}}} part. (Actually I don't even think this is necessary). But do be sure to delete instructions for compiling EX10, which begins with a remark, and then the lines:
+
+{{{
+ex10: ex10.o 
+$(CXX) -o $@ $^ $(LFLAGS)
+}}}
+
+Be sure to delete these two lines. Now you are ready to exit Makefile with saving, and then you should  be in the right directory, so just type make and you will compile the examples. To execute the compiled examples, you can find instructions in the .c file for each example. To find the instructions for EX1, type:
+
+{{{$ nano ex1.c}}}
+
+You will see a comment near the top that says
+
+{{{Sample Run:   mpirun -np 2 ex1}}}
+
+So you will type the following command in the terminal to run example 1:
+
+{{{$ mpirun -np 2 ex1}}}
