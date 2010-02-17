@@ -20,8 +20,13 @@
 </tr>
 
 <tr>
-<td>Eugene</td><td>XVIA / XVIB</td><td>Petsc,Hypre,Matlab,effect of Scaling on C=chol(A)</td>
+<td>Eugene</td><td>XVIA / XVIB</td><td>AMD ACML,Petsc,Hypre,Matlab,effect of Scaling on C=chol(A)</td>
 </tr>
+
+<tr>
+<td>Bryan</td><td></td><td>Quality Control</td>
+</tr>
+
 </table>
 
 
