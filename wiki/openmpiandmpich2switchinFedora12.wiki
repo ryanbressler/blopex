@@ -47,6 +47,15 @@ and switch to MPICH2 with
 
 module load mpich2-x86_64
 
+Double-ckeck by running
+
+which mpicc
+
+which mpiCC
+
+to make sure that they refer to the same MPI. 
+
+
 Remember that this setup is only active in the given shell window till you close it. 
 Make sure that you name differently the directories where you compile and run the 
 codes. Do not forget to setup the MPI again if you return to the previously compiled 
