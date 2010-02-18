@@ -17,7 +17,7 @@ You can download from the official HYPRE web site, or you can download directly 
 
 Unzip the compressed file:
 
-{{{$ gunzip -c hypre-2.4.0b.tar.gz | tar -xof -}}}
+{{{$ tar xzvf hypre-2.4.0b.tar.gz }}}
 
 You can rename the HYPRE directory at this point.
 
