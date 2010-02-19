@@ -1,12 +1,13 @@
-#summary Installing and running HYPRE 2.4.0b on OPT4.
+#summary Installing and running HYPRE 2.4.0b on OPTIV.
 #labels hypre,opt4,fedora
 
 = Introduction =
 
-Installing and running HYPRE 2.4.0b on OPT4.
+Installing and running HYPRE 2.4.0b on OPTIV.
 
-OPT4 is a computer with the following specs: Fedora 10 OS, Two Dual Core AMD Opteron 275 CPUs, 16GB RAM.
+OPTIV is a computer with the following specs: Fedora 12 OS, Two Dual Core AMD Opteron 275 CPUs, 16GB RAM.
 
+THIS INFO NEEDS TO BE UPDATED.
 
 = Details =
 
