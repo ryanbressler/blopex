@@ -1,7 +1,5 @@
-#summary One-sentence summary of this page.
 #labels openmpi,mpich2,Fedora12
-
-How to setup openmpi or mpich2 in Fedora12
+#How to setup openmpi or mpich2 in Fedora12
 
 = Introduction =
 
