@@ -1,6 +1,6 @@
 #summary Changes to Blopex as of March 2010
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 = Changes to blopex_abstract =
 
@@ -92,7 +92,7 @@ Files HYPRE_parcsr_int.h, HYPRE_sstruct_int.h, and HYPRE_struct_ls.h are no more
 
 = changes to blopex_matlab =
 
-support for 64 bit versions of matlab 
+== support for 64 bit versions of matlab ==
 
 Currently the default version of matlab in math or xvia is Version 7.8.0.347 (R2009a) 64-bit (glnxa64).
 This uses a version of lapack where the interger variables to lapack functions are defined as ptrdiff_t. 
@@ -117,7 +117,7 @@ If you don't do this you can get some contradictory results.  What appears to be
 
 This illustrates the difficulty of supporting 64 bit lapack libraries.  Depending on the parameter types, some kind of redirection and recasting of variables may be needed.   This should be done in the interface and potentially will vary from library to library.
 
-support for complex arithematic
+== support for complex arithematic ==
 
 Eugene last fall was able to modify the matlab interface (32 bit) to support complex arithematic.  
 I have made some adjustments to this code to add 64 bit integer support (BlopexInt) and redirection of lapack functions to handle casting of parameters.  In addition the code was setup to compile to either double or complex support. This was implemented via a preprocessor.  I have modified this to support both double and complex without recompilation.  To do this in blopex_matlab_gateway.c  I define BLOPEX_MATLAB_COMPLEX as an external variable rather than a preprocessor variable,  then check whether OperatorA is complex and set BLOPEX_MATLAB_COMPLEX = 1 if true and 0 otherwise.  Then in the remainder of blopex_matlab_gateway.c and in matlab_interface.c we do a regular c "if" statement with BLOPEX_MATLAB_COMPLEX rather than a preprocessor "#ifdef" statement.  
@@ -126,7 +126,7 @@ Eugene has also added new tests for both complex and double.
 
 To test, after starting matlab you will need to add paths ../blopex_matlab/driver, ../blopex_matlab/driver/test_complex,  ../blopex_matlab/driver/test_real, and ../blopex_matlab/matlab_interface/m_files.  Other than this the instructions given by Eugene under wiki  TestBLOPEXMatlabInterfaceLinux should be followed. 
 
-32 bit support
+== 32 bit support ==
 
 Matlab interface has code to support both 64 and 32 bit matlab.  To compile for 32 bit 1st add path to 32 bit matlab  if it is not the default (on xvia;  PATH=/opt/matlab_2009a_32/bin:$PATH; export PATH).  Then specify "make matlab=32".   If the architecture is not glnx86, you may have to modify the Makefile.  
 
@@ -136,11 +136,11 @@ Warning!:  Testing on xvia was not completed.   The mex command (as in CC = mex)
 
 = changes to blopex_petsc =
 
-support for complex arithematic
+== support for complex arithematic ==
 
 We have tested this before.  Just need to retest.  
 
-support for 64 bit arithematic
+== support for 64 bit arithematic ==
 
 BlopexInt changes are in place in petsc-interface.c.  Note that Petsc lapack funtions are LAPACKpotrf_, LAPACKsygv_, etc. The integer parameters in these functions are defined as PetscBLASInt.  These functions get called via redirection functions PETSC_dpotrf_interface, PETSC_dsygv_interface etc. where BlopexInt is recast as PetscBLASInt.  
 
@@ -148,7 +148,7 @@ Should  PETSC start to use 64 bit lapack routines we should be compatible using 
  
 = changes for blopex_serial_double =
 
-modifications due to blopex_abstract changes 
+== modifications due to blopex_abstract changes ==
 
 Since this interface is only for double (real); the only change is to call lobpcg_solve_double and interface function parameters must conform to new definitions (mostly using void* in place of double*).  Also BlopexInt has been added. 
 
