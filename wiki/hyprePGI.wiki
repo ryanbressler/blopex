@@ -1,0 +1,41 @@
+#summary One-sentence summary of this page.
+#labels hypre,PGI,ACML
+
+= Introduction =
+
+Hypre installation using PGI compilers with ACML. 
+This information is obsolete, since it refers to hypre and PGI versions from 2005.  
+Also, it uses LAM-MPI, which is no longer supported and merged with openmpi. 
+Still, it might be useful.
+
+= Details =
+<pre>
+First set the correct environment for PGI, see
+
+/opt/pgi/set_environment (bash example):
+
+export LM_LICENSE_FILE=/opt/pgi/license.dat
+export PGI=/opt/pgi
+export PATH=/opt/pgi/linux86-64/5.2/bin:$PATH
+export MANPATH=$MANPATH:/opt/pgi/linux86-64/man
+
+Those below are not really needed as we pass them through the command line anyway
+
+export CC=pgcc
+export CFLAGS="-Kpic -Mcache_align -Mreentrant -tp=k8-64 -O3"
+export CXX=pgCC
+export F77=pgf77
+export F77FLAGS="-Kpic -Mcache_align -Mreentrant -tp=k8-64 -O3 -fast -Mvect=sse -Mscalarsse"
+
+Optimization flags are as in /opt/acml2.5.0/ReleaseNotes
+
+Flag -Mcache_align comes from
+
+http://www.pgroup.com/support/libacml.htm
+
+./configure --with-CC=pgcc --with-CFLAGS="-Kpic -Mcache_align -Mreentrant -tp=k8-64 -O3" --with-CXX=pgCC --with-F77=pgf77 --with-F77FLAGS="-Kpic -Mcache_align -Mreentrant -tp=k8-64 -O3 -fast -Mvect=sse -Mscalarsse" --with-lapack-libs="acml" --with-lapack-lib-dirs="/opt/acml2.5.0/pgi64/lib" --with-blas-libs="acml"  --with-blas-lib-dirs="/opt/acml2.5.0/pgi64/lib" --with-MPI-include=/usr/include --with-MPI-libs="mpi lam pthread" --with-MPI-lib-dirs=/usr/lib64/
+
+ To run, use 
+
+mpirun -x LD_LIBRARY_PATH="/opt/acml2.5.0/gnu64/lib;/opt/pgi/linux86-64/5.2/libso/" -np 2 ij -lobpcg
+</pre>
