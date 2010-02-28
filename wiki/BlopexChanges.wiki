@@ -12,7 +12,7 @@ This was done 2 years ago and have been through a round of testing by everyone. 
 
 Up until now blopex supported only array dimensions of size "int".  The size of "int" is dependent on the complier and system.  Typically this is 32 bit; that is integers of size 2,147,483,647.   However, the newest versions of matlab implement versions of lapack which use 64 bit arithmetic which can be in conflict with the size of "int".  
 
-To provide for a way to support this we implement an integer size called BlopexInt which is defined via the  c preprocessor.  This defaults to "#define BlopexInt int".   To override; specify BlopexInt in the compiler command.  For example to make it a long integer add  "-DBlopexInt=long" to the compiler command.   
+To provide for a way to support this we implement an integer size called 'BlopexInt' which is defined via the  c preprocessor.  This defaults to "#define BlopexInt int".   To override; specify BlopexInt in the compiler command.  For example to make it a long integer add  "-DBlopexInt=long" to the compiler command.   
 
 The default for BlopexInt occurs in a new header ../blopex_abstract/utilities/fortran_options.h.  This is included in various other blopex_abstract headers.   The location and name for this header was chosen to maximize compatibility with the existing HYPRE Makefile's. 
 
