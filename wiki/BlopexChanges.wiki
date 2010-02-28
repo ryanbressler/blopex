@@ -12,23 +12,23 @@ This was done 2 years ago and have been through a round of testing by everyone. 
 
 Up until now blopex supported only array dimensions of size "int".  The size of "int" is dependent on the complier and system.  Typically this is 32 bit; that is integers of size 2,147,483,647.   However, the newest versions of matlab implement versions of lapack which use 64 bit arithmetic which can be in conflict with the size of "int".  
 
-To provide for a way to support this we implement an integer size called `BlopexInt` which is defined via the  c preprocessor.  This defaults to "#define `BlopexInt` int".   To override; specify BlopexInt in the compiler command.  For example to make it a long integer add  "-DBlopexInt=long" to the compiler command.   
+To provide for a way to support this we implement an integer size called `BlopexInt` which is defined via the  c preprocessor.  This defaults to `"#define BlopexInt int"`.   To override; specify `BlopexInt` in the compiler command.  For example to make it a long integer add  `"-DBlopexInt=long"` to the compiler command.   
 
-The default for BlopexInt occurs in a new header ../blopex_abstract/utilities/fortran_options.h.  This is included in various other blopex_abstract headers.   The location and name for this header was chosen to maximize compatibility with the existing HYPRE Makefile's. 
+The default for `BlopexInt` occurs in a new header `../blopex_abstract/utilities/fortran_options.h`.  This is included in various other blopex_abstract headers.   The location and name for this header was chosen to maximize compatibility with the existing HYPRE Makefile's. 
 
-Note that BlopexInt will be used in the function calls to the lapack functions called from lobpcg.c.  If this is not compatible with the lapack function definitions a pointer compiler error can occur.   To get around this another level of redirection will need to be coded in the interface where type casting can be done.  This is the case for the matlab interface (also, we have always done this in the Petsc interface).  We could recode the calls in lobpcg.c but as a general rule we want to avoid this.  More on this under "changes to blopex_matlab".
+Note that `BlopexInt` will be used in the function calls to the lapack functions called from lobpcg.c.  If this is not compatible with the lapack function definitions a pointer compiler error can occur.   To get around this another level of redirection will need to be coded in the interface where type casting can be done.  This is the case for the matlab interface (also, we have always done this in the Petsc interface).  We could recode the calls in lobpcg.c but as a general rule we want to avoid this.  More on this under "changes to blopex_matlab".
 
 == support for hypre_assert macro ==
 
-Hypre has recoded some of our abstract modules to use their hypre_assert macro instead of the standard c assert function.  To support this but still use the c assert for the other interfaces, we have added a preprocessor variable called "BlopexAssert".   This is implemented along with BlopexInt in fortran_options.h.   The HYPRE version of  fortran_options.h contains an include for "_hypre_utilities.h"  which is commented out for the version used for the other interfaces.  "_hypre_utilities.h" contains the macro definition for hypre_assert.  
+Hypre has recoded some of our abstract modules to use their hypre_assert macro instead of the standard c assert function.  To support this but still use the c assert for the other interfaces, we have added a preprocessor variable called `BlopexAssert`.   This is implemented along with `BlopexInt` in fortran_options.h.   The HYPRE version of  fortran_options.h contains an include for "_hypre_utilities.h"  which is commented out for the version used for the other interfaces.  "_hypre_utilities.h" contains the macro definition for hypre_assert.  
 
 == other changes for HYPRE ==
 
 There are two minor changes done for HYPRE which apply to all interfaces.
 
  # format %22.16e changed to %22.14e.
- # in temp_multivector.h  "typedef struct mv_TempMultiVector * mv_tempMultiVectorPtr" 
-changed to "typedef mv_TempMultiVector * mv_tempMultiVectorPtr"
+ # in temp_multivector.h  `"typedef struct mv_TempMultiVector * mv_tempMultiVectorPtr"` 
+changed to `"typedef mv_TempMultiVector * mv_tempMultiVectorPtr"`
 
 = changes to blopex_hypre =
 
@@ -98,7 +98,7 @@ Files HYPRE_parcsr_int.h, HYPRE_sstruct_int.h, and HYPRE_struct_ls.h are no more
 
 == support for 64 bit versions of matlab ==
 
-Currently the default version of matlab in math or xvia is Version 7.8.0.347 (R2009a) 64-bit (glnxa64). 
+Currently the default version of matlab in math or xvia is `Version 7.8.0.347 (R2009a) 64-bit (glnxa64)`. 
 
 This uses a version of lapack where the interger variables to lapack functions are defined as ptrdiff_t. 
 
@@ -106,17 +106,17 @@ This has resulted in MKL errors within the lapack function and caused us conside
 
 Sinced then Matlab has provided some documentation (see Calling LAPACK and BLAS Functions from MEX-Files: under http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_external/f13120.html).  Using this the issue has been resolved. 
 
-First, support of 64 integers was added to blopex_abstract via the use of preprocessor variable BlopexInt.  
+First, support of 64 integers was added to blopex_abstract via the use of preprocessor variable `BlopexInt`.  
 
-Then, instead of assigning dpotrf_ to blap_fn.dpotrf  we assign a new function dpotrf_redirect.  This function is defined in matlab_interface.c which includes the matlab header file lapack.h.  dpotrf_redirect recasts the variables (BlopexInt) into a form compatible with the matlab definitions (i.e. mwSignedIndex).   The same is done for dsygv_, zpotrf_, and zhegv_. 
+Then, instead of assigning dpotrf_ to blap_fn.dpotrf  we assign a new function dpotrf_redirect.  This function is defined in matlab_interface.c which includes the matlab header file lapack.h.  dpotrf_redirect recasts the variables (`BlopexInt`) into a form compatible with the matlab definitions (i.e. mwSignedIndex).   The same is done for dsygv_, zpotrf_, and zhegv_. 
 
 Then some changes to the blopex_matlab Makefile are needed.   
 
-1.CFLAGS = -g -largeArrayDims  or CFLAGS = -g -largeArrayDims -DBlopexInt=long
+1.`CFLAGS = -g -largeArrayDims  or CFLAGS = -g -largeArrayDims -DBlopexInt=long`
 
-You must be consistent in the blopex_abstract make versus the blopex_matlab make for the BlopexInt definition.
+You must be consistent in the blopex_abstract make versus the blopex_matlab make for the `BlopexInt` definition.
 You can just leave it off in which case the default of "int" will be used and this will execute OK (assuming your array dimension is less than 2,147,483,647 ).  Be sure to run the make for blopex_abstract first. 
-The largeArrayDims option supplied insures mex is compatible with 64 bit.  This is an option to use 32 bit but this doesn't seem to apply to the lapack functions and so it won't work.  Matlab warns that largeArrayDims will soon be the default and the 32 bit option will not be supported.  
+The `largeArrayDims` option supplied insures mex is compatible with 64 bit.  This is an option to use 32 bit but this doesn't seem to apply to the lapack functions and so it won't work.  Matlab warns that `largeArrayDims` will soon be the default and the 32 bit option will not be supported.  
 
 2. Specify -lmwlapack instead of "lapack" for the lapack library.  
 
@@ -127,11 +127,11 @@ This illustrates the difficulty of supporting 64 bit lapack libraries.  Dependin
 == support for complex arithematic ==
 
 Eugene last fall was able to modify the matlab interface (32 bit) to support complex arithematic.  
-I have made some adjustments to this code to add 64 bit integer support (BlopexInt) and redirection of lapack functions to handle casting of parameters.  In addition the code was setup to compile to either double or complex support. This was implemented via a preprocessor.  I have modified this to support both double and complex without recompilation.  To do this in blopex_matlab_gateway.c  I define BLOPEX_MATLAB_COMPLEX as an external variable rather than a preprocessor variable,  then check whether OperatorA is complex and set BLOPEX_MATLAB_COMPLEX = 1 if true and 0 otherwise.  Then in the remainder of blopex_matlab_gateway.c and in matlab_interface.c we do a regular c "if" statement with BLOPEX_MATLAB_COMPLEX rather than a preprocessor "#ifdef" statement.  
+I have made some adjustments to this code to add 64 bit integer support (`BlopexInt`) and redirection of lapack functions to handle casting of parameters.  In addition the code was setup to compile to either double or complex support. This was implemented via a preprocessor.  I have modified this to support both double and complex without recompilation.  To do this in blopex_matlab_gateway.c  I define BLOPEX_MATLAB_COMPLEX as an external variable rather than a preprocessor variable,  then check whether OperatorA is complex and set BLOPEX_MATLAB_COMPLEX = 1 if true and 0 otherwise.  Then in the remainder of blopex_matlab_gateway.c and in matlab_interface.c we do a regular c "if" statement with BLOPEX_MATLAB_COMPLEX rather than a preprocessor "#ifdef" statement.  
 
 Eugene has also added new tests for both complex and double.  
 
-To test, after starting matlab you will need to add paths ../blopex_matlab/driver, ../blopex_matlab/driver/test_complex,  ../blopex_matlab/driver/test_real, and ../blopex_matlab/matlab_interface/m_files.  Other than this the instructions given by Eugene under wiki  TestBLOPEXMatlabInterfaceLinux should be followed. 
+To test, after starting matlab you will need to add paths ../blopex_matlab/driver, ../blopex_matlab/driver/test_complex,  ../blopex_matlab/driver/test_real, and ../blopex_matlab/matlab_interface/m_files.  Other than this the instructions given by Eugene under wiki TestBLOPEXMatlabInterfaceLinux should be followed. 
 
 == 32 bit support ==
 
@@ -149,15 +149,15 @@ We have tested this before.  Just need to retest.
 
 == support for 64 bit arithematic ==
 
-BlopexInt changes are in place in petsc-interface.c.  Note that Petsc lapack funtions are LAPACKpotrf_, LAPACKsygv_, etc. The integer parameters in these functions are defined as PetscBLASInt.  These functions get called via redirection functions PETSC_dpotrf_interface, PETSC_dsygv_interface etc. where BlopexInt is recast as PetscBLASInt.  
+`BlopexInt` changes are in place in petsc-interface.c.  Note that Petsc lapack funtions are LAPACKpotrf_, LAPACKsygv_, etc. The integer parameters in these functions are defined as `PetscBLASInt`.  These functions get called via redirection functions PETSC_dpotrf_interface, PETSC_dsygv_interface etc. where `BlopexInt` is recast as `PetscBLASInt`.  
 
-Should  PETSC start to use 64 bit lapack routines we should be compatible using BlopexInt as either int or long. 
+Should  PETSC start to use 64 bit lapack routines we should be compatible using `BlopexInt` as either int or long. 
  
 = changes for blopex_serial_double =
 
 == modifications due to blopex_abstract changes ==
 
-Since this interface is only for double (real); the only change is to call lobpcg_solve_double and interface function parameters must conform to new definitions (mostly using void* in place of double*).  Also BlopexInt has been added. 
+Since this interface is only for double (real); the only change is to call lobpcg_solve_double and interface function parameters must conform to new definitions (mostly using void* in place of double*).  Also `BlopexInt` has been added. 
 
 This should be tested exactly the same as we did last fall. 
 
@@ -165,6 +165,6 @@ This should be tested exactly the same as we did last fall.
 
 == modifications due to blopex_abstract changes ==
 
-This is a new interface for testing of complex changes.  It calls lobpcg_solve_complex.   BlopexInt has been added.
+This is a new interface for testing of complex changes.  It calls lobpcg_solve_complex.   `BlopexInt` has been added.
 
 This should be tested exactly the same as we did last fall. 
