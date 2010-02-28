@@ -1,6 +1,6 @@
 #summary Changes to Blopex as of March 2010
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="1" />
 
 = Changes to blopex_abstract =
 
