@@ -18,11 +18,11 @@ The default for BlopexInt occurs in a new header ../blopex_abstract/utilities/fo
 
 Note that BlopexInt will be used in the function calls to the lapack functions called from lobpcg.c.  If this is not compatible with the lapack function definitions a pointer compiler error can occur.   To get around this another level of redirection will need to be coded in the interface where type casting can be done.  This is the case for the matlab interface (also, we have always done this in the Petsc interface).  We could recode the calls in lobpcg.c but as a general rule we want to avoid this.  More on this under "changes to blopex_matlab".
 
-support for hypre_assert macro
+== support for hypre_assert macro ==
 
 Hypre has recoded some of our abstract modules to use their hypre_assert macro instead of the standard c assert function.  To support this but still use the c assert for the other interfaces, we have added a preprocessor variable called "BlopexAssert".   This is implemented along with BlopexInt in fortran_options.h.   The HYPRE version of  fortran_options.h contains an include for "_hypre_utilities.h"  which is commented out for the version used for the other interfaces.  "_hypre_utilities.h" contains the macro definition for hypre_assert.  
 
-other changes for HYPRE
+== other changes for HYPRE ==
 
 There are two minor changes done for HYPRE which apply to all interfaces.
 
@@ -32,7 +32,7 @@ changed to "typedef mv_TempMultiVector * mv_tempMultiVectorPtr"
 
 = changes to blopex_hypre =
 
-modifications due to blopex_abstract changes
+== modifications due to blopex_abstract changes ==
 
 HYPRE only supports double (real) arithmetic for array elements and 32 bit integer.  The following changes are needed due to the new complex code.  These are the files that should be given to HYPRE for upgrading our code in HYPRE. 
 
@@ -58,16 +58,16 @@ Note that the starting code for all of the HYPRE_ modules is version hypre-2.6.0
 
 The tar file hypre_lobpcg_modifications.tar.gz that we have been using for testing has been changed to reflect the new changes and is on the google source site under the downloads tab. 
 
-support for hypre_assert macro 
+== support for hypre_assert macro ==
 
 lobpcg.c, multivector.c, and temp_multivector.c use hypre_assert instead of assert.  This is controlled via fortran_options.h as described under "changes to blopex_abstract".
 
-New ex11.c test
+== New ex11.c test ==
 
 This is the new test we were given in the last round of communication with HYPRE prior to the hypre-2.6.0b release.  
 It was not included in hypre-2.6.0b.  So to test we have to go through the process of modifying the Makefile in hypre-2.6.0b/src/test/.   This is documented in document ex11_testing_in_xvia.txt included in the same email as this document. 
 
-Things to know about hypre-2.6.0b
+== Things to know about hypre-2.6.0b ==
 
 Beware of the following with hypre-2.6.0b.  When doing a make (even with the unmodified files from the hypre install_, the following error occurs. 
 
