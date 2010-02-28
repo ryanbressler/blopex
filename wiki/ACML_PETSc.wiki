@@ -1,17 +1,33 @@
-#summary PETSc install with AMD's ACML in Fedora12
+#summary PETSc install with AMD's ACML in Fedora 12
+#labels PETSc,ACML,Fedora
 
 = Introduction =
 
-HowTo install PETSc with AMD's ACML in Fedora12 64 bit
+How To install PETSc with AMD's ACML in Fedora12 64 bit
 (assuming bash shell)
 
 TO BE CONTINUED....
 
 = Details =
 
+The basic system info:
+
+uname -a
+
+Linux opt 2.6.31.12-174.2.22.fc12.x86_64 #1 SMP Fri Feb 19 18:55:03 UTC 2010 x86_64 x86_64 x86_64 GNU/Linux
+
+rpm -q openmpi
+
+openmpi-1.3.3-6.fc12.x86_64
+
+rpm -q mpich2
+
+mpich2-1.2.1-2.fc12.x86_64
+
+
 Download from 
 http://developer.amd.com/cpu/Libraries/acml/downloads/pages/default.aspx
-the following ACML libraries: 
+the latest ACML libraries, in my case: 
   * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit.tgz
   * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit-int64.tgz
   * http://developer.amd.com/Downloads/acml-4-4-0-open64-64bit.tgz
@@ -30,7 +46,8 @@ Set up the MPI by running
 
 module load openmpi-x86_64
 
-Download and extract PETSc. cd to PETSc src and run 
+Download and extract the latest PETSc, in my case petsc-3.0.0-p11. 
+Extract using *tar xzvf* , cd to PETSc dir and run 
 
 PETSC_DIR=$PWD; export PETSC_DIR
 
@@ -39,3 +56,33 @@ PETSC_DIR=$PWD; export PETSC_DIR
 PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit; export PETSC_ARCH
 
 make all
+
+Assuming no errors on the previous steps, run
+
+cd /src/contrib/blopex/driver
+
+make driver
+
+Now, you can execute the driver by using 
+
+mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./driver
+
+Here, both shared libraries /usr/lib64/openmpi/lib and /opt/acml-4-4-0-gfortran-64bit/ are necessary to specify in the command-line. Alternatively, you can set 
+
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+
+then you can simply run 
+
+mpirun -np 2 ./driver
+
+See http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html for more info on shared libraries. 
+
+If you get an error like "error while loading shared libraries: /opt/acml-4-4-0-gfortran-64bit/gfortran64/lib/libacml.so: cannot restore segment prot after reloc: Permission denied" it is probably coming from your SELinux security software. Disable SELinux temporarily by running (as root) 
+
+ echo 0 > /selinux/enforce 
+
+After you are done running the codes, restore SELinux by 
+
+echo 1 > /selinux/enforce
+
+If you cannot be root, contact the sysadmin. 
