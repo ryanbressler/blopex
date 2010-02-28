@@ -157,7 +157,7 @@ Should  PETSC start to use 64 bit lapack routines we should be compatible using 
 
 == modifications due to blopex_abstract changes ==
 
-Since this interface is only for double (real); the only change is to call lobpcg_solve_double and interface function parameters must conform to new definitions (mostly using void* in place of double*).  Also `BlopexInt` has been added. 
+Since this interface is only for double (real); the only change is to call lobpcg_solve_double and interface function parameters must conform to new definitions (mostly using `void* in place of double*`).  Also `BlopexInt` has been added. 
 
 This should be tested exactly the same as we did last fall. 
 
