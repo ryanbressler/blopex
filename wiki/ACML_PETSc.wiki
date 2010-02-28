@@ -1,0 +1,41 @@
+#summary PETSc install with AMD's ACML in Fedora12
+
+= Introduction =
+
+HowTo install PETSc with AMD's ACML in Fedora12 64 bit
+(assuming bash shell)
+
+TO BE CONTINUED....
+
+= Details =
+
+Download from 
+http://developer.amd.com/cpu/Libraries/acml/downloads/pages/default.aspx
+the following ACML libraries: 
+  * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit.tgz
+  * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit-int64.tgz
+  * http://developer.amd.com/Downloads/acml-4-4-0-open64-64bit.tgz
+  * http://developer.amd.com/Downloads/acml-4-4-0-open64-64bit-int64.tgz
+
+Install each of them into a SEPARATE local directory, i.e., 
+provide different directory names when asked during the installation. 
+In my case, the directories are: 
+   * /opt/acml-4-4-0-gfortran-64bit
+   * /opt/acml-4-4-0-gfortran-64bit-int64
+   * /opt/acml-4-4-0-open64-64bit
+   * /opt/acml-4-4-0-open64-64bit-int64
+correspondingly. 
+
+Set up the MPI by running 
+
+module load openmpi-x86_64
+
+Download and extract PETSc. cd to PETSc src and run 
+
+PETSC_DIR=$PWD; export PETSC_DIR
+
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --download-hypre=1
+
+PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit; export PETSC_ARCH
+
+make all
