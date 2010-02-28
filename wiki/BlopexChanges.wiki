@@ -2,7 +2,7 @@
 
 <wiki:toc max_depth="1" />
 
-= Changes to blopex_abstract =
+= changes to blopex_abstract =
 
 == support for complex arithmetic ==
 
