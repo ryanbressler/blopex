@@ -8,14 +8,14 @@ http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
 run "./configure" with the appropriate parameters for your setup and then "make"
 Go to the examples directory. 
 
-= Step 3 =
+= Step 1 =
  
 compile and linkedit ex11.c to create ex11.o and ex11
 {{{
 >make ex11
 }}}
  
-= Step 4 =
+= Step 2 =
  
 execute ex11
 {{{
