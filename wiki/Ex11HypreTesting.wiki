@@ -1,30 +1,13 @@
-#summary How to test Ex11.c in Hypre
+#summary How to test ex11.c in Hypre
 
-= Step 1 =
+The code ex11.c is already in the examples directory. 
+This is the only example that calls our eigensolver LOBPCG. 
 
-Copy ex11.c to directory ../src/test
+After unpacking the hypre 1.6.0b source, apply our new change
+http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
+run "./configure" with the appropriate parameters for your setup and then "make"
+Go to the examples directory. 
 
-= Step 2 =
- 
-To ../src/test/Makefile add/change the following lines.  This follows the logic for example 5.
-Note: remember to use tabs in 2nd 2 lines of ex11: ...
-
-{{{
-HYPRE_F77_EXAMPLES_DRIVERS =\
- ex1_for.c\
- ex3_for.c\
- ex5_for.c\
- ex6_for.c\
- ex7_for.c\
- ex11.c
-...............
-        rm -f ex1 ex2 ex3 ex4 ex5 ex5b ex5b77 ex6 ex7 ex8 ex9 ex11
-...............
-ex11: fij_mv.o fparcsr_mv.o fparcsr_ls.o ex11.o
-        @echo "Building" $@ "... "
-        ${LINK_CC} -o $@ fij_mv.o fparcsr_mv.o fparcsr_ls.o $@.o ${FFLAGS} ${LFLAGS}
-}}}
- 
 = Step 3 =
  
 compile and linkedit ex11.c to create ex11.o and ex11
