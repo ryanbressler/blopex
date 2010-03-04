@@ -1,62 +1,106 @@
-#summary Installing and running HYPRE 2.4.0b on OPTIV.
-#labels hypre,opt4,fedora
+#summary Installing and running HYPRE 2.6.0b with our modifications on linux
 
 = Introduction =
 
-Installing and running HYPRE 2.4.0b on OPTIV.
+Installing and running HYPRE 2.6.0b with our modifications on linux.
 
-OPTIV is a computer with the following specs: Fedora 12 OS, Two Dual Core AMD Opteron 275 CPUs, 16GB RAM.
+Tested on AK's BOX, which is Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
 
 THIS INFO NEEDS TO BE UPDATED.
 
 = Details =
 
-First download the compressed file:
-You can download from the official HYPRE web site, or you can download directly version 2.4.0b with the following command:
+First download the compressed hypre file:
+You can download from the official HYPRE web site, or you can download directly version 2.6.0b with the following command:
 
-{{{$ wget https://computation.llnl.gov/casc/hypre/download/hypre-2.4.0b.tar.gz}}}
+{{{$ wget https://computation.llnl.gov/casc/hypre/download/hypre-2.6.0b.tar.gz}}}
 
 Unzip the compressed file:
 
-{{{$ tar xzvf hypre-2.4.0b.tar.gz }}}
+{{{$ tar xzvf hypre-2.6.0b.tar.gz }}}
 
-You can rename the HYPRE directory at this point.
+You can rename the HYPRE directory at this point to reflect the expected configuration, e.g., 
 
-Go to the HYPRE directory and type the following to configure HYPRE:
+{{{$ mv hypre-2.6.0b hypre-2.6.0b_openmpi}}}
+
+Go to the new HYPRE directory source: 
+
+{{{$ cd hypre-2.6.0b_openmpi\src}}}
+
+and download our modifications
+
+{{{$ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz}}}
+
+You should now be in hypre-2.6.0b_openmpi_ACML/src - double-check with pwd. 
+Uncompress: 
+
+{{{$ tar xzvf hypre_lobpcg_modifications.tar.gz}}}
+
+The above applies our modification to hypre 1.6.0b
+
+Hypre configure is not too smart and relies on a user to tell where all the compilers are and what flags to use. This is easy if you plan to use mpiich2 or openmpi, see 
+http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12
+
+Suppose that you use openmpi on 64bit, make sure to load its environment by 
+
+{{{$ module load openmpi-x86_64
+$ env | grep MPI
+$ which mpicc }}} 
+
+to double-check which C compiler is being used. For openmpi, that latter should point to 
+/usr/lib64/openmpi/bin/mpicc
+
+Now, the following configures and makes HYPRE
+{{{$ ./configure
+$ make }}}
+
+There MUST NOT BE ANY ERRORS. If you do get errors, there is something wrong with your setup of compilers. This setup is controlled by relevant parameters in env, as well as configure options. To see the latter, run 
 
 {{{
-$ cd src
-$ ./configure
-$ make
+$ ./configure --help 
 }}}
 
-Now to run the examples:
-
-{{{$ cd src/examples}}}
-
-I ran into two problems when I first tried to do this.
-
-First, when I ran make to compile the examples, I received an error that said could not find lg2c. Lg2c is a Fortran library, and a Fortran library is needed by gcc because blas and lapack were originally written in Fortran. To fix the problem on OPT4, edit the make file:
-
-{{{$nano Makefile}}}
-
-Then on line 27 you see a reference to lg2c. Replace the word {{{-lg2c}}} with {{{-lgfortran}}}. Apparently OPT4 uses a different Fortran library, probably has to do with which distribution of Linux you are using.
-
-The second error is also in the Makefile, so keep this open. EX10 makes reference to {{{$(CXX)}}}, which is defined in the Makefile header to point to mpiCC, which is a C++ MPI compiler. This file cannot be found. Perhaps we just need to set a path to this program. OPT4 is broken at the moment, so I have not tried to get this to work. Just delete the references to EX10 in the Makefile, and then you should be able to compile examples 1-9 without problems. The two references you need to delete are in the line where it says {{{ALLLPROGS = ex1 ex2 ... ex10}}}. Delete the {{{ex10}}} part. (Actually I don't even think this is necessary). But do be sure to delete instructions for compiling EX10, which begins with a remark, and then the lines:
+Having no errors, try to be adventurous and run 
 
 {{{
-ex10: ex10.o 
-$(CXX) -o $@ $^ $(LFLAGS)
+$ make test
 }}}
 
-Be sure to delete these two lines. Now you are ready to exit Makefile with saving, and then you should  be in the right directory, so just type {{{make}}} and you will compile the examples. To execute the compiled examples, you can find instructions in the .c file for each example. To find the instructions for EX1, type:
+which complies and links all the drivers in the test directory. If you get errors at this point, you have problems with linking to the external headers and/or the libraries. These are, again, set up by relevant parameters in env, as well as configure options. 
 
-{{{$ nano ex1.c}}}
+There are several BLOPEX-related drivers the test directory, e.g., the simplest tests to run are: 
 
-You will see a comment near the top that says
+{{{
+$ ./ij -lobpcg
+$ ./struct -lobpcg
+}}}
 
-{{{Sample Run:   mpirun -np 2 ex1}}}
+and, the same, using mpi: 
 
-So you will type the following command in the terminal to run example 1:
+{{{
+$ mpirun -np 2 ./ij -lobpcg
+$ mpirun -np 2 ./struct -lobpcg
+}}}
 
-{{{$ mpirun -np 2 ex1}}}
+In addition to BLOPEX-related drivers the test directory, there is 
+ex11 driver in the examples directory. To make the executable ex11 
+run in the examples directory
+
+{{{
+$ make ex11
+}}}
+
+It may give errors even though there have been no errors making the test drivers. E.g., "could not find lg2c." 
+
+This is because the examples/Makefile ignores the configure parameters and variables in env, but rather uses hard-coded values. So you have to edit the examples/Makefile by hand.
+E.g., to remove the "could not find lg2c" error, you can try the following.
+On line 27 of the Makefile you see a reference to lg2c. Replace the word {{{-lg2c}}} with {{{-lgfortran}}}. If you have test drivers made without errors, try to reproduce the parameters used there for the ex11 Makefile. 
+
+Having no errors, run the ex11 executable in the usual way: 
+
+{{{
+$ ./ex11
+$ mpirun -np 2 ./ex11
+}}}
+
+to see the familiar output coming from the LOBPCG function. 
