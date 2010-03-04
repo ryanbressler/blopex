@@ -1,0 +1,128 @@
+#summary Installing and running HYPRE 2.6.0b with our modifications on linux
+
+= Introduction =
+
+Installing and running HYPRE 2.6.0b with our modifications on linux.
+
+Tested on AK's BOX, which is Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
+
+THIS INFO NEEDS TO BE UPDATED.
+
+= Details =
+
+First download the compressed hypre file:
+You can download from the official HYPRE web site, or you can download directly version 2.6.0b with the following command:
+
+{{{
+$ wget https://computation.llnl.gov/casc/hypre/download/hypre-2.6.0b.tar.gz
+}}}
+
+Unzip the compressed file:
+
+{{{
+$ tar xzvf hypre-2.6.0b.tar.gz 
+}}}
+
+You can rename the HYPRE directory at this point to reflect the expected configuration, e.g., 
+
+{{{
+$ mv hypre-2.6.0b hypre-2.6.0b_openmpi
+}}}
+
+Go to the new HYPRE directory source: 
+
+{{{
+$ cd hypre-2.6.0b_openmpi\src
+}}}
+
+and download our modifications
+
+{{{
+$ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
+}}}
+
+You should now be in hypre-2.6.0b_openmpi_ACML/src - double-check with pwd. 
+Uncompress: 
+
+{{{
+$ tar xzvf hypre_lobpcg_modifications.tar.gz
+}}}
+
+The above applies our modification to hypre 1.6.0b
+
+Hypre configure is not too smart and relies on a user to tell where all the compilers are and what flags to use. This is easy if you plan to use mpiich2 or openmpi, see 
+http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12 
+
+Suppose that you use openmpi on 64bit, make sure to load its environment by 
+
+{{{
+$ module load openmpi-x86_64
+}}}
+
+Type
+
+{{{
+$ env | grep MPI
+$ which mpicc 
+}}}
+
+to double-check which C compiler is being used. For openmpi, the latter should point to 
+/usr/lib64/openmpi/bin/mpicc
+
+Now, the following configures and makes HYPRE
+
+{{{
+$ ./configure
+$ make 
+}}}
+
+There MUST NOT BE ANY ERRORS. If you do get errors, there is something wrong with your setup of compilers. This setup is controlled by relevant parameters in env, as well as configure options. To see the latter, run 
+
+{{{
+$ ./configure --help 
+}}}
+
+Having no errors, try to be adventurous and run 
+
+{{{
+$ make test
+}}}
+
+which complies and links all the drivers in the test directory. If you get errors at this point, you have problems with linking to the external headers and/or the libraries. These are, again, set up by relevant parameters in env, as well as configure options. 
+
+There are several BLOPEX-related drivers the test directory, e.g., the simplest tests to run are: 
+
+{{{
+$ ./ij -lobpcg
+$ ./struct -lobpcg
+}}}
+
+and, the same, using mpi: 
+
+{{{
+$ mpirun -np 2 ./ij -lobpcg
+$ mpirun -np 2 ./struct -lobpcg
+}}}
+
+In addition to BLOPEX-related drivers the test directory, there is 
+ex11 driver in the examples directory. To make the executable ex11 
+run in the examples directory
+
+{{{
+$ make ex11
+}}}
+
+It may give errors even though there have been no errors making the test drivers. E.g., "could not find lg2c." 
+
+This is because the examples/Makefile ignores the configure parameters and variables in env, but rather uses hard-coded values. So you have to edit the examples/Makefile by hand.
+E.g., to remove the "could not find lg2c" error, you can try the following.
+On line 27 of the Makefile you see a reference to lg2c. Replace the word {{{-lg2c}}} with {{{-lgfortran}}}. If you have test drivers made without errors, try to reproduce the parameters used there for the ex11 Makefile. 
+
+Having no errors, run the ex11 executable in the usual way: 
+
+{{{
+$ ./ex11
+$ mpirun -np 2 ./ex11
+}}}
+
+to see the familiar output coming from the LOBPCG function. 
