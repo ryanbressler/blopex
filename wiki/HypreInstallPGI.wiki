@@ -1,4 +1,4 @@
-#summary Hypre installation using PGI compilers with ACML, obsolete.
+#summary Hypre install using PGI compilers with ACML, obsolete.
 
 = Introduction =
 
