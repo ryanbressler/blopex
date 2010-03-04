@@ -42,8 +42,10 @@ Hypre configure is not too smart and relies on a user to tell where all the comp
 http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12
 
 Suppose that you use openmpi on 64bit, make sure to load its environment by 
+{{{$ module load openmpi-x86_64}}
 
-{{{$ module load openmpi-x86_64
+Type
+{{{
 $ env | grep MPI
 $ which mpicc }}} 
 
