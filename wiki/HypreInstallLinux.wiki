@@ -41,7 +41,7 @@ and download our modifications
 $ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
 }}}
 
-You should now be in hypre-2.6.0b_openmpi_ACML/src - double-check with pwd. 
+You should now be in hypre-2.6.0b_openmpi/src - double-check with pwd. 
 Uncompress: 
 
 {{{
@@ -69,10 +69,43 @@ $ which mpicc
 to double-check which C compiler is being used. For openmpi, the latter should point to 
 /usr/lib64/openmpi/bin/mpicc
 
-Now, the following configures and makes HYPRE
+At this point, you also need to decide on which BLAS/LAPACK library 
+you want to use. If you just run 
 
 {{{
 $ ./configure
+}}}
+
+it would use the source of all related BLAS/LAPACK functions provided within hypre
+and compile this source during the next step, make. 
+
+If you want to use some precompiled BLAS/LAPACK libraries, you need to tell 
+hypre configure where they are located, e.g., 
+
+{{{
+$ ./configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib"  
+}}}
+
+will use acml-4-4-0-gfortran-64bit BLAS/LAPACK functions from the given location, i.e., opt/acml-4-4-0-gfortran-64bit/gfortran64/lib. Openmpi uses GNU compilers and hypre 1.6.0b does not support long integers, which determines our choice of the ACML library from many available, cf. http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML .
+
+If you want to use precompiled BLAS/LAPACK libraries from the distribution provider, in Fedora, check if you have them installed and determine their locations by 
+
+{{{
+$ rpm -ql blas   | grep lib
+$ rpm -ql lapack | grep lib
+}}}
+
+In Fedora 12 64-bit, the location is /usr/lib64/ , so you run 
+
+{{{
+$ ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"  
+}}}
+
+<font color=red>THE LATTER IS NOT TESTED.</font>
+
+Now, the following makes HYPRE
+
+{{{
 $ make 
 }}}
 
@@ -104,6 +137,14 @@ $ mpirun -np 2 ./ij -lobpcg
 $ mpirun -np 2 ./struct -lobpcg
 }}}
 
+If you get errors here like "error while loading shared libraries: libacml.so: cannot open shared object file", this means that the executable has been compiled using shared libraries, so you need to provide the location of the shared libraries in the execution line using LD_LIBRARY_PATH, cf. http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML , e.g., like  
+
+{{{
+$ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./ij -lobpcg
+$ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./struct -lobpcg
+}}}
+
+
 In addition to BLOPEX-related drivers the test directory, there is 
 ex11 driver in the examples directory. To make the executable ex11 
 run in the examples directory
@@ -125,4 +166,13 @@ $ ./ex11
 $ mpirun -np 2 ./ex11
 }}}
 
+or, if shared libraries have been used, something like 
+
+{{{
+$ ./ex11 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
+$ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./ex11
+}}}
+
 to see the familiar output coming from the LOBPCG function. 
+
+For details on hypre Linux testing see http://code.google.com/p/blopex/wiki/HypreTestingLinux
