@@ -4,7 +4,9 @@
  
 Installing and running HYPRE 2.6.0b with our modifications on linux.
 
-Tested on AK's BOX, which is Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
+Tested on:
+    * AK's Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
+    * PZ's Intel(R) Pentium(R) ,4 CPU, 3.06GHz, 3.24 GB, IntelMKL 10.1.1.019
 
 THIS INFO NEEDS TO BE UPDATED.
 
@@ -88,6 +90,14 @@ $ ./configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/opt/a
 
 will use acml-4-4-0-gfortran-64bit BLAS/LAPACK functions from the given location, i.e., opt/acml-4-4-0-gfortran-64bit/gfortran64/lib. Openmpi uses GNU compilers and hypre 1.6.0b does not support long integers, which determines our choice of the ACML library from many available, cf. http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML .
 
+For Intel 64 bit CPUs, 
+
+{{{
+$ ./configure  --with-lapack-libs="mkl  mkl_lapack guide pthread" --with-lapack-lib-dirs="/opt/intel/mkl/10.1.1.019/lib/em64t" --with-blas-libs="mkl  mkl_em64t  guide pthread m" --with-blas-lib-dirs="/opt/intel/mkl/10.1.1.019/lib/em64" 
+}}}
+
+will use 64bit Intel's MKL rev. 10.1.1.019 library for BLAS/LAPACK. 
+
 If you want to use precompiled BLAS/LAPACK libraries from the distribution provider, in Fedora, check if you have them installed and determine their locations by 
 
 {{{
@@ -144,6 +154,20 @@ $ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortra
 $ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./struct -lobpcg
 }}}
 
+Alternatively, set the LD_LIBRARY_PATH in your environment by (bash shell), e.g., 
+
+{{{
+$ export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
+}}}
+
+for AMD's ACML, or 
+
+{{{
+$ export LD_LIBRARY_PATH=/opt/intel/mkl/10.1.1.019/lib/em64t
+}}}
+
+for Intel's MKL, then you do not need to specify "-x LD_LIBRARY_PATH=..." in the 
+execution command line. 
 
 In addition to BLOPEX-related drivers the test directory, there is 
 ex11 driver in the examples directory. To make the executable ex11 
