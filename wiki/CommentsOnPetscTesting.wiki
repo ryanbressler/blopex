@@ -5,9 +5,9 @@ There are two components:  blopex_abstract and blopex_interface.
 The blopex_abstract is incorporated as an external package.  
 
 This can be specified during configuration with the option "--with-blopex=1" 
-in which case "blopex_abstract_Aug_2006.tar.gz" is ftped from the ftp.mcs.anl.gov site.
+in which case "blopex_abstract_Aug_2006.tar.gz" is ftped from the ftp.mcs.anl.gov site, see also http://ftp.mcs.anl.gov/pub/petsc/externalpackages/blopex_abstract_Aug_2006.tar.gz
 
-It can also be specified during configuration with the option "--download-blopex=/PATH/TO/package.tar.gz". 
+It can also be specified during configuration with the option "--download-blopex=/PATH/TO/package.tar.gz" if already downloaded and saved locally.
 For example: I have created a zipped tar file on my system with the blopex_abstract files and called it /home/grads/dmccuan/blopex_abstract_Mar_2010.tar.gz.  To use this I would specify the configuration option {{{--download-blopex=/home/grads/dmccuan/blopex_abstract_Mar_2010.tar.gz}}}
 
 In either case under the PETSC_DIR directory a subdirectory "externalpackages/blopex_abstract" will be created and the files from the tar installed there, compiled, and then the header files moved to $PETSC_DEV/$PETSC_ARCH subdirectory /include, the object files moved to /lib,  and the BLOPEX library created and moved to /lib/libBLOPEX.a. Note that on xvia $PETSC_ARCH=linux-gnu-c-debug.
@@ -22,25 +22,16 @@ Note that the drivers are not compiled in this step.  Now the driver can be comp
 
 The changes needed to incorporate a new release of BLOPEX into PETSC are defined in two tar files.
 
- # blopex_abstract_Aug_2006.tar.gz
- # blopex_petsc_interface.tar.gz
+ # http://blopex.googlecode.com/files/blopex_abstract_Mar_2010.tar.gz
+ # http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
 
-I have created both of these files and added them to the blopex Google download tab.
+Extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  Then configure PETSC using the "--download-blopex" option as described above with the blopex_abstract_Mar_2010.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
 
-There are two ways to go about testing changes to BLOPEX in PETSC.
+If you have done this before you know it takes a very long time to do the configure and "make all test".  Remember this compiles the petsc-interface.c.  If you are making changes to the interface or to the abstract code, this can become very tedious.  
 
-The first is to extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  Then configure PETSC using the "--download-blopex" option as described above with the blopex_abstract_Mar_2010.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
-
-If you have done this before you know it takes a very long time to do the configure and "make all test".  Remember this compiles the petsc-interface.c.  If you are making changes to the interface or to the abstract code, this can become very tedious.  This leads to the 2nd way of testing.
-
+<font color=blue>
+A different method of testing, described below, is primarily to help future developers. 
 Perhaps you have noticed there is both a Makefile and a makefile in the blopex_petsc directories.  The lowercase makefile is used by PETSC.  The uppercase Makefile is used to compile and link the petsc-interface and drivers when the code is located externally to PETSC, such as in our source downloaded from Google.  This Makefile requires PETSC to be installed but not necessarily "--download-blopex" since we link with the blopex_abstract library that is compiled externally.  So, you can make changes and quickly test them without reinstallation of PETSC. 
 
-This is the second method for testing Blopex with PETSC.  
-
 Note that if you are in the external directory and specify "make" it will execute the lowercase makefile, which is not correct.  Instead use "make -f Makefile".  Also, note in the driver files (driver.c, driver_fiedler.c, etc.) there is an include for header file petsc-interface.c.  If executing a make from within PETSC this has to be hard coded to the subdirectory for petsc-interface but if external this subdirectory is different.  To handle this without changing the code I have incorporated some preprocessor code within the Makefile's and the driver--.c files. 
-
-For our testing we should use the first method.  I've included a discussion of the 2nd method primarily to help future developers. 
-
-
-
-
+</font>
