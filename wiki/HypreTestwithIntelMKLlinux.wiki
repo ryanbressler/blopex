@@ -122,7 +122,7 @@ the test the desired tolerance for residual norms (1e-8) was achieved at each ei
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and SMG (default) preconditioner.
 {{{
-$ $ mpirun -np 2 ./struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
+$ mpirun -np 2 ./struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
 ........
 Eigenvalue lambda             Residual              
 
