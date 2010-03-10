@@ -18,9 +18,31 @@ To install files issue command:
 }}}
 This creates files in directory petsc-dev.  
 
+Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
 
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory, install as follows:
+{{{
+>> cp blopex_petsc_interface.tar.gz petsc-dev/src/contrib/blopex/
+>> cd petsc-dev/src/contrib/blopex
+>> tar -zxvg blopex_petsc_interface.tar.gz
+}}}
 
+Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15)
+`self.complex    = 0`.
 
+This specifies that the blopex interface is not defined for Petsc scalar type complex.
+Edit blopex.py and change this to `self.complex    = 1`.
+
+Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
+
+Configure Petsc as follows:
+{{{
+>> ./config/configure.py --with-shared --with-scalar-type=complex --with-debugging=1 --download-blopex=../blopex_abstract_Mar_2010.tar.gz
+}}}
+
+Petsc runs with either double or complex objects but not both.  
+To test the blopex routines for double configure Petsc without the 
+option --with-scalar-type=complex. 
 
 Now two environment variables must be setup:
 {{{
@@ -36,70 +58,33 @@ file as follows:
 export PETSC_DIR=/home/grads/dmccuan/petsc-dev
 export PETSC_ARCH=linux-gnu-c-debug
 }}}
-The next step is to configure Petsc.  Shift to the Petsc directory and 
-issue command
-{{{
->> ./config/configure.py  --with-shared --with-scalar-type=complex
-}}}
-
-Petsc runs with either double or complex objects but not both.  
-To test the blopex routines for double configure Petsc without the 
-option --with-scalar-type=complex. 
 
 After configuration is finished issue the command
 {{{
 >> make all test
 }}}
 = Setup blopex_petsc =  
-
-Source for blopex_abstract and blopex_petsc must be present on your system.
-Either obtained via tarballs or svn repository.
-
-I have setup a tarball called blopex.tar.gz under the downloads tab that contains the new blopex and 
-interfaces which has been modified for complex arithematic.  This creates 
-source under directory work/trunk.
-
-In order to compile the blopex_petsc drivers for testing we must first have 
-blopex_abstract installed and compiled.  
-
-To do this execute "make clean" and then "make" under work/trunk/blopex_abstract.
-
-Then, some adjustments to the makefiles for blopex_petsc are needed. 
-
-The ../blopex_petsc/Makefile.inc must specify the location of petsc_abstract
-For example:
+ 
+Now create executables for the blopex drivers 
 {{{
-LOBPCG_ROOT_DIR = ../../blopex_abstract
+>> cd petsc-dev/src/contrib/blopex/driver
+>> make driver
+>> cd ../driver_fiedler
+>> make driver_fiedler
 }}}
-when blopex_abstract and petsc_abstract directories are defined under the same directory. 
-
-Note that ../blopex_petsc/driver/Makefile, ../blopex_petsc/driver_fiedler/Makefile, and 
-../blopex_petsc/petsc-interface must have an include for the Petsc variable definitions.
-   
-For the Beta version use
-{{{
-include ${PETSC_DIR}/conf/variables
-}}}
-This change has already been implemented in the tarball. 
-
-note:  ${CLINKER}, ${PETSC_COMPILE_SINGLE}, and ${PETSC_KSP_LIB} are set by this include. 
-
-After running make, executables for driver and driver_fiedler are created in their 
-respective directories.  
 
 = Execution of Tests =
 
 There are two test drivers located in subdirectories of blopex_petsc:
 driver an driver_fiedler.  The executables for these are in directories
-../blopex_petsc/driver and ../blopex_petsc/driver_fiedler.
+petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
 
 driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
-if Petsc is configured for complex (this is controlled by PETSC_USE_COMPLEX preprocessor
- variable) or lobpcg_solve_doube if Petsc is configured for double. 
+if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for double. 
 
 For example:
 {{{
->> mpirun -np 2 driver -n_eigs 3 -itr 20 
+>> mpirun -np 2 ./driver -n_eigs 3 -itr 20 
 or 
 >> ./driver -n_eigs 3 -itr 20
 }}}
