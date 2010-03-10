@@ -25,7 +25,11 @@ The changes needed to incorporate a new release of BLOPEX into PETSC are defined
  # http://blopex.googlecode.com/files/blopex_abstract_Mar_2010.tar.gz
  # http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
 
-Extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  Then configure PETSC using the "--download-blopex" option as described above with the blopex_abstract_Mar_2010.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
+To setup PETSC perform the following steps:
+
+ # Extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  
+ # Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15) "self.complex    = 0".  This specifies that the blopex interface is not defined for Petsc scalar type complex.  Edit blopex.py and change this to "self.complex    = 1". Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.  Warning: On some systems (Frost) the configuration will abort when you get this message, but on others (Linux) it doesn't and while you can continue with the make you will get bad results with the complex tests. 
+ # Then configure PETSC using the "--download-blopex" option as described above with the blopex_abstract_Mar_2010.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
 
 If you have done this before you know it takes a very long time to do the configure and "make all test".  Remember this compiles the petsc-interface.c.  If you are making changes to the interface or to the abstract code, this can become very tedious.  
 
