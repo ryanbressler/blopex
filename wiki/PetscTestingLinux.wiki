@@ -9,13 +9,19 @@ How to test BLOPEX under Beta version of Petsc on Linux
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
-the Petsc website at ftp://info.mcs.anl.gov/pub/petsc-dev.tar.gz
+the Petsc website at ftp://info.mcs.anl.gov/pub/petsc-dev.tar.gz .
  
+
 To install files issue command:
 {{{
 >> gunzip -c petsc-dev.tar.gz | tar -xof -
 }}}
 This creates files in directory petsc-dev.  
+
+
+
+
+
 Now two environment variables must be setup:
 {{{
 >> PETSC_DIR=/home/grads/dmccuan/petsc-dev
@@ -35,8 +41,6 @@ issue command
 {{{
 >> ./config/configure.py  --with-shared --with-scalar-type=complex
 }}}
-Since we are not using the source for blopex included in Petsc we don't need the 
-options --download-blopex=1 or --download-hypre=1.  
 
 Petsc runs with either double or complex objects but not both.  
 To test the blopex routines for double configure Petsc without the 
