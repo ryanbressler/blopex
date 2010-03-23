@@ -1,0 +1,31 @@
+#summary Specifics of LLNL configure and testing
+
+= Introduction =
+
+Rico has (and Andrew should have) accounts on LLNL machines: ATLAS, ZEUS, YANA.
+Here we describe the specifics of LLNL configure and testing. 
+
+= Details =
+
+According to https://computing.llnl.gov/?set=resources&page=OCF_resources ATLAS, ZEUS, YANA all are essentially the same hardware (dual core AMD opteron Proc 8216) with 64 bit memory addressing. Each node has 8 CPUs and 16 GB of RAM (32 GB for yana60-79). They all run CHAOS linux which is the LLNL version of redhat. 
+
+ * ATLAS     1152 nodes, high speed interconnect
+ * ZEUS      288 nodes, high speed interconnect
+ * YANA      80 nodes, no high speed interconnect
+
+Here is a typical msub script for a batch job (msub tst3.sh)
+
+<pre>
+#!/bin/csh
+#MSUB -l nodes=8
+#MSUB -l walltime=25:00
+#MSUB -q pbatch
+#MSUB -m be
+#MSUB -V
+#MSUB -o tst.out
+#MSUB -A asccasc
+##### These are shell commands
+date
+srun -n64  ./ij -lobpcg -n 150 150 150 -pcgitr 0 -vrand 20 -seed 1
+echo 'Done'
+</pre>
