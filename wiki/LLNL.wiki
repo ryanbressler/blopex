@@ -11,7 +11,8 @@ According to https://computing.llnl.gov/?set=resources&page=OCF_resources ATLAS,
 
  * ATLAS     1152 nodes, high speed interconnect
  * ZEUS      288 nodes, high speed interconnect
- * YANA      80 nodes, no high speed interconnect
+
+YANA is not a cluster as it has no interconnect between 80 nodes. 32 GB for yana60-79, 16 GB for all other notes. Jobs are limited to a single node because there is no interconnect.
 
 Here is a typical msub script for a batch job (msub tst3.sh)
 
