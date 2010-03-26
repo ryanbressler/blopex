@@ -14,8 +14,9 @@ According to https://computing.llnl.gov/?set=resources&page=OCF_resources ATLAS,
 
 YANA is not a cluster as it has no interconnect between 80 nodes. 32 GB for yana60-79, 16 GB for all other notes. Jobs are limited to a single node because there is no interconnect.
 
-Here is a typical msub script for a batch job (msub tst3.sh)
-
+Use msub to submit batch jobs: msub file.sh.
+Useful commands include: mshare, ju, showq, mdiag, checkjob job#, canceljob job#,
+news job.lim.atlas. Here is a typical msub script for a batch job (msub tst.sh)
 <pre>
 #!/bin/csh
 #MSUB -l nodes=8
@@ -23,7 +24,7 @@ Here is a typical msub script for a batch job (msub tst3.sh)
 #MSUB -q pbatch
 #MSUB -m be
 #MSUB -V
-#MSUB -o tst3.out
+#MSUB -o tst.out
 #MSUB -A asccasc
 ##### These are shell commands
 date
