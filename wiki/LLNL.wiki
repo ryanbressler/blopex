@@ -61,5 +61,5 @@ msub script file or in your C Shell startup configuration file.
 setenv LD_LIBRARY_PATH /usr/local/tools/acml-gfortran/lib
 }}}
 
-NOTE: I believe that there is a way to use configure so that the executables knows
+NOTE: I believe that there is a way to use configure so that the executables know
 where the shared libaries are, but I don't know how to do it.
