@@ -32,3 +32,9 @@ echo 'Done'
 </pre>
 
 = Configuring and Compiling =
+The HYPRE release hypre-2.6.0b was configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
+ 
+
+{{{
+$ ./configure
+}}}
