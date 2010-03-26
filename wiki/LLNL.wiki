@@ -39,6 +39,15 @@ By MEA 3/25/2010.
 The HYPRE release hypre-2.6.0b is configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX and use the same processor technology so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
 These included both hypre-2.6.0b.tar.gz and hypre_lobpcg_modifications.tar.gz.
 
+To recap:
+{{{
+wget https://computation.llnl.gov/casc/hypre/download/hypre-2.6.0b.tar.gz
+wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
+tar xzvf hypre-2.6.0b.tar.gz 
+cd hypre-2.6.0b.tar.gz/src
+tar xzvf ~../hypre_lobpcg_modifications.tar.gz
+}}}
+
 Testing is done using two different math libraries: 1) the standard ATLAS (Automatically Tuned Linear Algebra Software) Math Libary, 2) the ACML - AMD Core Math Library. See
 https://computing.llnl.gov/tutorials/linux_clusters/#Software.
 
