@@ -23,10 +23,12 @@ Here is a typical msub script for a batch job (msub tst3.sh)
 #MSUB -q pbatch
 #MSUB -m be
 #MSUB -V
-#MSUB -o tst.out
+#MSUB -o tst3.out
 #MSUB -A asccasc
 ##### These are shell commands
 date
 srun -n64  ./ij -lobpcg -n 150 150 150 -pcgitr 0 -vrand 20 -seed 1
 echo 'Done'
 </pre>
+
+= Configuring and Compiling =
