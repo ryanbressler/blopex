@@ -32,8 +32,38 @@ echo 'Done'
 </pre>
 
 = Configuring and Compiling =
-The HYPRE release hypre-2.6.0b was configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
- 
+The HYPRE release hypre-2.6.0b is configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
+
+Testing is done using two different math libraries: 1) the standard ATLAS (Automatically Tuned Linear Algebra Software) Math libary, 2) the ACML - AMD Core Math Library.
+
+Create two directory structures: hypre-2.6.0b-stdlib and hypre-2.6.0b-amdlib.
+First setup the standard libary:
+{{{
+$ cd hypre-2.6.0b-stdlib/src
+$ configure
+$ make
+$ make test 
+}}}
+Next setup the AMD library:
+{{{
+$ cd hypre-2.6.0b-amdlib/src
+$ configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/usr/local/tools/acml-gfortran/lib"
+$ make
+$ make test 
+}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {{{
 $ ./configure
