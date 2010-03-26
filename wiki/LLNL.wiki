@@ -32,7 +32,7 @@ echo 'Done'
 </pre>
 
 = Configuring and Compiling =
-The HYPRE release hypre-2.6.0b is configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
+The HYPRE release hypre-2.6.0b is configured and compiled  on the LLNL machines ATLAS, ZEUS and YANA. They all run standard LINUX and use the same processor technology so the same install and compile works on all the machines. First download the compressed files and uncompress them according to http://code.google.com/p/blopex/wiki/HypreInstallLinux.
 
 Testing is done using two different math libraries: 1) the standard ATLAS (Automatically Tuned Linear Algebra Software) Math Libary, 2) the ACML - AMD Core Math Library. See
 https://computing.llnl.gov/tutorials/linux_clusters/#Software.
@@ -54,7 +54,7 @@ $ make test
 }}}
 To run hypre lobpcg with the AMD libraries you need to define an envronmental
 variable so the programs can find the shared libraries. You could do this in the
-msub script file or in your {C Shell} startup configuration file.
+msub script file or in your C Shell startup configuration file.
 {{{
 # add path for AMD core math libary
 setenv LD_LIBRARY_PATH /usr/local/tools/acml-gfortran/lib
