@@ -51,6 +51,15 @@ $ configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/usr/loc
 $ make
 $ make test 
 }}}
+To run hypre lobpcg with the AMD libraries you need to define an envronmental
+variable so the programs can find the shared libraries. You could do this in the
+msub script file or in your {C Shell} startup configuration file.
+{{{
+# add path for AMD core math libary
+setenv LD_LIBRARY_PATH /usr/local/tools/acml-gfortran/lib
+}}}
+
+
 
 
 
