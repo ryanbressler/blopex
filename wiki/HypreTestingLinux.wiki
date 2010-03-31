@@ -18,6 +18,8 @@ per node, 64bit memory addressing, 1152 nodes and 9216 processors.
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and BoomerAMG (default) preconditioner. 
 
+All of these tests used the ATLAS (Automatically Tuned Linear Algebra Software) project's version of blas and lapack which is the default for this system.
+
 Here is a typical msub script:
 {{{
 #!/bin/csh
