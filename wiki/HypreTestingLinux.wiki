@@ -10,10 +10,12 @@ Test drivers ij, struct, sstruct in test and ex11 in examples.
 = Setup Hypre =  
 
 See
-http://code.google.com/p/blopex/wiki/HypreInstallLinux
+http://code.google.com/p/blopex/wiki/LLNL
 
 = Execution of Tests for Hypre's IJ interface =
-4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM. 
+LLNL ATLAS system, 8 AMD Opteron processors and 16G of memory
+per node, 64bit memory addressing, 1152 nodes and 9216 processors.
+
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and BoomerAMG (default) preconditioner. 
 {{{
