@@ -81,59 +81,64 @@ LOBPCG Solve:
   cpu MFLOPS      = 0.000000
 
 
-mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
+srun -n8  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   7.00663900604041e-03
-Eigenvalue lambda   1.40078232353957e-02
-Eigenvalue lambda   1.40078232353966e-02
+Initial Max. Residual   2.43975107136868e+00
+Iteration 1 	bsize 20 	maxres   9.42509159068712e-01
+Iteration 2 	bsize 20 	maxres   1.06547393971217e-01
+Iteration 3 	bsize 20 	maxres   4.20822219529653e-02
 ........
-Eigenvalue lambda   3.96606622272988e-02
-Eigenvalue lambda   3.96606622273095e-02
-Eigenvalue lambda   3.96606622276261e-02
-Residual   3.70085907256198e-09
-Residual   4.00319530890741e-09
-Residual   4.20084850498391e-09
-........
-Residual   6.54338573150323e-09
-Residual   8.05614030452242e-09
-Residual   8.13140916860350e-09
+Iteration 33 	bsize 3 	maxres   1.32343428294644e-08
+Iteration 34 	bsize 1 	maxres   1.05484409989219e-08
+Iteration 35 	bsize 1 	maxres   9.11921415936450e-09
 
-34 iterations
-=============================================
-Solve phase times:
-=============================================
-LOBPCG Solve:
-  wall clock time = 113.460000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 113.470000 seconds
-  cpu MFLOPS      = 0.000000
-
-
-$ mpirun -np 12 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
-........
-Eigenvalue lambda   7.00663900603955e-03
-Eigenvalue lambda   1.40078232353956e-02
-Eigenvalue lambda   1.40078232353959e-02
-........
-Eigenvalue lambda   3.96606622273043e-02
-Eigenvalue lambda   3.96606622273095e-02
-Eigenvalue lambda   3.96606622273160e-02
-Residual   1.16582909260867e-09
-Residual   8.54372572267420e-09
-Residual   1.37677311213383e-09
-........
-Residual   7.99361652917548e-09
-Residual   9.46390622434787e-09
-Residual   8.40211141630243e-09
+Eigenvalue lambda       Residual              
+  7.00663900604047e-03    3.70085899255288e-09
+  1.40078232353957e-02    4.90069048034002e-09
+  1.40078232353970e-02    1.98359423970836e-09
+........ 
+  3.96606622273044e-02    9.11921415936450e-09
+  3.96606622273126e-02    6.58539147644802e-09
+  3.96606622277364e-02    6.55620097895291e-09
 
 35 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 188.470000 seconds
+  wall clock time = 40.970000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 185.710000 seconds
+  cpu clock time  = 40.970000 seconds
+  cpu MFLOPS      = 0.000000
+
+srun -n12  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+........
+Initial Max. Residual   2.43769022193455e+00
+Iteration 1 	bsize 20 	maxres   9.36812311008159e-01
+Iteration 2 	bsize 20 	maxres   1.11863318144932e-01
+Iteration 3 	bsize 20 	maxres   5.01242692640469e-02
+........
+Iteration 33 	bsize 2 	maxres   1.75108824274872e-08
+Iteration 34 	bsize 1 	maxres   1.31438097854918e-08
+Iteration 35 	bsize 1 	maxres   9.28416855326690e-09
+
+Eigenvalue lambda       Residual              
+  7.00663900603874e-03    1.16582862186407e-09
+  1.40078232353951e-02    1.97027315050180e-09
+  1.40078232353964e-02    1.02406385727161e-09
+........ 
+  3.96606622272498e-02    8.57657681057407e-09
+  3.96606622272987e-02    9.14301724087940e-09
+  3.96606622273175e-02    6.16593293200329e-09
+
+35 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 61.580000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 61.570000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
