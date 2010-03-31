@@ -11,13 +11,12 @@ Test drivers ij, struct, sstruct in test and ex11 in examples.
 
 See
 http://code.google.com/p/blopex/wiki/LLNL
+
 All of these test were done using the LLNL ATLAS system: 8 AMD Opteron processors and 16G of memoryper node, 64bit memory addressing, a total of 1152 nodes and 9216 processors.
 
 All of these tests used the ATLAS (Automatically Tuned Linear Algebra Software) project's version of blas and lapack which is the default for this system.
 
 = Execution of Tests for Hypre's IJ interface =
-Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and BoomerAMG (default) preconditioner. 
-
 Here is a typical msub script:
 {{{
 #!/bin/csh
@@ -35,6 +34,7 @@ echo 'Done'
 }}}
 Line #2 and/or #11 are changed for each run.
 
+Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and BoomerAMG (default) preconditioner. 
 {{{
 $ srun -n2  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
