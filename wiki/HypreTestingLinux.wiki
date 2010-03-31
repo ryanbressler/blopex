@@ -12,7 +12,7 @@ Test drivers ij, struct, sstruct in test and ex11 in examples.
 See
 http://code.google.com/p/blopex/wiki/LLNL
 
-All of these test were done using the LLNL ATLAS system: 8 AMD Opteron processors and 16G of memoryper node, 64bit memory addressing, a total of 1152 nodes and 9216 processors.
+All of these test were done using the LLNL ATLAS system: 8 AMD Opteron processors and 16G of memory per node, 64bit memory addressing, a total of 1152 nodes and 9216 processors.
 
 All of these tests used the ATLAS (Automatically Tuned Linear Algebra Software) project's version of blas and lapack which is the default for this system.
 
