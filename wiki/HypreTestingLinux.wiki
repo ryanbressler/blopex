@@ -11,14 +11,12 @@ Test drivers ij, struct, sstruct in test and ex11 in examples.
 
 See
 http://code.google.com/p/blopex/wiki/LLNL
-
-= Execution of Tests for Hypre's IJ interface =
-LLNL ATLAS system, 8 AMD Opteron processors and 16G of memory
-per node, 64bit memory addressing, 1152 nodes and 9216 processors.
-Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
-and BoomerAMG (default) preconditioner. 
+All of these test were done using the LLNL ATLAS system: 8 AMD Opteron processors and 16G of memoryper node, 64bit memory addressing, a total of 1152 nodes and 9216 processors.
 
 All of these tests used the ATLAS (Automatically Tuned Linear Algebra Software) project's version of blas and lapack which is the default for this system.
+
+= Execution of Tests for Hypre's IJ interface =
+Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and BoomerAMG (default) preconditioner. 
 
 Here is a typical msub script:
 {{{
@@ -166,7 +164,7 @@ LOBPCG Solve:
 In all the tests the desired tolerance for residual norms (1e-8) was achieved at each eigenpair.
 
 = Execution of Tests for Hypre's Struct interface =
-LLNL ATLAS system. Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and SMG (default) preconditioner.
+Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and SMG (default) preconditioner.
 {{{
 srun -n2 struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
 ........
@@ -269,7 +267,7 @@ In all the tests the desired tolerance for residual norms (1e-6) was achieved at
 Note: dimensions _-n nx ny nz_ in the driver's parameter list, are assumed to be per processor, while the processors topology is defined by _-P Px Py Pz_.  
 
 = Execution of Tests for Hypre's SStruct interface =
-LLNL ATLAS system. To test Hypre's SStruct interface we use the default input file sstuct.in.default (can be found in src/test/TEST_sstruct and copied to src/test). We compute 10 smallest eigenpairs using 2 cores, random initial guess and SMG preconditioner:
+To test Hypre's SStruct interface we use the default input file sstuct.in.default (can be found in src/test/TEST_sstruct and copied to src/test). We compute 10 smallest eigenpairs using 2 cores, random initial guess and SMG preconditioner:
 {{{
 
 srun -n2 sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10 
