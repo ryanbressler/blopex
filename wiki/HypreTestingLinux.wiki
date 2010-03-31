@@ -50,40 +50,38 @@ LOBPCG Solve:
 
 Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
 {{{
-$ mpirun -np 4 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
+srun -n4  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   7.00663900604047e-03
-Eigenvalue lambda   1.40078232353951e-02
-Eigenvalue lambda   1.40078232353976e-02
+Initial Max. Residual   2.43707798239336e+00
+Iteration 1 	bsize 20 	maxres   9.19578401303560e-01
+Iteration 2 	bsize 20 	maxres   1.05575154554308e-01
+Iteration 3 	bsize 20 	maxres   4.94189137866536e-02
 ........
-Eigenvalue lambda   3.96606622273073e-02
-Eigenvalue lambda   3.96606622274270e-02
-Eigenvalue lambda   3.96606622309705e-02
-Residual   3.82339245841408e-09
-Residual   3.16097555887773e-09
-Residual   3.87442820543904e-09
-........
-Residual   8.06351772888438e-09
-Residual   9.40532480087339e-09
-Residual   9.72355853713388e-09
+Iteration 39 	bsize 1 	maxres   2.32192704559918e-08
+Iteration 40 	bsize 1 	maxres   1.47105047511431e-08
+Iteration 41 	bsize 1 	maxres   8.97634657275717e-09
 
-43 iterations
+Eigenvalue lambda       Residual              
+  7.00663900604048e-03    3.82339243630002e-09
+  1.40078232353942e-02    4.64989432090594e-09
+  1.40078232353962e-02    4.36956251539866e-09
+........  
+  3.96606622168279e-02    8.01279743679407e-09
+  3.96606622272654e-02    7.83277321700525e-09
+  3.96606622273116e-02    8.39957241938649e-09
+
+41 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 175.810000 seconds
+  wall clock time = 76.540000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 175.810000 seconds
+  cpu clock time  = 76.540000 seconds
   cpu MFLOPS      = 0.000000
 
 
-
-
-
-
-
-$ mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
+mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
 ........
 Eigenvalue lambda   7.00663900604041e-03
 Eigenvalue lambda   1.40078232353957e-02
