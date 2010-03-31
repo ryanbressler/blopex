@@ -17,33 +17,35 @@ http://code.google.com/p/blopex/wiki/HypreInstallLinux
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and BoomerAMG (default) preconditioner. 
 {{{
-$ mpirun -np 2 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+$ srun -n2  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   7.00663900604048e-03
-Eigenvalue lambda   1.40078232353966e-02
-Eigenvalue lambda   1.40078232353974e-02
+Initial Max. Residual   2.43837832680517e+00
+Iteration 1 	bsize 20 	maxres   9.27760154340509e-01
+Iteration 2 	bsize 20 	maxres   9.95859757156789e-02
+Iteration 3 	bsize 20 	maxres   5.35809124539832e-02
 ........
-Eigenvalue lambda   3.96606622240182e-02
-Eigenvalue lambda   3.96606622268822e-02
-Eigenvalue lambda   3.96606622275167e-02
-Residual   3.11322657629586e-09
-Residual   2.15473103267669e-09
-Residual   2.52511985320079e-09
-........
-Residual   9.76997940917496e-09
-Residual   7.18751263543368e-09
-Residual   7.84529136335655e-09
+Iteration 32 	bsize 3 	maxres   1.63915213644935e-08
+Iteration 33 	bsize 2 	maxres   1.00061006177016e-08
+Iteration 34 	bsize 1 	maxres   9.79423242872933e-09
 
-35 iterations
+Eigenvalue lambda       Residual              
+  7.00663900604040e-03    3.11322750992554e-09
+  1.40078232353962e-02    2.18555493423167e-09
+  1.40078232353966e-02    1.56740554270983e-09
+........
+  3.96606622255917e-02    9.79423242872933e-09
+  3.96606622273213e-02    7.52027698802309e-09
+  3.96606622335298e-02    7.01148270739451e-09
+
+34 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 334.070000 seconds
+  wall clock time = 157.880000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 333.760000 seconds
+  cpu clock time  = 157.840000 seconds
   cpu MFLOPS      = 0.000000
-}}}
 
 Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
 {{{
@@ -73,6 +75,11 @@ LOBPCG Solve:
   wall MFLOPS     = 0.000000
   cpu clock time  = 175.810000 seconds
   cpu MFLOPS      = 0.000000
+
+
+
+
+
 
 
 $ mpirun -np 8 ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1	
