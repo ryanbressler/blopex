@@ -46,6 +46,7 @@ LOBPCG Solve:
   wall MFLOPS     = 0.000000
   cpu clock time  = 157.840000 seconds
   cpu MFLOPS      = 0.000000
+}}}
 
 Below are the similar runs and corresponding timings on 4, 8 and 12 cores:
 {{{
