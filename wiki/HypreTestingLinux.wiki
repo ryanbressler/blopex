@@ -212,22 +212,37 @@ PCG Solve:
   cpu clock time  = 429.010000 seconds
   cpu MFLOPS      = 0.000000
 
-$ mpirun -np 8 ./struct -lobpcg -P 8 1 1 -n 8 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
+srun -n8 struct -lobpcg -P 8 1 1 -n 8 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1 
 ........
-Eigenvalue lambda   7.00663900604125e-03
-Eigenvalue lambda   1.40078232353979e-02
-Eigenvalue lambda   1.40078232354031e-02
+Initial Max. Residual   2.44408933274620e+00
+Iteration 1 	bsize 20 	maxres   1.14006356546377e+00
+Iteration 2 	bsize 20 	maxres   1.49131321672789e-01
+Iteration 3 	bsize 20 	maxres   1.32045118727645e-01
 ........
-Eigenvalue lambda   3.96606622279464e-02
-Eigenvalue lambda   3.96606622282876e-02
-Eigenvalue lambda   3.96606622288330e-02
-Residual   9.75486455152180e-08
-Residual   2.70336730473921e-07
-Residual   4.31824092087032e-07
-........
-Residual   9.50887547266384e-07
-Residual   8.41228947639852e-07
-Residual   7.30405123841645e-07
+Iteration 26 	bsize 1 	maxres   1.82839821558345e-06
+Iteration 27 	bsize 1 	maxres   1.24712146542881e-06
+Iteration 28 	bsize 1 	maxres   9.50723501978925e-07
+
+Eigenvalue lambda       Residual              
+  7.00663900604126e-03    9.75486466223631e-08
+  1.40078232353970e-02    2.70584840420372e-07
+  1.40078232354029e-02    4.31678613414848e-07
+........ 
+  3.96606622279406e-02    9.50723501978925e-07
+  3.96606622282889e-02    8.40847685491894e-07
+  3.96606622288377e-02    7.28101790402948e-07
+
+28 iterations
+=============================================
+Solve phase times:
+=============================================
+PCG Solve:
+  wall clock time = 65.620000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 65.620000 seconds
+  cpu MFLOPS      = 0.000000
+
+Done
 }}} 
 
 In all the tests the desired tolerance for residual norms (1e-6) was achieved at each eigenpair.
