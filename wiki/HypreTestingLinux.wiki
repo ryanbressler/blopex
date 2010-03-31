@@ -239,60 +239,69 @@ Note: dimensions _-n nx ny nz_ in the driver's parameter list, are assumed to be
 To test Hypre's SStruct interface we use the default input file sstuct.in.default (can be found in src/test/TEST_sstruct and
 copied to src/test). We compute 10 smallest eigenpairs using 2 cores, random initial guess and SMG preconditioner:
 {{{
-$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10
+
+srun -n2 sstruct -P 1 1 2 -lobpcg -solver 10 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10 
 ........
-Eigenvalue lambda   1.34880848246863e+00
-Eigenvalue lambda   1.36560847743438e+00
-Eigenvalue lambda   1.47908699641544e+00
+Initial Max. Residual   3.66746834197939e+00
+Iteration 1 	bsize 10 	maxres   3.95931766889061e+00
+Iteration 2 	bsize 10 	maxres   2.52086174796120e+00
+Iteration 3 	bsize 10 	maxres   1.82502104263550e+00
 ........
-Eigenvalue lambda   1.81237285972004e+00
-Eigenvalue lambda   1.82920488646823e+00
-Eigenvalue lambda   1.84668108359500e+00
-Residual   8.63315860537788e-07
-Residual   7.12441393056327e-07
-Residual   8.01558894158301e-07
-........
-Residual   9.25493675135675e-07
-Residual   8.43603987608139e-07
-Residual   1.01253511015489e-06
+Iteration 98 	bsize 1 	maxres   1.36386601977662e-06
+Iteration 99 	bsize 1 	maxres   1.12325862360037e-06
+Iteration 100 	bsize 1 	maxres   1.01253561108829e-06
+
+Eigenvalue lambda       Residual              
+  1.34880848246844e+00    8.63315792564494e-07
+  1.36560847743383e+00    7.12441389392736e-07
+  1.47908699641188e+00    8.01558782275141e-07
+........  
+  1.81237285967070e+00    9.25492569443323e-07
+  1.82920488646799e+00    8.43603474141757e-07
+  1.84668108358999e+00    1.01253561108829e-06
 
 100 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 22.330000 seconds
+  wall clock time = 18.640000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 22.340000 seconds
+  cpu clock time  = 18.630000 seconds
   cpu MFLOPS      = 0.000000
 }}}
+
 Compute 10 smallest eigenpairs using 2 cores, random initial guess and PFMG preconditioner:
 {{{
-$ mpirun -np 2 ./sstruct -P 1 1 2 -lobpcg -solver 11 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10
+
+srun -n2 sstruct -P 1 1 2 -lobpcg -solver 11 -tol 1.e-6 -pcgitr 0 -seed 1 -vrand 10 
 ........
-Eigenvalue lambda   1.34880848246839e+00
-Eigenvalue lambda   1.36560847743322e+00
-Eigenvalue lambda   1.47908699640858e+00
+Initial Max. Residual   3.66746834197939e+00
+Iteration 1 	bsize 10 	maxres   4.01329957316064e+00
+Iteration 2 	bsize 10 	maxres   2.71181526959483e+00
+Iteration 3 	bsize 10 	maxres   1.80491843909126e+00
 ........
-Eigenvalue lambda   1.81237285962400e+00
-Eigenvalue lambda   1.82920488646689e+00
-Eigenvalue lambda   1.84668108358911e+00
-Residual   7.70861397184120e-07
-Residual   7.60135735509432e-07
-Residual   9.62472434545365e-07
-........
-Residual   9.97971662032563e-07
-Residual   9.98086843726105e-07
-Residual   2.13094634006495e-06
+Iteration 98 	bsize 1 	maxres   2.43721630804724e-06
+Iteration 99 	bsize 1 	maxres   2.26280601667150e-06
+Iteration 100 	bsize 1 	maxres   2.13094586186140e-06
+
+Eigenvalue lambda       Residual              
+  1.34880848246839e+00    7.70861393247927e-07
+  1.36560847743322e+00    7.60135734276439e-07
+  1.47908699641186e+00    9.62472424047735e-07
+........ 
+  1.81237285961860e+00    9.97971810445109e-07
+  1.82920488646791e+00    9.98086964234622e-07
+  1.84668108359012e+00    2.13094586186140e-06
 
 100 iterations
 =============================================
 Solve phase times:
 =============================================
 LOBPCG Solve:
-  wall clock time = 5.300000 seconds
+  wall clock time = 5.190000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 5.300000 seconds
+  cpu clock time  = 5.190000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
