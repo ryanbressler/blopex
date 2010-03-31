@@ -149,31 +149,34 @@ In all the tests the desired tolerance for residual norms (1e-8) was achieved at
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess
 and SMG (default) preconditioner.
 {{{
-$ $ mpirun -np 2 ./struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
+srun -n2 struct -lobpcg -P 2 1 1 -n 32 64 64 -pcgitr 0 -tol 1.e-6 -vrand 20 -seed 1
 ........
-Eigenvalue lambda   7.00663900604137e-03
-Eigenvalue lambda   1.40078232354006e-02
-Eigenvalue lambda   1.40078232354045e-02
+Initial Max. Residual   2.44147768637573e+00
+Iteration 1 	bsize 20 	maxres   9.61366917411159e-01
+Iteration 2 	bsize 20 	maxres   1.16958182015928e-01
+Iteration 3 	bsize 20 	maxres   7.54703862046335e-02
 ........
-Eigenvalue lambda   3.96606622278755e-02
-Eigenvalue lambda   3.96606622283022e-02
-Eigenvalue lambda   3.96606622286556e-02
-Residual   7.56594294724381e-08
-Residual   3.77279806460283e-07
-Residual   7.15222192077976e-07
-........
-Residual   6.76919987150030e-07
-Residual   6.36262557074980e-07
-Residual   6.80569313188676e-07
+Iteration 36 	bsize 1 	maxres   1.26361673376445e-06
+Iteration 37 	bsize 1 	maxres   1.01621060896889e-06
+Iteration 38 	bsize 1 	maxres   9.77612585752585e-07
+
+Eigenvalue lambda       Residual              
+  7.00663900604137e-03    7.56594294724381e-08
+  1.40078232354006e-02    3.77279806460283e-07
+  1.40078232354045e-02    7.15222192077976e-07
+........ 
+  3.96606622278755e-02    6.76919987150030e-07
+  3.96606622283022e-02    6.36262557074980e-07
+  3.96606622286556e-02    6.80569313188676e-07
 
 38 iterations
 =============================================
 Solve phase times:
 =============================================
 PCG Solve:
-  wall clock time = 452.640000 seconds
+  wall clock time = 210.590000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 452.400000 seconds
+  cpu clock time  = 210.560000 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
