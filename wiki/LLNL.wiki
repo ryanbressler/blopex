@@ -48,7 +48,7 @@ cd hypre-2.6.0b/src
 tar xzvf .../hypre_lobpcg_modifications.tar.gz
 }}}
 
-Testing is done using two different math libraries: 1) the standard ATLAS (Automatically Tuned Linear Algebra Software) Math Libary, 2) the ACML - AMD Core Math Library. See
+Testing is done using two different math libraries: 1) the standard BLAS/LAPACK libraries provided with hypre, 2) the ACML - AMD Core Math Library. See
 https://computing.llnl.gov/tutorials/linux_clusters/#Software.
 
 Create two directory structures: hypre-2.6.0b-stdlib and hypre-2.6.0b-amdlib.
