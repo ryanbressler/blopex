@@ -355,7 +355,7 @@ srun -n64  ij  -n 400 400 400  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4
 successful 
 }}}
 
-Test on LLNL ATLAS system. Execution tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
+Test on LLNL ATLAS system. Execute tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
 {{{
 srun -n64  ij -lobpcg -n 400 400 400 -pcgitr 0 -vrand 20 -seed 1  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4
 ........
@@ -394,7 +394,7 @@ LOBPCG Solve:
 }}}
 
 = Hypre Testing on Larger Problems (AMD BLAS/LAPACK libraries) =
-Test on LLNL ATLAS system. Execution tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
+Test on LLNL ATLAS system. Execute tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
 {{{
 srun -n64  ij -lobpcg -n 400 400 400 -pcgitr 0 -vrand 20 -seed 1  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4
 ........
@@ -408,7 +408,29 @@ Iteration 1     bsize 20        maxres   8.10036373965024e-01
 Iteration 2     bsize 20        maxres   2.74010627338399e-02
 Iteration 3     bsize 20        maxres   2.38522241565166e-02
 ........
+Iteration 98    bsize 3         maxres   1.76268238384281e-06
+Iteration 99    bsize 3         maxres   1.52652960627237e-06
+Iteration 100   bsize 3         maxres   1.42073159770084e-06
+........
+Eigenvalue lambda       Residual
+  1.84132323721136e-04    7.88363056635417e-09
+  3.68260879905147e-04    8.50482771093186e-09
+  3.68260879923057e-04    6.97386968653446e-09
+........
+  1.04338636289971e-03    4.71260888702569e-08
+  1.04338636337951e-03    4.16761054854837e-07
+  1.04338637175944e-03    1.42073159770084e-06
 
+100 iterations  
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:   
+  wall clock time = 4109.830000 seconds  
+  wall MFLOPS     = 0.000000    
+  cpu clock time  = 4108.830000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+There was no significant performance difference between the standard BLAS/LAPACK libraries provided with hypre and the AMD BLAS/LAPACK libraries available on the LLNL ATLAS system.
 
-
-}}} 
+ 
