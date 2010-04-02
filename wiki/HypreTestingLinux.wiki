@@ -349,9 +349,9 @@ srun -n64  ij -n 400 400 400 -P 4 4 4
 crashed
 4)
 srun -n64  ij  -n 400 400 400 -hmis -agg_nl 1 -interptype 6 -Pmx 4 successful
+successful 
 5)
 srun -n64  ij  -n 400 400 400  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4 successful
+successful 
 }}}
-
-
 
