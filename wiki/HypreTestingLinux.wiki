@@ -334,3 +334,24 @@ LOBPCG Solve:
 }}}
 
 For both cases the desired tolerance (1e-6) for residual norms was achieved at each eigenpair.
+
+= Hypre Testing on Larger Problems =
+The following jobs were run on 64 processors to see if we could increase the size of the problem. Runs #2 and #3 crashed (running out of memory). #4 with AMG tuning parameters from LLNL ran ok and #5 using both of the LLNL recommendations ran ok.
+{{{
+1)
+srun -n64  ij -n 200 200 200 -P 4 4 4
+successful 
+2)
+srun -n64  ij -n 250 250 250 -P 4 4 4
+crashed
+3)
+srun -n64  ij -n 400 400 400 -P 4 4 4
+crashed
+4)
+srun -n64  ij  -n 400 400 400 -hmis -agg_nl 1 -interptype 6 -Pmx 4 successful
+5)
+srun -n64  ij  -n 400 400 400  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4 successful
+}}}
+
+
+
