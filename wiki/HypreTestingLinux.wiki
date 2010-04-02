@@ -335,8 +335,8 @@ LOBPCG Solve:
 
 For both cases the desired tolerance (1e-6) for residual norms was achieved at each eigenpair.
 
-= Hypre Testing on Larger Problems (BLAS/LAPACK libraries provided with hypre) =
-The following jobs were run on 64 processors to see if we could increase the size of the problem. Runs #2 and #3 crashed (running out of memory). #4 with AMG tuning parameters from LLNL ran ok and #5 using both of the LLNL recommendations ran ok.
+= Hypre Testing on Larger Problems =
+These jobs were run on LLNL using the standard BLAS/LAPACK libraries provided with hypre. The following jobs were run on 64 processors to see if we could increase the size of the problem. Runs #2 and #3 crashed (running out of memory). #4 with AMG tuning parameters from LLNL ran ok and #5 using both of the LLNL recommendations ran ok.
 {{{
 1)
 srun -n64  ij -n 200 200 200 -P 4 4 4
@@ -393,5 +393,22 @@ LOBPCG Solve:
   cpu MFLOPS      = 0.000000
 }}}
 
+= Hypre Testing on Larger Problems (AMD BLAS/LAPACK libraries) =
+Test on LLNL ATLAS system. Execution tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
+{{{
+srun -n64  ij -lobpcg -n 400 400 400 -pcgitr 0 -vrand 20 -seed 1  -P 4 4 4 -hmis -agg_nl 1 -interptype 6 -Pmx 4
+........
+  Laplacian:
+    (nx, ny, nz) = (400, 400, 400)
+    (Px, Py, Pz) = (4, 4, 4)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+........
+Initial Max. Residual   2.44739676813973e+00
+Iteration 1     bsize 20        maxres   8.10036373965024e-01
+Iteration 2     bsize 20        maxres   2.74010627338399e-02
+Iteration 3     bsize 20        maxres   2.38522241565166e-02
+........
 
 
+
+}}} 
