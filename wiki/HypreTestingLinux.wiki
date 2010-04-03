@@ -393,6 +393,44 @@ LOBPCG Solve:
   cpu MFLOPS      = 0.000000
 }}}
 
+Test on LLNL ATLAS system. Execute tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 500x500x500 Laplacian. Use 64 nodes and 512 processors, random guess and BoomerAMG (default) preconditioner. 
+{{{
+srun -n512  ij -lobpcg -n 500 500 500 -pcgitr 0 -vrand 20 -seed 1  -P 8 8 8 -hmis -agg_nl 1 -interptype 6 -Pmx 4
+........
+  Laplacian:
+    (nx, ny, nz) = (500, 500, 500)
+    (Px, Py, Pz) = (8, 8, 8)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+........
+Initial Max. Residual   2.44762003452109e+00
+Iteration 1     bsize 20        maxres   7.78059751283823e-01
+Iteration 2     bsize 20        maxres   2.24893106059477e-02
+Iteration 3     bsize 20        maxres   1.80924248589866e-02
+........
+Iteration 98    bsize 3         maxres   1.88845907948380e-06
+Iteration 99    bsize 3         maxres   1.70505327519112e-06
+Iteration 100   bsize 3         maxres   1.69226446409738e-06
+........
+Eigenvalue lambda       Residual
+  1.17962542906779e-04    9.12159288714868e-09
+  2.35923539283847e-04    9.26846395155813e-09
+  2.35923539299908e-04    6.48999956327757e-09
+........
+  6.68442040292635e-04    4.06660781310217e-07
+  6.68442041063227e-04    6.45320260847077e-07
+  6.68442052000848e-04    1.69226446409738e-06
+
+100 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 1166.910000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 1166.760000 seconds
+  cpu MFLOPS      = 0.000000
+}}}
+
 = Hypre Testing on Larger Problems (AMD BLAS/LAPACK libraries) =
 Test on LLNL ATLAS system. Execute tests for Hypre's IJ interface. Find 20 smallest eigenpairs of 3-D 7-point 400x400x400 Laplacian. Use 8 nodes and 64 processors, random guess and BoomerAMG (default) preconditioner. 
 {{{
