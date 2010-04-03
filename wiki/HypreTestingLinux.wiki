@@ -29,7 +29,7 @@ date
 srun -n2  ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 echo 'Done'
 }}}
-Line #2 and/or #11 are changed for each run.
+Lines #2, #3 and #11 are changed for each run.
 
 = Execution of Tests for Hypre's IJ interface =
 Find 20 smallest eigenpairs of 3-D 7-point 64x64x64 Laplacian. Use 2 cores, random guess and BoomerAMG (default) preconditioner. 
