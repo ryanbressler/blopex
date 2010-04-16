@@ -1,0 +1,168 @@
+#summary BLOPEX Double Petsc testing on Windows XP
+<wiki:toc max_depth="1" />
+
+= Introduction =
+
+How to test BLOPEX Double under Petsc-3.0.0 on Windows XP
+
+= Setup Petsc =  
+
+To use blopex_solve_double using the  Petsc first download the development version from 
+the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
+In particular, if you install in windows, see http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows. One can download Cygwin from http://cygwin.com/.
+
+I download Petsc-3.0.0 in L:/pei/petsc. To install files issue command:
+{{{
+>> cd  /cygdrive/l/pei/petsc_1
+>> gunzip -c petsc-3.0.0.tar.gz | tar -xof - 
+}}}
+This creates files in directory petsc-3.0.0 
+
+Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory such as /cygdrive/l/pei/petsc_1, install as follows:
+{{{
+>> cp blopex_petsc_interface.tar.gz  petsc-3.0.0/src/contrib/blopex/
+>> cd petsc-3.0.0/src/contrib/blopex
+>> tar -xvf blopex_petsc_interface.tar.gz
+}}}
+
+Configure Petsc as follows:
+{{{
+>> ./config/configure.py  --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_1/blopex_abstract_Mar_2010.tar.gz
+}}}
+
+Now two environment variables must be setup:
+{{{
+>> PETSC_DIR=/cygdrive/l/pei/petsc/petsc-3.0.0
+>> export PETSC_DIR
+>> PETSC_ARCH=cygwin-c-debug
+>> export PETSC_ARCH
+}}}
+
+After configuration is finished issue the command
+{{{
+>> make all 
+>> make test
+}}}
+
+= Setup blopex_petsc =  
+ 
+Now create executables for the blopex drivers 
+{{{
+>> cd petsc-3.0.0/src/contrib/blopex/driver
+>> make driver
+>> cd ../driver_fiedler
+>> make driver_fiedler
+}}}
+
+= Execution of Tests =
+
+There are two test drivers located in subdirectories of blopex_petsc:
+driver an driver_fiedler.  The executables for these are in directories
+petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
+
+driver builds a 7pt laplacian for solution and calls  lobpcg_solve_double, since Petsc is configured for double. 
+
+For example:
+{{{
+>> ./driver -n_eigs 3 -itr 20 >testdriver.doc
+}}}
+Save the output result in file testdriver.doc.
+{{{
+Partitioning: 1 1 1
+Preconditioner setup, seconds: 0.000608
+Initial Max. Residual   2.39094944828294e+00
+Iteration 1 	bsize 3 	maxres   1.40974603809037e+00
+Iteration 2 	bsize 3 	maxres   5.26363753650121e-01
+Iteration 3 	bsize 3 	maxres   3.14290197742993e-01
+Iteration 4 	bsize 3 	maxres   9.41239727607964e-02
+Iteration 5 	bsize 3 	maxres   2.71535492759968e-02
+Iteration 6 	bsize 3 	maxres   8.39578753798627e-03
+Iteration 7 	bsize 3 	maxres   1.62604485844861e-03
+Iteration 8 	bsize 3 	maxres   3.45269637060868e-04
+Iteration 9 	bsize 3 	maxres   5.01544721670845e-05
+Iteration 10 	bsize 3 	maxres   1.99447231907575e-05
+Iteration 11 	bsize 3 	maxres   5.53987092566509e-06
+Iteration 12 	bsize 2 	maxres   1.57440393034012e-06
+Iteration 13 	bsize 2 	maxres   2.71131468175827e-07
+Iteration 14 	bsize 2 	maxres   5.63114795119421e-08
+Iteration 15 	bsize 2 	maxres   1.99080884910654e-08
+Iteration 16 	bsize 1 	maxres   6.42500126660348e-09
+
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    2.06075491123769e-09
+  4.79521039879650e-01    4.46203426266394e-09
+  4.79521039879652e-01    6.42500126660348e-09
+
+16 iterations
+Solution process, seconds: 1.923329e-01
+}}}
+
+We first run driver_fiedler for the matrix provided in _L-matrix-double.petsc_.
+For example:
+{{{
+>> ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 3 -itr 20 >test1.doc
+}}}
+Save the output result in file test1.doc.
+
+{{{
+Preconditioner setup, seconds: 0.076990
+Initial Max. Residual   1.45518043157658e+00
+Iteration 1 	bsize 3 	maxres   8.15822827240446e-04
+Iteration 2 	bsize 3 	maxres   2.40127078204264e-04
+Iteration 3 	bsize 3 	maxres   1.12407387047927e-04
+Iteration 4 	bsize 3 	maxres   5.36919960040654e-05
+Iteration 5 	bsize 3 	maxres   3.22166378786430e-05
+Iteration 6 	bsize 2 	maxres   1.37404514278325e-05
+Iteration 7 	bsize 2 	maxres   5.79978572390536e-06
+Iteration 8 	bsize 1 	maxres   1.48717028588284e-06
+Iteration 9 	bsize 1 	maxres   3.55034347259269e-07
+Iteration 10 	bsize 1 	maxres   1.39867893025934e-07
+Iteration 11 	bsize 1 	maxres   7.41945605627964e-08
+Iteration 12 	bsize 1 	maxres   3.88668439209947e-08
+Iteration 13 	bsize 1 	maxres   1.28881289961934e-08
+Iteration 14 	bsize 1 	maxres   4.05536869263948e-09
+
+Eigenvalue lambda       Residual              
+  3.24057229834819e-06    1.13454736714304e-09
+  9.46022689452516e-06    2.28965192080072e-09
+  2.01380536840438e-05    4.05536869263948e-09
+
+14 iterations
+Solution process, seconds: 3.506331e+02
+Final eigenvalues:
+3.240572e-06
+9.460227e-06
+2.013805e-05
+}}}
+
+Now we run similar tests for the matrix provided in _DL-matrix-double.petsc_.
+{{{
+$./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3  -itr 20 >test2.doc
+}}}
+Save the output result in file test2.doc.
+
+{{{
+Initial Max. Residual   9.31442380281522e-01
+Iteration 1 	bsize 3 	maxres   1.04209119599699e-02
+Iteration 2 	bsize 3 	maxres   5.69432261384482e-03
+Iteration 3 	bsize 3 	maxres   1.08259655175457e-03
+..........
+Iteration 17 	bsize 3 	maxres   5.32624741487571e-05
+Iteration 18 	bsize 3 	maxres   5.26499262381087e-05
+Iteration 19 	bsize 3 	maxres   4.48712832976272e-05
+Iteration 20 	bsize 3 	maxres   4.82871050489235e-05
+
+Eigenvalue lambda       Residual              
+  4.02544378183548e-05    6.39412824459574e-06
+  4.03050265221568e-05    2.16914554179753e-05
+  4.06041171449838e-05    4.82871050489235e-05
+
+20 iterations
+Solution process, seconds: 3.137963e+00
+Final eigenvalues:
+4.025444e-05
+4.030503e-05
+4.060412e-05
+}}}
