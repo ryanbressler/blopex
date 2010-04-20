@@ -11,7 +11,7 @@ To use blopex_solve_double using the  Petsc first download the development versi
 the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
 In particular, if you install in windows, see http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows. One can download Cygwin from http://cygwin.com/.
 
-I download Petsc-3.0.0 in L:/pei/petsc. To install files issue command:
+I download Petsc-3.0.0 in L:/pei/petsc_1. To install files issue command:
 {{{
 >> cd  /cygdrive/l/pei/petsc_1
 >> gunzip -c petsc-3.0.0.tar.gz | tar -xof - 
