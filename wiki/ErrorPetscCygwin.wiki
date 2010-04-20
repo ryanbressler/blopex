@@ -1,0 +1,82 @@
+#summary Errors with BLOPEX Complex PETSc testing on Cygwin
+<wiki:toc max_depth="2" />
+
+= Introduction =
+
+Getting some errors of the test of  BLOPEX Complex under Petsc-3.0.0 on Cygwin 
+
+= Setup Petsc =  
+
+To use blopex_solve_complex using the  Petsc first download the development version from the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
+In particular, if you install in windows, see http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows. One can download Cygwin from http://cygwin.com/.
+
+I download Petsc-3.0.0 in L:/pei/petsc_complex. To install files issue command:
+{{{
+>> cd  /cygdrive/l/pei/petsc_complex
+>> gunzip -c petsc-3.0.0.tar.gz | tar -xof - 
+}}}
+This creates files in directory petsc-3.0.0 
+
+Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory such as /cygdrive/l/pei/petsc_1, install as follows:
+{{{
+>> cp blopex_petsc_interface.tar.gz  petsc-3.0.0/src/contrib/blopex/
+>> cd petsc-3.0.0/src/contrib/blopex
+>> tar -xvf blopex_petsc_interface.tar.gz
+}}}
+
+Configuration in Petsc is controlled via python scripts. The script petsc-3.0.0/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15)
+`self.complex    = 0`.
+
+This specifies that the blopex interface is not defined for Petsc scalar type complex.
+Edit blopex.py and change this to `self.complex    = 1`.
+
+Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
+Configure Petsc as follows:
+{{{
+>> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_complex/blopex_abstract_Mar_2010.tar.gz --with-scalar-type=complex --with-clauguage=cxx
+}}}
+
+Now two environment variables must be setup:
+{{{
+>> PETSC_DIR=/cygdrive/l/pei/petsc_complex/petsc-3.0.0
+>> export PETSC_DIR
+>> PETSC_ARCH=cygwin-cxx-debug
+>> export PETSC_ARCH
+}}}
+
+After configuration is finished issue the command
+{{{
+>> make all 
+>> make test
+}}}
+
+= Errors with blopex_petsc =  
+ 
+Now create executables for the blopex driver 
+{{{
+>> cd petsc-3.0.0/src/contrib/blopex/driver
+>> make driver
+}}}
+Errors as following:
+{{{
+driver.c : In function  ‘void precond_Fnsinglevector <void*, void *, void*>’:
+driver.c : 92: error: invalid conversion from ‘void*’ to _p_Vec*’
+driver.c : 92: error: initializing argument 2 of ‘ PetscErrorCode KSPSolve<_p_KSP*,_p_Vec*,_P_Vec*>’
+}}}
+Now create executables for the blopex driver_fiedler 
+{{{
+>> cd petsc-3.0.0/src/contrib/blopex/driver_fiedler
+>> make driver_fiedler
+}}}
+Errors as following:
+{{{
+driver_fiedler.c: 203 :under reference to ‘KSPCreate <int, _p_KSP**>’
+driver_fiedler.c: 209: under reference to ‘KSPSetoperators < _p_KSP**,_p_Mat* _p_Mat*,Matstructure>’
+driver_fiedler.c: 218: under reference to ‘KSPSetFrom option < _p_KSP*>’
+driver_fiedler.c: 221 :under reference to ‘KSPSetup < _p_KSP*>’
+driver_fiedler.c: 241: under reference to ‘LOBPCG _intiRandomContext<>’
+driver_fiedler.c: In function _Z22precond_FnSingleVectorPvS_S_’
+driver_fiedler.c:51 :under reference to KSPSolve <_p_KSP*,_p_Vec*,_p_Vec*>’
+}}}
