@@ -34,7 +34,7 @@ Configure Petsc as follows:
 
 Now two environment variables must be setup:
 {{{
->> PETSC_DIR=/cygdrive/l/pei/petsc/petsc-3.0.0
+>> PETSC_DIR=/cygdrive/l/pei/petsc_1/petsc-3.0.0
 >> export PETSC_DIR
 >> PETSC_ARCH=cygwin-c-debug
 >> export PETSC_ARCH
