@@ -39,15 +39,16 @@ Edit blopex.py and change this to `self.complex    = 1`.
 
 Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
 
+An additional change to blopex.py is needed to support 64bit integers.  After the `self.complex = 1` line; add the following line `self.requires32bitint = 0`.  Which means that blopex is coded to support 64bit integers.
 
 
 Configure Petsc as follows:
 {{{
->> ./config/configure.py --with-shared --with-scalar-type=complex --with-debugging=1 --download-blopex=../blopex_abstract_Mar_2010.tar.gz
+>> ./config/configure.py --with-shared --with-debugging=1 --download-blopex=../blopex_petsc_abstract.tar.gz --with-64-bit-indices
 }}}
 
 Petsc runs with either double or complex objects but not both.  
-To test the blopex routines for double configure Petsc without the 
+To test the blopex routines for complex configure Petsc with the 
 option --with-scalar-type=complex. 
 
 Now two environment variables must be setup:
@@ -81,24 +82,30 @@ Now create executables for the blopex drivers
 
 = Execution of Tests =
 
+When Petsc is configured for 64bit integers it expects that
+
 There are two test drivers located in subdirectories of blopex_petsc:
-driver an driver_fiedler.  The executables for these are in directories
+driver and driver_fiedler.  The executables for these are in directories
 petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
 
 driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
 if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for double. 
 
-For example:
+Both Blopex abstract and interface code uses the PetscInt type to determine how to define integers.  So, the Blopex interger type should always match what is in Petsc. 
+
+
+To execute driver:
 {{{
 >> mpirun -np 2 ./driver -n_eigs 3 -itr 20 
 or 
 >> ./driver -n_eigs 3 -itr 20
 }}}
-driver_fiedler accepts as input matrices in Petsc format. 
+
+driver_fiedler accepts as input matrices in Petsc format.  These matrices must be setup for either 32bit or 64bit arithematic.  The test matrices are setup for double (real) or complex and for 32bit or 64bit.  The 64bit version have a file name containing `_64`. 
 
 For example:
 {{{
->> ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -itr 20
+>> ./driver_fiedler -matrix DL-matrix-double_64.petsc -n_eigs 3 -itr 20
 }}}
 The option -matrix specifies the matrix to solve.  
 The initial eigenvectors are generated randomly. 
@@ -108,14 +115,14 @@ These can be setup via some Matlab programs in the PETSc socket interface to Mat
 `PetscBinaryRead.m` and `PetscBinaryWrite.m`.  
 These programs read and write Matlab matrices and vectors to files formated for Petsc. 
 The version from Petsc only supports double.   
-We have modified these programs to  also support complex.  
+We have modified these programs to  also support complex and 64bit integers.  
 The complex versions are included in the .../blopex_petsc directory along with 
 `PetscWriteReadExample.m` to illustrate how to use them. 
 
-The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
-and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
+The *complex files* are L-matrix-complex_64.petsc (65536x65536 diagonal values 0-4)
+and DL-matrix-complex_64.petsc (65536x65536 tridiagonal values 0-4).  
 
 The *complex files* are complex versions of the L and DL double matrices (with imag part zero) 
-plus test_complex1.petsc (40x40 134 nz hpd random),
-test_complex2.petsc (1000x1000 50786 nz hpd random) and 
-test_complex3 (10876 nz hpd random). 
+plus test_complex1_64.petsc (40x40 134 nz hpd random),
+test_complex2_64.petsc (1000x1000 50786 nz hpd random) and 
+test_complex3_64 (10876 nz hpd random). 
