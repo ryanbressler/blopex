@@ -1,13 +1,115 @@
-#summary One-sentence summary of this page.
+#summary BLOPEX Complex Petsc testing on Linux
+<wiki:toc max_depth="1" />
 
 = Introduction =
 
-Add your content here.
+How to test BLOPEX under Beta version of Petsc on Linux
 
+= Setup Petsc =  
 
-= Details =
+To use blopex_solve_double or blopex_solve_complex using the 
+Beta release of Petsc first download the development version from 
+the Petsc website at ftp://info.mcs.anl.gov/pub/petsc-dev.tar.gz .
+ 
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+To install files issue command:
+{{{
+>> gunzip -c petsc-dev.tar.gz | tar -xof -
+}}}
+This creates files in directory petsc-dev.  
+
+Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory, install as follows:
+{{{
+>> cp blopex_petsc_interface.tar.gz petsc-dev/src/contrib/blopex/
+>> cd petsc-dev/src/contrib/blopex
+>> tar -zxvg blopex_petsc_interface.tar.gz
+}}}
+
+Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15)
+`self.complex    = 0`.
+
+This specifies that the blopex interface is not defined for Petsc scalar type complex.
+Edit blopex.py and change this to `self.complex    = 1`.
+
+Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
+
+Configure Petsc as follows:
+{{{
+>> ./config/configure.py --with-shared --with-scalar-type=complex --with-debugging=1 --download-blopex=../blopex_abstract_Mar_2010.tar.gz
+}}}
+
+Petsc runs with either double or complex objects but not both.  
+To test the blopex routines for double configure Petsc without the 
+option --with-scalar-type=complex. 
+
+Now two environment variables must be setup:
+{{{
+>> PETSC_DIR=/home/grads/dmccuan/petsc-dev
+>> export PETSC_DIR
+>> PETSC_ARCH=linux-gnu-c-debug
+>> export PETSC_ARCH
+}}}
+We will also need these set when compiling the blopex_petsc interface.   
+To avoid setting everytime you logon you can put them in your .bashrc 
+file as follows:
+{{{
+export PETSC_DIR=/home/grads/dmccuan/petsc-dev
+export PETSC_ARCH=linux-gnu-c-debug
+}}}
+
+After configuration is finished issue the command
+{{{
+>> make all test
+}}}
+= Setup blopex_petsc =  
+ 
+Now create executables for the blopex drivers 
+{{{
+>> cd petsc-dev/src/contrib/blopex/driver
+>> make driver
+>> cd ../driver_fiedler
+>> make driver_fiedler
+}}}
+
+= Execution of Tests =
+
+There are two test drivers located in subdirectories of blopex_petsc:
+driver an driver_fiedler.  The executables for these are in directories
+petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
+
+driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
+if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for double. 
+
+For example:
+{{{
+>> mpirun -np 2 ./driver -n_eigs 3 -itr 20 
+or 
+>> ./driver -n_eigs 3 -itr 20
+}}}
+driver_fiedler accepts as input matrices in Petsc format. 
+
+For example:
+{{{
+>> ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -itr 20
+}}}
+The option -matrix specifies the matrix to solve.  
+The initial eigenvectors are generated randomly. 
+
+The matrix file is in a Petsc format.  
+These can be setup via some Matlab programs in the PETSc socket interface to Matlab; 
+`PetscBinaryRead.m` and `PetscBinaryWrite.m`.  
+These programs read and write Matlab matrices and vectors to files formated for Petsc. 
+The version from Petsc only supports double.   
+We have modified these programs to  also support complex.  
+The complex versions are included in the .../blopex_petsc directory along with 
+`PetscWriteReadExample.m` to illustrate how to use them. 
+
+The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
+and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
+
+The *complex files* are complex versions of the L and DL double matrices (with imag part zero) 
+plus test_complex1.petsc (40x40 134 nz hpd random),
+test_complex2.petsc (1000x1000 50786 nz hpd random) and 
+test_complex3 (10876 nz hpd random). 
