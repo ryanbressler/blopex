@@ -1,9 +1,13 @@
-#summary BLOPEX Complex Petsc testing on Linux
+#summary BLOPEX Petsc 64bit testing on Linux
 <wiki:toc max_depth="1" />
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Petsc on Linux
+How to test BLOPEX under Beta version of Petsc on Linux with Petsc configured for 64bit integers.
+
+Refer to wiki *CommentsOnPetscTesting* for a more technical discussion on how Blopex is setup in Petsc.  
+
+This wiki describes in detail a test with Petsc configured real numbers with side comments when this differs with complex number testing.
 
 = Setup Petsc =  
 
@@ -18,9 +22,9 @@ To install files issue command:
 }}}
 This creates files in directory petsc-dev.  
 
-Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
 
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory, install as follows:
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  Assuming you are in your home directory, install as follows:
 {{{
 >> cp blopex_petsc_interface.tar.gz petsc-dev/src/contrib/blopex/
 >> cd petsc-dev/src/contrib/blopex
@@ -34,6 +38,8 @@ This specifies that the blopex interface is not defined for Petsc scalar type co
 Edit blopex.py and change this to `self.complex    = 1`.
 
 Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
+
+
 
 Configure Petsc as follows:
 {{{
