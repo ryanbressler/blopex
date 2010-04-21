@@ -5,10 +5,10 @@ There are two components:  blopex_abstract and blopex_interface.
 The blopex_abstract is incorporated as an external package.  
 
 This can be specified during configuration with the option "--with-blopex=1" 
-in which case "blopex_abstract_Aug_2006.tar.gz" is ftped from the ftp.mcs.anl.gov site, see also http://ftp.mcs.anl.gov/pub/petsc/externalpackages/blopex_abstract_Aug_2006.tar.gz
+in which case "blopex_abstract_Aug_2006.tar.gz" is ftped from the ftp.mcs.anl.gov site, see also http://ftp.mcs.anl.gov/pub/petsc/externalpackages/blopex_petsc_abstract.tar.gz
 
 It can also be specified during configuration with the option "--download-blopex=/PATH/TO/package.tar.gz" if already downloaded and saved locally.
-For example: I have created a zipped tar file on my system with the blopex_abstract files and called it /home/grads/dmccuan/blopex_abstract_Mar_2010.tar.gz.  To use this I would specify the configuration option {{{--download-blopex=/home/grads/dmccuan/blopex_abstract_Mar_2010.tar.gz}}}
+For example: I have created a zipped tar file on my system with the blopex_abstract files and called it /home/grads/dmccuan/blopex_petsc_abstract.tar.gz.  To use this I would specify the configuration option {{{--download-blopex=/home/grads/dmccuan/blopex_petsc_abstract.tar.gz}}}
 
 In either case under the PETSC_DIR directory a subdirectory "externalpackages/blopex_abstract" will be created and the files from the tar installed there, compiled, and then the header files moved to $PETSC_DEV/$PETSC_ARCH subdirectory /include, the object files moved to /lib,  and the BLOPEX library created and moved to /lib/libBLOPEX.a. Note that on xvia $PETSC_ARCH=linux-gnu-c-debug.
 
@@ -22,7 +22,7 @@ Note that the drivers are not compiled in this step.  Now the driver can be comp
 
 The changes needed to incorporate a new release of BLOPEX into PETSC are defined in two tar files.
 
- # http://blopex.googlecode.com/files/blopex_abstract_Mar_2010.tar.gz
+ # http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz
  # http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
 
 To setup PETSC perform the following steps:
