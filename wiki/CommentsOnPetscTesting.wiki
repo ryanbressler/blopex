@@ -18,7 +18,7 @@ Now the blopex_petsc interface files with include the drivers and petsc-interfac
 
 After the petsc configuration step when you do a "make all test"; the petsc-interface.c gets compiled and the object saved in libpetscksp.a which is located in $PETSC_DEV/$PETSC_ARCH/lib.  
 
-Note that the drivers are not compiled in this step.  Now the driver can be compiled and linked by changing the drivers subdirectory and executing the make (for example: in src/contrib/blopex/driver execute "make driver").
+Note that the drivers are not compiled in this step.  Now the driver can be compiled and linked by changing to the drivers subdirectory and executing the make (for example: in src/contrib/blopex/driver execute "make driver").
 
 The changes needed to incorporate a new release of BLOPEX into PETSC are defined in two tar files.
 
@@ -29,9 +29,20 @@ To setup PETSC perform the following steps:
 
  # Extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  
  # Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15) "self.complex    = 0".  This specifies that the blopex interface is not defined for Petsc scalar type complex.  Edit blopex.py and change this to "self.complex    = 1". Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.  Warning: On some systems (Frost) the configuration will abort when you get this message, but on others (Linux) it doesn't and while you can continue with the make you will get bad results with the complex tests. 
- # Then configure PETSC using the "--download-blopex" option as described above with the blopex_abstract_Mar_2010.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
+ # Then configure PETSC using the "--download-blopex" option as described above with the blopex_petsc_abstract.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
 
-If you have done this before you know it takes a very long time to do the configure and "make all test".  Remember this compiles the petsc-interface.c.  If you are making changes to the interface or to the abstract code, this can become very tedious.  
+If you are going to test with Petsc configured for 64bit integers, you should be awared of the following:
+
+ # You use the option `--with-64-bit-indices` to configure Petsc.  The type PetscInt will be defined with the interger type your compiler needs for 64bit integers (usually `long long`).
+ # Petsc configuration won't allow you to do this with blopex unless blopex.py (see above) has the following line added after "self.complex =1"; "self.requires32bitint = 0". This tells the configurator that blopex is coded to use 64bit integers (or 32bit). 
+ # We want the Petsc abstract, interface, and driver code to be compiled with 64bit integers.  This is accomplished by having a special version of fortran_options.h which includes "petsc.h" (where PetscInt is defined) and forces our preprocessor variable BlopexInt equal to PetscInt.  This is the same approach that we have for HYPRE.  The Petsc version of fortran_options.h is in "blopex_petsc/utilities/".
+ # In driver_fiedler.c matrices are read in a Petsc Format.  These files can be created by matlab pgms (see m files in source directory blopex_petsc).  When created integers are written as either 32bit or 64bit.  This must match   
+
+
+
+
+
+If you have all of done this before you know it takes a very long time to do the configure and "make all test".  Remember this compiles the petsc-interface.c.  If you are making changes to the interface or to the abstract code, this can become very tedious.  
 
 <font color=blue>
 A different method of testing, described below, is primarily to help future developers. 
