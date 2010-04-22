@@ -18,7 +18,7 @@ To install files issue command:
 }}}
 This creates files in directory petsc-dev.  
 
-Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
 
 blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory, install as follows:
 {{{
@@ -37,7 +37,7 @@ Without this change configuration will give the error _"cannot use blopex with c
 
 Configure Petsc as follows:
 {{{
->> ./config/configure.py --with-shared --with-scalar-type=complex --with-debugging=1 --download-blopex=../blopex_abstract_Mar_2010.tar.gz
+>> ./config/configure.py --with-shared --with-scalar-type=complex --with-debugging=1 --download-blopex=../blopex_petsc_abstract.tar.gz
 }}}
 
 Petsc runs with either double or complex objects but not both.  
