@@ -5,9 +5,9 @@
 
 How to test BLOPEX under Beta version of Petsc on Linux with Petsc configured for 64bit integers.
 
-Refer to wiki *CommentsOnPetscTesting* for a more technical discussion on how Blopex is setup in Petsc.  
+In this wiki we describe in detail a test with Petsc configured real numbers with side comments when this differs with complex number testing.
 
-This wiki describes in detail a test with Petsc configured real numbers with side comments when this differs with complex number testing.
+Refer to wiki "CommentsOnPetscTesting" for a more technical discussion on how Blopex is setup in Petsc.  
 
 = Setup Petsc =  
 
@@ -58,7 +58,7 @@ Now two environment variables must be setup:
 >> PETSC_ARCH=linux-gnu-c-debug
 >> export PETSC_ARCH
 }}}
-We will also need these set when compiling the blopex_petsc interface.   
+We will also need these set when compiling the blopex_petsc interface and drivers.
 To avoid setting everytime you logon you can put them in your .bashrc 
 file as follows:
 {{{
@@ -82,16 +82,14 @@ Now create executables for the blopex drivers
 
 = Execution of Tests =
 
-When Petsc is configured for 64bit integers it expects that
-
 There are two test drivers located in subdirectories of blopex_petsc:
 driver and driver_fiedler.  The executables for these are in directories
 petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
 
 driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
-if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for double. 
+if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double). 
 
-Both Blopex abstract and interface code uses the PetscInt type to determine how to define integers.  So, the Blopex interger type should always match what is in Petsc. 
+Both the Blopex abstract and interface code use the "PetscInt" type to determine how to define integers.  This forces the Blopex interger type to always match what is in Petsc. 
 
 
 To execute driver:
@@ -101,12 +99,91 @@ or
 >> ./driver -n_eigs 3 -itr 20
 }}}
 
-driver_fiedler accepts as input matrices in Petsc format.  These matrices must be setup for either 32bit or 64bit arithematic.  The test matrices are setup for double (real) or complex and for 32bit or 64bit.  The 64bit version have a file name containing `_64`. 
+This gives the following results:
+{{{
+Partitioning: 1 1 1
+Preconditioner setup, seconds: 0.000369
+
+Solving standard eigenvalue problem with preconditioning
+
+block size 10
+
+No constraints
+
+
+Initial Max. Residual   2.41101765193731e+00
+Iteration 1     bsize 10        maxres   1.47485155706695e+00
+Iteration 2     bsize 10        maxres   5.76499070872537e-01
+Iteration 3     bsize 10        maxres   3.06659255730571e-01
+Iteration 4     bsize 10        maxres   2.00635934430889e-01
+Iteration 5     bsize 10        maxres   6.38690964763992e-02
+Iteration 6     bsize 10        maxres   2.04031509081778e-02
+Iteration 7     bsize 10        maxres   1.02958167235834e-02
+Iteration 8     bsize 9         maxres   3.57149267532509e-03
+Iteration 9     bsize 8         maxres   1.13980591096821e-03
+Iteration 10    bsize 6         maxres   4.15729900972210e-04
+Iteration 11    bsize 6         maxres   1.64977271895793e-04
+Iteration 12    bsize 5         maxres   5.68823837427636e-05
+Iteration 13    bsize 3         maxres   2.12576562467706e-05
+Iteration 14    bsize 3         maxres   7.60612793341467e-06
+Iteration 15    bsize 3         maxres   3.27324391450688e-06
+Iteration 16    bsize 2         maxres   1.73049728975516e-06
+Iteration 17    bsize 1         maxres   9.63758146551376e-07
+
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    7.85460552428888e-08
+  4.79521039879645e-01    5.38143072677682e-07
+  4.79521039879654e-01    4.18818869908062e-07
+  4.79521039879684e-01    4.23232402359408e-07
+  7.15999921446316e-01    8.92081907089266e-07
+  7.15999921446375e-01    7.47752020201913e-07
+  7.15999921446505e-01    8.79103766081576e-07
+  8.52306637651430e-01    6.91831240708695e-07
+  8.52306637651604e-01    5.47008725220135e-07
+  8.52306637652249e-01    9.63758146551376e-07
+
+17 iterations
+Solution process, seconds: 2.897029e-01
+}}}
+
+driver_fiedler accepts as input matrices in Petsc format.  These matrices must be setup for either 32bit or 64bit arithematic.  The test matrices are setup for double (real) or complex and for 32bit or 64bit.  The 64bit version have a file name containing "_64"`. 
 
 For example:
 {{{
->> ./driver_fiedler -matrix DL-matrix-double_64.petsc -n_eigs 3 -itr 20
+>> ./driver_fiedler -matrix DL-matrix-double_64.petsc -n_eigs 3 -itr 200
 }}}
+
+This gives the following results:
+{{{
+Preconditioner setup, seconds: 0.002955
+
+Solving standard eigenvalue problem with preconditioning
+
+block size 3
+
+1 constraint
+
+
+Initial Max. Residual   9.29703885936090e-01
+Iteration 1     bsize 3         maxres   8.08364838024446e-03
+Iteration 2     bsize 3         maxres   3.54278978281592e-03
+Iteration 3     bsize 3         maxres   5.26702389967756e-04
+Iteration 4     bsize 3         maxres   3.87008818770373e-04
+.................
+Iteration 197   bsize 3         maxres   3.34025396810235e-06
+Iteration 198   bsize 3         maxres   3.35960348089173e-06
+Iteration 199   bsize 3         maxres   3.39105815089645e-06
+Iteration 200   bsize 3         maxres   3.38848721913166e-06
+
+Eigenvalue lambda       Residual              
+  4.01462700990605e-05    3.38848721913166e-06
+  4.01893266524972e-05    2.96381572768123e-06
+  4.02216637895209e-05    3.25730371476605e-06
+
+200 iterations
+Solution process, seconds: 2.747978e+00
+}}}
+
 The option -matrix specifies the matrix to solve.  
 The initial eigenvectors are generated randomly. 
 
@@ -116,7 +193,7 @@ These can be setup via some Matlab programs in the PETSc socket interface to Mat
 These programs read and write Matlab matrices and vectors to files formated for Petsc. 
 The version from Petsc only supports double.   
 We have modified these programs to  also support complex and 64bit integers.  
-The complex versions are included in the .../blopex_petsc directory along with 
+Our versions are included in the .../blopex_petsc directory along with 
 `PetscWriteReadExample.m` to illustrate how to use them. 
 
 The *complex files* are L-matrix-complex_64.petsc (65536x65536 diagonal values 0-4)
