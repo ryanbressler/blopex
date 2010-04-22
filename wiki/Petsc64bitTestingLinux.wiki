@@ -7,7 +7,7 @@ How to test BLOPEX under Beta version of Petsc on Linux with Petsc configured fo
 
 In this wiki we describe in detail a test with Petsc configured real numbers with side comments when this differs with complex number testing.
 
-Refer to wiki "CommentsOnPetscTesting" for a more technical discussion on how Blopex is setup in Petsc.  
+Refer to wiki `CommentsOnPetscTesting` for a more technical discussion on how Blopex is setup in Petsc.  
 
 = Setup Petsc =  
 
