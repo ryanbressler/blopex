@@ -93,7 +93,7 @@ After configuration is finished and the environment variables are setup issue th
  
 Now create executables for the blopex drivers 
 {{{
->> cd petsc-dev/src/contrib/blopex/driver
+>> cd src/contrib/blopex/driver
 >> make driver
 >> cd ../driver_fiedler
 >> make driver_fiedler
