@@ -3,7 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX under Beta version of Petsc on Linux with Petsc configured for 64bit integers.
+How to test BLOPEX under version 3.1-p1 of Petsc on Linux with Petsc configured for 64bit integers.
 
 In this wiki we describe in detail a test with Petsc configured real numbers with side comments when this differs with complex number testing.
 
@@ -13,63 +13,82 @@ Refer to wiki `CommentsOnPetscTesting` for a more technical discussion on how Bl
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
-the Petsc website at ftp://info.mcs.anl.gov/pub/petsc/petsc-dev.tar.gz.
+the Petsc website at ftp://info.mcs.anl.gov/pub/petsc/petsc-3.1-p1.tar.gz.
+Petsc 3.1 also has a petsc-lite-3.1-p1.tar.gz which excludes documentation and is a lot smaller distribution tar.  I used the lite package in this test. 
  
-
-To install files issue command:
+If you have an existing version of petsc-3.1-p1 I highly recommend you remove it before starting a new configure. If you do not a new blopex package may not be installed if one is already setup.  We assume you are in your home directory, $HOME at this point.
 {{{
->> gunzip -c petsc-dev.tar.gz | tar -xof -
-}}}
-This creates files in directory petsc-dev.  
-
-Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
-
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  Assuming you are in your home directory, install as follows:
-{{{
->> cp blopex_petsc_interface.tar.gz petsc-dev/src/contrib/blopex/
->> cd petsc-dev/src/contrib/blopex
->> tar -zxvf blopex_petsc_interface.tar.gz
+>> rm -r petsc-3.1-p1
 }}}
 
-Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15)
-`self.complex    = 0`.
+To install Petsc files issue command:
+{{{
+>> tar -zxvf petsc-lite-3.1-p1.tar.gz
+}}}
+This creates files in directory petsc-3.1-p1.  
 
-This specifies that the blopex interface is not defined for Petsc scalar type complex.
-Edit blopex.py and change this to `self.complex    = 1`.
+Change directory to petsc-3.1-p1.
+{{{
+>> cd petsc-3.1-p1
+}}}
 
-Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
+Petsc version 3.1 has a bug which affect compilation of blopex driver's.  The library libpetscksp.a is no more.  These routines are now compiled to libpetsc.a.  The Petsc make file in src/contrib/ had a problem that affected the PETSC_KSP_LIB preprocessor variable used in the link step for driver and driver_fiedler.  
 
-An additional change to blopex.py is needed to support 64bit integers.  After the `self.complex = 1` line; add the following line `self.requires32bitint = 0`.  Which means that blopex is coded to support 64bit integers.
+To fix this we have to install a patch that was supplied by Petsc support.  Assuming the patch is in your home directory, do the following.
+{{{
+>> patch -Np1 < $HOME/blopex.patch
+}}}
 
+Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex into your home directory.  
+
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  This tar assumes you are in the base Petsc directory petsc-3.1-p1.  Install as follows:
+{{{
+>> tar -zxvf $HOME/blopex_petsc_interface.tar.gz
+}}}
+
+Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used. There are certain flags that must be set if blopex is compatible with complex and 64bit data types.
+
+configure option `--with-scalar-type=complex`  requires flag  `self.complex = 0`.
+configure option `--with-64-bit-indices` requires flag `self.requires32bitint = 0`.
+
+I have edited a copy of blopex.py and included it in blopex_petsc_interface.tar.gz
+so you don't have to do anything special to get these changes.  
+
+This test configures Petsc for both complex and 64bit. 
 
 Configure Petsc as follows:
 {{{
->> ./config/configure.py --with-shared --with-debugging=1 --download-blopex=../blopex_petsc_abstract.tar.gz --with-64-bit-indices
+>> ./config/configure.py --with-shared --with-debugging=1 --with-scalar-type=complex --download-blopex=$HOME/blopex_petsc_abstract.tar.gz --with-64-bit-indices
 }}}
 
+Note that the blopex abstract code comes from your home directory.  If you specify --download-blopex=1 it will be downloaded from a Petsc internet site.  This is version 1.0 of Blopex.  Which does not have complex or 64bit support. 
+
 Petsc runs with either double or complex objects but not both.  
-To test the blopex routines for complex configure Petsc with the 
+To test the blopex routines for real (the default) configure Petsc without the 
 option --with-scalar-type=complex. 
 
 Now two environment variables must be setup:
 {{{
->> PETSC_DIR=/home/grads/dmccuan/petsc-dev
+>> PETSC_DIR=/home/grads/dmccuan/petsc-3.1-p1
 >> export PETSC_DIR
 >> PETSC_ARCH=linux-gnu-c-debug
 >> export PETSC_ARCH
 }}}
+Note they can be setup at any time prior to the next step.
+
 We will also need these set when compiling the blopex_petsc interface and drivers.
 To avoid setting everytime you logon you can put them in your .bashrc 
 file as follows:
 {{{
-export PETSC_DIR=/home/grads/dmccuan/petsc-dev
+export PETSC_DIR=/home/grads/dmccuan/petsc-3.1-p1
 export PETSC_ARCH=linux-gnu-c-debug
 }}}
 
-After configuration is finished issue the command
+After configuration is finished and the environment variables are setup issue the command
 {{{
 >> make all test
 }}}
+
 = Setup blopex_petsc =  
  
 Now create executables for the blopex drivers 
@@ -150,7 +169,7 @@ driver_fiedler accepts as input matrices in Petsc format.  These matrices must b
 
 For example:
 {{{
->> ./driver_fiedler -matrix DL-matrix-double_64.petsc -n_eigs 3 -itr 200
+>> ./driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 200
 }}}
 
 This gives the following results:
