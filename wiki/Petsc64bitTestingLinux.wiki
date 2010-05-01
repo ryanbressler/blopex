@@ -13,7 +13,7 @@ Refer to wiki `CommentsOnPetscTesting` for a more technical discussion on how Bl
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
-the Petsc website at ftp://info.mcs.anl.gov/pub/petsc/petsc-3.1-p1.tar.gz.
+the Petsc website at ftp://info.mcs.anl.gov/pub/petsc/petsc-3.1.tar.gz or ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz 
 Petsc 3.1 also has a petsc-lite-3.1-p1.tar.gz which excludes documentation and is a lot smaller distribution tar.  I used the lite package in this test. 
  
 If you have an existing version of petsc-3.1-p1 I highly recommend you remove it before starting a new configure. If you do not a new blopex package may not be installed if one is already setup.  We assume you are in your home directory, $HOME at this point.
