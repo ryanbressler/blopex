@@ -11,14 +11,12 @@ Refer to wiki `CommentsOnPetscTesting` for a more technical discussion on how Bl
 
 = Setup Petsc =  
 
-To use blopex_solve_double or blopex_solve_complex using the 
-Beta release of Petsc first download the development version from 
-the Petsc website at ftp://info.mcs.anl.gov/pub/petsc/petsc-3.1.tar.gz or ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz , which excludes documentation and is a lot smaller distribution tar. I used the lite package in this test. 
- 
 Remove all existing versions of petsc and BLOPEX before starting a new configure. 
+Petsc version 3.1-p1 had a bug which affected compilation of blopex driver's. It is currently fixed in 3.1-p2, so make sure that you download new petsc-lite-3.1.tar.gz
+
+Download ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz , which excludes documentation and is a lot smaller distribution tar. 
 
 We assume you are in your home directory, $HOME at this point.
-
 
 To unpack Petsc files issue command:
 {{{
@@ -57,18 +55,6 @@ configure option `--with-64-bit-indices` requires flag `self.requires32bitint = 
 
 I have edited a copy of blopex.py and included it in blopex_petsc_interface.tar.gz
 so you don't have to do anything special to get these changes.  
-
-Petsc version 3.1 has a bug which affect compilation of blopex driver's.  The library libpetscksp.a is no more.  These routines are now compiled to libpetsc.a.  The Petsc make file in src/contrib/ had a problem that affected the PETSC_KSP_LIB preprocessor variable used in the link step for driver and driver_fiedler.  
-
-To fix this we have to install a patch that was supplied by Petsc support.  I have included the patch as part of the blopex_petsc_interface.tar.gz so it should now be in the PETSC_DIR directory.  Install it as follows:
-{{{
->> patch -Np1 < blopex.patch
-}}}
-
-This patch has been already applied to the developer's version of PETSc, 
-so you do not need to apply it if you use 
-http://ftp.mcs.anl.gov/pub/petsc/petsc-dev.tar.gz
-instead of petsc-3.1-p2. 
 
 This test configures Petsc for both complex and 64bit. 
 
