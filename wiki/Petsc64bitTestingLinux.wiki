@@ -20,20 +20,32 @@ Remove all existing versions of petsc and BLOPEX before starting a new configure
 We assume you are in your home directory, $HOME at this point.
 
 
-To install Petsc files issue command:
+To unpack Petsc files issue command:
 {{{
 >> tar -zxvf petsc-lite-3.1.tar.gz
 }}}
-This creates files in directory petsc-3.1.  
+This creates a directory, e.g., petsc-3.1-p2. 
+Rename it, if you plan to test different combinations, e.g., to 
+petsc-3.1-p2-int64-complex
 
-Change directory to petsc-3.1.
+Change directory to it, e.g.,
 {{{
->> cd petsc-3.1
+>> cd petsc-3.1-p2
 }}}
+
+The PETSC_DIR environment variable must be setup:
+{{{
+>> export PETSC_DIR=$PWD
+}}}
+Another environment variable, PETSC_ARCH, is not needed here. 
+
+If you test different combinations of configuration at the same time, 
+do it in separate terminal windows, and setup  PETSC_DIR in every window separately
+as needed for different directories.  
 
 Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex into your home directory.  
 
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  This tar assumes you are in the base Petsc directory petsc-3.1.  Install as follows:
+blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  This tar assumes you are in the base Petsc directory, specified by PETSC_DIR. Install as follows:
 {{{
 >> tar -zxvf $HOME/blopex_petsc_interface.tar.gz
 }}}
@@ -48,10 +60,15 @@ so you don't have to do anything special to get these changes.
 
 Petsc version 3.1 has a bug which affect compilation of blopex driver's.  The library libpetscksp.a is no more.  These routines are now compiled to libpetsc.a.  The Petsc make file in src/contrib/ had a problem that affected the PETSC_KSP_LIB preprocessor variable used in the link step for driver and driver_fiedler.  
 
-To fix this we have to install a patch that was supplied by Petsc support.  I have included the patch as part of the blopex_petsc_interface.tar.gz so it should now be in the petsc-3.1 directory.  Install it as follows:
+To fix this we have to install a patch that was supplied by Petsc support.  I have included the patch as part of the blopex_petsc_interface.tar.gz so it should now be in the PETSC_DIR directory.  Install it as follows:
 {{{
 >> patch -Np1 < blopex.patch
 }}}
+
+This patch has been already applied to the developer's version of PETSc, 
+so you do not need to apply it if you use 
+http://ftp.mcs.anl.gov/pub/petsc/petsc-dev.tar.gz
+instead of petsc-3.1-p2. 
 
 This test configures Petsc for both complex and 64bit. 
 
@@ -65,23 +82,6 @@ Note that the blopex abstract code comes from your home directory.  If you speci
 Petsc runs with either double or complex objects but not both.  
 To test the blopex routines for real (the default) configure Petsc without the 
 option --with-scalar-type=complex. 
-
-Now two environment variables must be setup:
-{{{
->> PETSC_DIR=/home/grads/dmccuan/petsc-3.1
->> export PETSC_DIR
->> PETSC_ARCH=linux-gnu-c-debug
->> export PETSC_ARCH
-}}}
-Note they can be setup at any time prior to the next step.
-
-We will also need these set when compiling the blopex_petsc interface and drivers.
-To avoid setting everytime you logon you can put them in your .bashrc 
-file as follows:
-{{{
-export PETSC_DIR=/home/grads/dmccuan/petsc-3.1
-export PETSC_ARCH=linux-gnu-c-debug
-}}}
 
 After configuration is finished and the environment variables are setup issue the command
 {{{
