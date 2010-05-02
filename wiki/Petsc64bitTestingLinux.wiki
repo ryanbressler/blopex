@@ -53,7 +53,7 @@ Configuration in Petsc is controlled via python scripts. The script petsc-dev/co
 configure option `--with-scalar-type=complex`  requires flag  `self.complex = 0`.
 configure option `--with-64-bit-indices` requires flag `self.requires32bitint = 0`.
 
-I have edited a copy of blopex.py and included it in blopex_petsc_interface.tar.gz
+Donald has edited a copy of blopex.py and included it in blopex_petsc_interface.tar.gz
 so you don't have to do anything special to get these changes.  
 
 This test configures Petsc for both complex and 64bit. 
@@ -72,6 +72,12 @@ option --with-scalar-type=complex.
 After configuration is finished and the environment variables are setup issue the command
 {{{
 >> make all test
+}}}
+
+You may need to start an MPI daemon prior to this. E.g., in Fedora 12  and mpich2: 
+{{{
+>> module load mpich2-x86_64
+>> mpd&
 }}}
 
 = Setup blopex_petsc =  
