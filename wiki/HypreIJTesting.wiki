@@ -6,7 +6,9 @@
 $Revision: 2.0 $ $Date: 21-Apr-2010
 Tested in MATLAB 7.9.0.529 (R2009b) and Octave 3.2.3 and Hypre 2.6.0b.
 
-Download http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d and matlab2hypre package from ???? ADD THE LINK LATER (AK). Install hypre.
+Download http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d and matlab2hypre package from http://www.mathworks.com/matlabcentral/fileexchange/27437-matlab2hypre-and-hypre2matlab
+
+Install hypre.
 
 = Test 1: Reading in the matrix. =
 
