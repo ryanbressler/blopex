@@ -66,7 +66,7 @@ PETSC_DIR=$PWD; export PETSC_DIR
 
 To test the old BLOPEX, run 
 
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp --download-blopex=1 --download-hypre=1
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit_mp --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp --download-blopex=1 --download-hypre=1
 
 PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit_mp; export PETSC_ARCH
 
