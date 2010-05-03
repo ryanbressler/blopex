@@ -44,7 +44,12 @@ and switch to MPICH2 with
 
 module load mpich2-x86_64
 
-Double-ckeck by running
+For mpich2, after the above, you may also need to start the mpich2 daemon by
+
+mpd&
+
+
+Double-check by running
 
 which mpicc
 
