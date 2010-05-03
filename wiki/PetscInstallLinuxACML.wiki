@@ -5,8 +5,6 @@
 How To install PETSc with AMD's ACML in Fedora12 64 bit
 (assuming bash shell)
 
-TO BE CONTINUED....
-
 = Details =
 
 The basic system info:
@@ -29,6 +27,8 @@ http://developer.amd.com/cpu/Libraries/acml/downloads/pages/default.aspx
 the latest ACML libraries, in my case: 
   * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit.tgz
   * http://developer.amd.com/Downloads/acml-4-4-0-gfortran-64bit-int64.tgz
+
+If you use AMD's open64 compiler rather then GNU-FORTRAN/C, you need these: 
   * http://developer.amd.com/Downloads/acml-4-4-0-open64-64bit.tgz
   * http://developer.amd.com/Downloads/acml-4-4-0-open64-64bit-int64.tgz
 
@@ -41,20 +41,40 @@ In my case, the directories are:
    * /opt/acml-4-4-0-open64-64bit-int64
 correspondingly. 
 
-Set up the MPI by running 
+Each library comes in two different flavours, regular and mp, e.g., 
+* /opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
+* /opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib
+
+According to Ch. 2 of the ACML manual, see  
+http://developer.amd.com/assets/acml_userguide.pdf
+one should use the mp version on a multi-CPU/core nodes.
+In the notes below, we use the mp version. 
+ 
+The latest ACML may not work on old CPUs! 
+
+Follow http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12
+to set up the MPI, e.g., by running 
 
 module load openmpi-x86_64
 
-Download and extract the latest PETSc, in my case petsc-3.0.0-p11. 
+Download and extract the latest PETSc, at the moment this is 
+ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz 
+
 Extract using *tar xzvf* , cd to PETSc dir and run 
 
 PETSC_DIR=$PWD; export PETSC_DIR
 
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --download-hypre=1
+To test the old BLOPEX, run 
 
-PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit; export PETSC_ARCH
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp --download-blopex=1 --download-hypre=1
+
+PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit_mp; export PETSC_ARCH
 
 make all
+
+To test the latest BLOPEX, instead of using the --download-blopex=1 option,  
+follow PetscTestingLinux instructions to test the latest BLOPEX, see 
+http://code.google.com/p/blopex/wiki/PetscTestingLinux
 
 Assuming no errors on the previous steps, run
 
@@ -64,11 +84,12 @@ make driver
 
 Now, you can execute the driver by using 
 
-mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./driver
+mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib ./driver
 
-Here, both shared libraries /usr/lib64/openmpi/lib and /opt/acml-4-4-0-gfortran-64bit/ are necessary to specify in the command-line. Alternatively, you can set 
+Here, both shared libraries /usr/lib64/openmpi/lib and /opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib are necessary to specify in the command-line. 
+Alternatively, you can set 
 
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib; export LD_LIBRARY_PATH
 
 then you can simply run 
 
@@ -76,7 +97,7 @@ mpirun -np 2 ./driver
 
 See http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html for more info on shared libraries. 
 
-If you get an error like "error while loading shared libraries: /opt/acml-4-4-0-gfortran-64bit/gfortran64/lib/libacml.so: cannot restore segment prot after reloc: Permission denied" it is probably coming from your SELinux security software. Disable SELinux temporarily by running (as root) 
+If you get an error like "error while loading shared libraries: /opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib/libacml.so: cannot restore segment prot after reloc: Permission denied" it is probably coming from your SELinux security software. Disable SELinux temporarily by running (as root) 
 
  echo 0 > /selinux/enforce 
 
