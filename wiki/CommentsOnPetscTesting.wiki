@@ -29,9 +29,15 @@ To setup PETSC perform the following steps:
 
  # Extract the latest PETSC distribution tar file and then copy the blopex_petsc_interface.tar.gz into its src/contrib/blopex subdirectory and extract it using "tar -zxvf blopex_petsc_interface.tar.gz".  
  # Configuration in Petsc is controlled via python scripts. The script petsc-dev/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15) "self.complex    = 0".  This specifies that the blopex interface is not defined for Petsc scalar type complex.  Edit blopex.py and change this to "self.complex    = 1". Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.  Warning: On some systems (Frost) the configuration will abort when you get this message, but on others (Linux) it doesn't and while you can continue with the make you will get bad results with the complex tests. 
+ # There are certain flags that must be set if blopex is compatible with complex and 64bit data types.
+
+configure option --with-scalar-type=complex requires flag self.complex = 0. 
+configure option --with-64-bit-indices requires flag self.requires32bitint = 0.
+
+Donald has edited a copy of blopex.py and included it in blopex_petsc_interface.tar.gz so you don't have to do anything special to get these changes. 
  # Then configure PETSC using the "--download-blopex" option as described above with the blopex_petsc_abstract.tar.gz.  Follow this with a "make all test" and then make and execute the drivers. 
 
-If you are going to test with Petsc configured for 64bit integers, you should be awared of the following:
+If you are going to test with Petsc configured for 64bit integers, you should be aware of the following:
 
  # You use the option `--with-64-bit-indices` to configure Petsc.  The type PetscInt will be defined with the interger type your compiler needs for 64bit integers (usually `long long`).
  # Petsc configuration won't allow you to do this with blopex unless blopex.py (see above) has the following line added after "self.complex =1"; "self.requires32bitint = 0". This tells the configurator that blopex is coded to use 64bit integers (or 32bit). 
