@@ -76,6 +76,10 @@ To test the latest BLOPEX, instead of using the --download-blopex=1 option,
 follow PetscTestingLinux instructions to test the latest BLOPEX, see 
 http://code.google.com/p/blopex/wiki/PetscTestingLinux
 
+Note the Hypre is real and 32-bit-indices only, so an attempt to use 
+--download-hypre=1 either with --with-scalar-type=complex or with --with-64-bit-indices would give an error. 
+
+
 Assuming no errors on the previous steps, run
 
 cd /src/contrib/blopex/driver
