@@ -49,8 +49,7 @@ According to Ch. 2 of the ACML manual, see
 http://developer.amd.com/assets/acml_userguide.pdf
 one should use the mp version on a multi-CPU/core nodes. 
 
-However, the PETSc configure does not like the mp version. 
-It is currently under investigation by the PETSc support. 
+However, the PETSc does not currently support the mp version. 
 In the notes below, we use the regular version. 
  
 The latest ACML may not work on old CPUs! 
