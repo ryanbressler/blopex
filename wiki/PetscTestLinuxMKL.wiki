@@ -32,25 +32,11 @@ For example:
 >>  mpirun -np 2 ./driver -n_eigs 3 -itr 20 
 
 Partitioning: 1 2 1
-
 Preconditioner setup, seconds: 0.001195
-
-
-
 Solving standard eigenvalue problem with preconditioning
 
-
-
 block size 3
-
-
-
 No constraints
-
-
-
-
-
 Initial Max. Residual   2.38958104976177e+00
 
 Iteration 1 	bsize 3 	maxres   1.30791884955647e+00
@@ -85,8 +71,6 @@ Iteration 15 	bsize 2 	maxres   2.62839797025781e-08
 
 Iteration 16 	bsize 2 	maxres   4.73294468228978e-09
 
-
-
 Eigenvalue lambda       Residual              
 
   2.43042158313016e-01    1.83322321612753e-09
@@ -95,13 +79,9 @@ Eigenvalue lambda       Residual
 
   4.79521039879651e-01    3.94953581172754e-09
 
-
-
 16 iterations
 
 Solution process, seconds: 1.605664e+00
-
-
 }}}
 driver_fiedler accepts as input matrices in Petsc format. 
 For example:
@@ -109,22 +89,11 @@ For example:
 >>  ./driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 20
 
 Preconditioner setup, seconds: 0.010741
-
-
-
 Solving standard eigenvalue problem with preconditioning
-
-
 
 block size 3
 
-
-
 1 constraint
-
-
-
-
 
 Initial Max. Residual   9.30058979524258e-01
 
@@ -168,8 +137,6 @@ Iteration 19 	bsize 3 	maxres   5.31567892688132e-05
 
 Iteration 20 	bsize 3 	maxres   4.81419226521259e-05
 
-
-
 Eigenvalue lambda       Residual              
 
   4.01877789458025e-05    6.20972564393931e-06
@@ -177,8 +144,6 @@ Eigenvalue lambda       Residual
   4.02900356844241e-05    1.30957816327902e-05
 
   4.07278197460483e-05    4.81419226521259e-05
-
-
 
 20 iterations
 
@@ -191,6 +156,4 @@ Final eigenvalues:
 4.029004e-05
 
 4.072782e-05
-
-
 }}}
