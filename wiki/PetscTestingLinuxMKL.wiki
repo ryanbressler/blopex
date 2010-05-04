@@ -1,9 +1,8 @@
-#summary BLOPEX Complex Petsc testing with MKL on Linux
+#summary BLOPEX Complex and 64bit Petsc testing with MKL on Linux
 <wiki:toc max_depth="1" />
 
 = Introduction =
-
-How to test BLOPEX under  Petsc with MKL on Linux.
+How to test BLOPEX under version 3.1 of Petsc with MKL on Linux , e.g., configured for 64bit integers and  complex. 
 
 System configuration: 
 
@@ -12,221 +11,149 @@ System configuration:
 
 = Setup Petsc =  
 
-To use blopex_solve_double or blopex_solve_complex using 
-Petsc-3.0.0-p11 download from 
-the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
- 
-
-To install files issue command:
+Follow http://code.google.com/p/blopex/wiki/PetscTestingLinux to setput Petsc.
+Using MKL, we need to configure as follows:
 {{{
->> gunzip -c petsc-3.0.0-p11.tar.gz | tar -xof -
-}}}
-This creates files in directory petsc-3.0.0-p11.  
-
-Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex/downloads/list and then move them to your home directory.
-
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory, install as follows:
-{{{
->> cp blopex_petsc_interface.tar.gz  petsc-3.0.0-p11/src/contrib/blopex/
->> cd petsc-3.0.0-p11/src/contrib/blopex
->> tar -xvf blopex_petsc_interface.tar.gz
-}}}
-
-Configuration in Petsc is controlled via python scripts. The script petsc-3.0.0-p11/config/PETSc/packages/blopex.py contains flags to control configuration when the --download-blopex option is used.  It contains the following line (about line 15)
-`self.complex    = 0`.
-
-This specifies that the blopex interface is not defined for Petsc scalar type complex.
-Edit blopex.py and change this to `self.complex    = 1`.
-
-Without this change configuration will give the error _"cannot use blopex with complex numbers it is not coded for this capability"_.
-
-Configure Petsc as follows:
-{{{
->> ./config/configure.py  --with-blas-lapack-dir=/opt/intel/mkl/10.1.1.019/lib/em64t --with-mpi-dir=/usr/include/openmpi --download-blopex=/home/peizhen/petsc_mkl_blopex/blopex_abstract_Mar_2010.tar.gz --with-scalar-type=complex
+>> ./config/configure.py  --with-blas-lapack-dir=/opt/intel/mkl/10.1.1.019/lib/em64t --with-mpi-dir=/usr/include/openmpi --download-blopex=/home/peizhen/petsc_blopex_0510/blopex_petsc_abstract.tar.gz --with-scalar-type=complex --with-64-bit-indices
 
 }}}
 
-Petsc runs with either double or complex objects but not both.  
-To test the blopex routines for double configure Petsc without the 
-option --with-scalar-type=complex. 
-
-Now two environment variables must be setup:
-{{{
->> PETSC_DIR=/home/peizhen/petsc/petsc-3.0.0-p11; export PETSC_DIR
->> PETSC_ARCH=linux-gnu-c-debug; export PETSC_ARCH
-}}}
-We will also need these set when compiling the blopex_petsc interface.   
-To avoid setting everytime you logon you can put them in your .bashrc 
-file as follows:
-{{{
-export PETSC_DIR=/home/peizhen/petsc/petsc-3.0.0-p11
-export PETSC_ARCH=linux-gnu-c-debug
-}}}
-
-After configuration is finished issue the command
-{{{
->> make all test
-}}}
-= Setup blopex_petsc =  
- 
-Now create executables for the blopex drivers 
-{{{
->> cd petsc-3.0.0-p11/src/contrib/blopex/driver
->> make driver
->> cd petsc-3.0.0-p11/src/contrib/blopex/driver_fiedler
->> make driver_fiedler
-}}}
+=Setup blopex_petsc=
+Please see http://code.google.com/p/blopex/wiki/PetscTestingLinux
 
 = Execution of Tests =
 
-There are two test drivers located in subdirectories of blopex_petsc:
-driver an driver_fiedler.  The executables for these are in directories
-$PETSC_DIR/src/contrib/blopex/driver and $PETSC_DIR/src/contrib/blopex/driver_fiedler.
-
-driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
-if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for double. 
+There are two test drivers located in subdirectories of blopex_petsc: driver and driver_fiedler. The executables for these are in directories petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler. 
+driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double). 
+Both the Blopex abstract and interface code use the "PetscInt" type to determine how to define integers. This forces the Blopex interger type to always match what is in Petsc. 
 
 For example:
 {{{
+>>  mpirun -np 2 ./driver -n_eigs 3 -itr 20 
 
->> ./driver -n_eigs 3 -itr 20
-
-Partitioning: 1 1 1
-Preconditioner setup, seconds: 0.000535
+Partitioning: 1 2 1
+Preconditioner setup, seconds: 0.001195
 Solving standard eigenvalue problem with preconditioning
 
 block size 3
 No constraints
-Initial Max. Residual   2.37592554274692e+00
+Initial Max. Residual   2.38958104976177e+00
 
-Iteration 1 	bsize 3 	maxres   1.39128149293022e+00
+Iteration 1 	bsize 3 	maxres   1.30791884955647e+00
 
-Iteration 2 	bsize 3 	maxres   4.06114492651955e-01
+Iteration 2 	bsize 3 	maxres   4.89955004256430e-01
 
-Iteration 3 	bsize 3 	maxres   2.55146031256070e-01
+Iteration 3 	bsize 3 	maxres   2.65027600754648e-01
 
-Iteration 4 	bsize 3 	maxres   9.74152372761823e-02
+Iteration 4 	bsize 3 	maxres   8.73375379741028e-02
 
-Iteration 5 	bsize 3 	maxres   2.69440336818915e-02
+Iteration 5 	bsize 3 	maxres   2.75631744406703e-02
 
-Iteration 6 	bsize 3 	maxres   5.79388385168317e-03
+Iteration 6 	bsize 3 	maxres   6.73712198452674e-03
 
-Iteration 7 	bsize 3 	maxres   1.30009157198411e-03
+Iteration 7 	bsize 3 	maxres   1.34394706277562e-03
 
-Iteration 8 	bsize 3 	maxres   2.38991852805283e-04
+Iteration 8 	bsize 3 	maxres   3.07681341555395e-04
 
-Iteration 9 	bsize 3 	maxres   8.41371687387893e-05
+Iteration 9 	bsize 3 	maxres   8.70760963721820e-05
 
-Iteration 10 	bsize 3 	maxres   2.47070785641687e-05
+Iteration 10 	bsize 3 	maxres   2.29998747093310e-05
 
-Iteration 11 	bsize 3 	maxres   4.04756787785642e-06
+Iteration 11 	bsize 3 	maxres   4.70515482875033e-06
 
-Iteration 12 	bsize 2 	maxres   1.11038460715499e-06
+Iteration 12 	bsize 2 	maxres   1.40804489228445e-06
 
-Iteration 13 	bsize 2 	maxres   3.16194336212725e-07
+Iteration 13 	bsize 2 	maxres   3.80746207768682e-07
 
-Iteration 14 	bsize 2 	maxres   7.52087838629855e-08
+Iteration 14 	bsize 2 	maxres   1.02374977567889e-07
 
-Iteration 15 	bsize 2 	maxres   2.96259865745718e-08
+Iteration 15 	bsize 2 	maxres   2.62839797025781e-08
 
-Iteration 16 	bsize 1 	maxres   6.31557582830866e-09
+Iteration 16 	bsize 2 	maxres   4.73294468228978e-09
 
 Eigenvalue lambda       Residual              
 
-  2.43042158313016e-01    4.05315088108212e-09
+  2.43042158313016e-01    1.83322321612753e-09
 
-  4.79521039879657e-01    6.31557582830866e-09
+  4.79521039879649e-01    4.73294468228978e-09
 
-  4.79521039879678e-01    4.01897318315701e-09
+  4.79521039879651e-01    3.94953581172754e-09
 
 16 iterations
-Solution process, seconds: 8.346729e-01
+
+Solution process, seconds: 1.605664e+00
 }}}
 driver_fiedler accepts as input matrices in Petsc format. 
 For example:
 {{{
->> ./driver_fiedler -matrix DL-matrix-complex.petsc -n_eigs 3 -itr 20
+>>  ./driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 20
 
-........
+Preconditioner setup, seconds: 0.010741
+Solving standard eigenvalue problem with preconditioning
 
-Initial Max. Residual   9.32569736871894e-01
+block size 3
 
-Iteration 1 	bsize 3 	maxres   1.25435910893582e-02
+1 constraint
 
-Iteration 2 	bsize 3 	maxres   1.12169888120603e-02
+Initial Max. Residual   9.30058979524258e-01
 
-Iteration 3 	bsize 3 	maxres   2.01586971797594e-03
+Iteration 1 	bsize 3 	maxres   1.43833741147424e-02
 
-Iteration 4 	bsize 3 	maxres   1.26519756205239e-03
+Iteration 2 	bsize 3 	maxres   6.15942858113996e-03
 
-Iteration 5 	bsize 3 	maxres   6.15956465471560e-04
+Iteration 3 	bsize 3 	maxres   2.01079917045845e-03
 
-Iteration 6 	bsize 3 	maxres   4.27728819239156e-04
+Iteration 4 	bsize 3 	maxres   1.71920802183462e-03
 
-Iteration 7 	bsize 3 	maxres   3.07865597741154e-04
+Iteration 5 	bsize 3 	maxres   8.72186336930106e-04
 
-Iteration 8 	bsize 3 	maxres   2.23669142601176e-04
+Iteration 6 	bsize 3 	maxres   3.50198680958579e-04
 
-Iteration 9 	bsize 3 	maxres   1.54363744663135e-04
+Iteration 7 	bsize 3 	maxres   1.79087753397569e-04
 
-Iteration 10 	bsize 3 	maxres   2.02895621822020e-04
+Iteration 8 	bsize 3 	maxres   1.67429111754386e-04
 
-Iteration 11 	bsize 3 	maxres   1.70464570595710e-04
+Iteration 9 	bsize 3 	maxres   1.54268798220444e-04
 
-Iteration 12 	bsize 3 	maxres   1.58129049218574e-04
+Iteration 10 	bsize 3 	maxres   1.25465854540571e-04
 
-Iteration 13 	bsize 3 	maxres   1.34228473836039e-04
+Iteration 11 	bsize 3 	maxres   6.88295660212444e-05
 
-Iteration 14 	bsize 3 	maxres   8.69033578579103e-05
+Iteration 12 	bsize 3 	maxres   7.77445539081224e-05
 
-Iteration 15 	bsize 3 	maxres   7.73336499441750e-05
+Iteration 13 	bsize 3 	maxres   7.35395667648613e-05
 
-Iteration 16 	bsize 3 	maxres   5.63170193834642e-05
+Iteration 14 	bsize 3 	maxres   6.37301513236273e-05
 
-Iteration 17 	bsize 3 	maxres   5.03985586231394e-05
+Iteration 15 	bsize 3 	maxres   6.09975443291103e-05
 
-Iteration 18 	bsize 3 	maxres   8.34977759289823e-05
+Iteration 16 	bsize 3 	maxres   5.87098670053548e-05
 
-Iteration 19 	bsize 3 	maxres   7.72139587529075e-05
+Iteration 17 	bsize 3 	maxres   5.54299929572641e-05
 
-Iteration 20 	bsize 3 	maxres   8.67316193448469e-05
+Iteration 18 	bsize 3 	maxres   5.38754157476224e-05
+
+Iteration 19 	bsize 3 	maxres   5.31567892688132e-05
+
+Iteration 20 	bsize 3 	maxres   4.81419226521259e-05
 
 Eigenvalue lambda       Residual              
 
-  4.01981784031632e-05    1.09799600946737e-05
+  4.01877789458025e-05    6.20972564393931e-06
 
-  4.02631352199169e-05    1.10746737154000e-05
+  4.02900356844241e-05    1.30957816327902e-05
 
-  4.08036982852300e-05    8.67316193448469e-05
+  4.07278197460483e-05    4.81419226521259e-05
 
 20 iterations
 
-Solution process, seconds: 8.920284e+00
+Solution process, seconds: 8.644127e+00
 
 Final eigenvalues:
 
-4.019818e-05
+4.018778e-05
 
-4.026314e-05
+4.029004e-05
 
-4.080370e-05
+4.072782e-05
 }}}
-The option -matrix specifies the matrix to solve.  
-The initial eigenvectors are generated randomly. 
-
-The matrix file is in a Petsc format.  
-These can be setup via some Matlab programs in the PETSc socket interface to Matlab; 
-`PetscBinaryRead.m` and `PetscBinaryWrite.m`.  
-These programs read and write Matlab matrices and vectors to files formated for Petsc. 
-The version from Petsc only supports double.   
-We have modified these programs to  also support complex.  
-The complex versions are included in the .../blopex_petsc directory along with 
-`PetscWriteReadExample.m` to illustrate how to use them. 
-
-The *double files* are L-matrix-double.petsc (65536x65536 diagonal values 0-4)
-and DL-matrix-double.petsc (65536x65536 tridiagonal values 0-4).  
-
-The *complex files* are complex versions of the L and DL double matrices (with imag part zero) 
-plus test_complex1.petsc (40x40 134 nz hpd random),
-test_complex2.petsc (1000x1000 50786 nz hpd random) and 
-test_complex3 (10876 nz hpd random). 
