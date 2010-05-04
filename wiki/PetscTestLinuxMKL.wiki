@@ -1,0 +1,196 @@
+#summary BLOPEX Complex and 64bit Petsc testing with MKL on Linux
+<wiki:toc max_depth="1" />
+
+= Introduction =
+How to test BLOPEX under version 3.1 of Petsc with MKL on Linux , e.g., configured for 64bit integers and  complex. 
+
+System configuration: 
+
+  * Intel(R) Pentium(R) ,4 CPU, 3.06GHz, 3.24 GB of RAM
+  * Intel® Math Kernel Library (Intel® MKL) 10.1.1.019
+
+= Setup Petsc =  
+
+Follow http://code.google.com/p/blopex/wiki/PetscTestingLinux to setput Petsc.
+Using MKL, we need to configure as follows:
+{{{
+>> ./config/configure.py  --with-blas-lapack-dir=/opt/intel/mkl/10.1.1.019/lib/em64t --with-mpi-dir=/usr/include/openmpi --download-blopex=/home/peizhen/petsc_blopex_0510/blopex_petsc_abstract.tar.gz --with-scalar-type=complex --with-64-bit-indices
+
+}}}
+
+=Setup blopex_petsc=
+Please see http://code.google.com/p/blopex/wiki/PetscTestingLinux
+
+= Execution of Tests =
+
+There are two test drivers located in subdirectories of blopex_petsc: driver and driver_fiedler. The executables for these are in directories petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler. 
+driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double). 
+Both the Blopex abstract and interface code use the "PetscInt" type to determine how to define integers. This forces the Blopex interger type to always match what is in Petsc. 
+
+For example:
+{{{
+>>  mpirun -np 2 ./driver -n_eigs 3 -itr 20 
+
+Partitioning: 1 2 1
+
+Preconditioner setup, seconds: 0.001195
+
+
+
+Solving standard eigenvalue problem with preconditioning
+
+
+
+block size 3
+
+
+
+No constraints
+
+
+
+
+
+Initial Max. Residual   2.38958104976177e+00
+
+Iteration 1 	bsize 3 	maxres   1.30791884955647e+00
+
+Iteration 2 	bsize 3 	maxres   4.89955004256430e-01
+
+Iteration 3 	bsize 3 	maxres   2.65027600754648e-01
+
+Iteration 4 	bsize 3 	maxres   8.73375379741028e-02
+
+Iteration 5 	bsize 3 	maxres   2.75631744406703e-02
+
+Iteration 6 	bsize 3 	maxres   6.73712198452674e-03
+
+Iteration 7 	bsize 3 	maxres   1.34394706277562e-03
+
+Iteration 8 	bsize 3 	maxres   3.07681341555395e-04
+
+Iteration 9 	bsize 3 	maxres   8.70760963721820e-05
+
+Iteration 10 	bsize 3 	maxres   2.29998747093310e-05
+
+Iteration 11 	bsize 3 	maxres   4.70515482875033e-06
+
+Iteration 12 	bsize 2 	maxres   1.40804489228445e-06
+
+Iteration 13 	bsize 2 	maxres   3.80746207768682e-07
+
+Iteration 14 	bsize 2 	maxres   1.02374977567889e-07
+
+Iteration 15 	bsize 2 	maxres   2.62839797025781e-08
+
+Iteration 16 	bsize 2 	maxres   4.73294468228978e-09
+
+
+
+Eigenvalue lambda       Residual              
+
+  2.43042158313016e-01    1.83322321612753e-09
+
+  4.79521039879649e-01    4.73294468228978e-09
+
+  4.79521039879651e-01    3.94953581172754e-09
+
+
+
+16 iterations
+
+Solution process, seconds: 1.605664e+00
+
+
+}}}
+driver_fiedler accepts as input matrices in Petsc format. 
+For example:
+{{{
+>>  ./driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 20
+
+Preconditioner setup, seconds: 0.010741
+
+
+
+Solving standard eigenvalue problem with preconditioning
+
+
+
+block size 3
+
+
+
+1 constraint
+
+
+
+
+
+Initial Max. Residual   9.30058979524258e-01
+
+Iteration 1 	bsize 3 	maxres   1.43833741147424e-02
+
+Iteration 2 	bsize 3 	maxres   6.15942858113996e-03
+
+Iteration 3 	bsize 3 	maxres   2.01079917045845e-03
+
+Iteration 4 	bsize 3 	maxres   1.71920802183462e-03
+
+Iteration 5 	bsize 3 	maxres   8.72186336930106e-04
+
+Iteration 6 	bsize 3 	maxres   3.50198680958579e-04
+
+Iteration 7 	bsize 3 	maxres   1.79087753397569e-04
+
+Iteration 8 	bsize 3 	maxres   1.67429111754386e-04
+
+Iteration 9 	bsize 3 	maxres   1.54268798220444e-04
+
+Iteration 10 	bsize 3 	maxres   1.25465854540571e-04
+
+Iteration 11 	bsize 3 	maxres   6.88295660212444e-05
+
+Iteration 12 	bsize 3 	maxres   7.77445539081224e-05
+
+Iteration 13 	bsize 3 	maxres   7.35395667648613e-05
+
+Iteration 14 	bsize 3 	maxres   6.37301513236273e-05
+
+Iteration 15 	bsize 3 	maxres   6.09975443291103e-05
+
+Iteration 16 	bsize 3 	maxres   5.87098670053548e-05
+
+Iteration 17 	bsize 3 	maxres   5.54299929572641e-05
+
+Iteration 18 	bsize 3 	maxres   5.38754157476224e-05
+
+Iteration 19 	bsize 3 	maxres   5.31567892688132e-05
+
+Iteration 20 	bsize 3 	maxres   4.81419226521259e-05
+
+
+
+Eigenvalue lambda       Residual              
+
+  4.01877789458025e-05    6.20972564393931e-06
+
+  4.02900356844241e-05    1.30957816327902e-05
+
+  4.07278197460483e-05    4.81419226521259e-05
+
+
+
+20 iterations
+
+Solution process, seconds: 8.644127e+00
+
+Final eigenvalues:
+
+4.018778e-05
+
+4.029004e-05
+
+4.072782e-05
+
+
+}}}
