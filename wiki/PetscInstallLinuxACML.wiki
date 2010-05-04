@@ -84,7 +84,7 @@ Note the Hypre is real and 32-bit-indices only, so an attempt to use
 
 Assuming no errors on the previous steps, run
 
-cd /src/contrib/blopex/driver
+cd src/contrib/blopex/driver
 
 make driver
 
