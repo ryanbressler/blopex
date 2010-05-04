@@ -47,8 +47,11 @@ Each library comes in two different flavours, regular and mp, e.g.,
 
 According to Ch. 2 of the ACML manual, see  
 http://developer.amd.com/assets/acml_userguide.pdf
-one should use the mp version on a multi-CPU/core nodes.
-In the notes below, we use the mp version. 
+one should use the mp version on a multi-CPU/core nodes. 
+
+However, the PETSc configure does not like the mp version. 
+It is currently under investigation by the PETSc support. 
+In the notes below, we use the regular version. 
  
 The latest ACML may not work on old CPUs! 
 
@@ -66,9 +69,9 @@ PETSC_DIR=$PWD; export PETSC_DIR
 
 To test the old BLOPEX, run 
 
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit_mp --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib --download-blopex=1 --download-hypre=1
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --download-hypre=1
 
-PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit_mp; export PETSC_ARCH
+PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit; export PETSC_ARCH
 
 make all
 
@@ -88,12 +91,12 @@ make driver
 
 Now, you can execute the driver by using 
 
-mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib ./driver
+mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./driver
 
-Here, both shared libraries /usr/lib64/openmpi/lib and /opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib are necessary to specify in the command-line. 
+Here, both shared libraries /usr/lib64/openmpi/lib and /opt/acml-4-4-0-gfortran-64bit/gfortran64/lib are necessary to specify in the command-line. 
 Alternatively, you can set 
 
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64_mp/lib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
 
 then you can simply run 
 
