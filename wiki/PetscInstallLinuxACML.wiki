@@ -116,21 +116,21 @@ If you cannot be root, contact the sysadmin.
 Here is a complete setup example: 
  
 wget ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz 
-wget http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
-wget http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz
-tar xzvf petsc-lite-3.1.tar.gz
-mv petsc-3.1-p2 petsc-3.1-p2-int64-complex-ACML
-cd petsc-3.1-p2-int64-complex-ACML
+wget http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz 
+wget http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz 
+tar xzvf petsc-lite-3.1.tar.gz 
+mv petsc-3.1-p2 petsc-3.1-p2-int64-complex-ACML 
+cd petsc-3.1-p2-int64-complex-ACML 
 PETSC_DIR=$PWD; export PETSC_DIR 
-module load openmpi-x86_64
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib;
-tar -zxvf ../blopex_petsc_interface.tar.gz
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64  --with-scalar-type=complex --with-64-bit-indices --download-blopex=../blopex_petsc_abstract.tar.gz
-make all
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
-make test
-cd src/contrib/blopex/driver
-make driver
-mpirun -np 2 ./driver
+module load openmpi-x86_64 
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; 
+tar -zxvf ../blopex_petsc_interface.tar.gz 
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64  --with-scalar-type=complex --with-64-bit-indices --download-blopex=../blopex_petsc_abstract.tar.gz 
+make all 
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH 
+make test 
+cd src/contrib/blopex/driver 
+make driver 
+mpirun -np 2 ./driver 
 
 </pre>
