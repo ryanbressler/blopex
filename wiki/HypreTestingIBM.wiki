@@ -98,7 +98,7 @@ be1105en$ ls -l mpi_struct*
 
 = Test Results =
 
-The test is executed on UCAR Bluefire system in May 2010.  This is an AIX operating system and the IBM XL C/C++ compiler (xlc) and IBM version of lapack libraries are used.  
+The test is executed on UCAR Bluefire system in May 2010.  This is an AIX operating system and the IBM XL C/C++ compiler (xlc).  
 
 == STRUCT test ===
 {{{
