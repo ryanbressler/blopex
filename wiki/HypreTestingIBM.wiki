@@ -1,5 +1,5 @@
 #summary BLOPEX Hypre 2.6.0b testing on UCAR Bluefire (IBM)
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 = Introduction =
 
