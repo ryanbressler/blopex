@@ -13,10 +13,9 @@ Extract hypre files from download file.
 {{{
 be1105en$ gunzip -c hypre-2.6.0b.tar.gz | tar -xof -
 }}}
-Copy the BLOPEX modifications tar file hypre_lobpcg_modification.tgz to
-{{{
-be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/src
-}}}
+
+Download the lobpcg modifications from http://code.google.com/p/blopex/downloads/list to your home directory.
+
 Change working directory to hypre source code directory.
 {{{
 be1105en$ cd hypre-2.6.0b/src
@@ -25,10 +24,10 @@ be1105en$ pwd
 }}}
 Install the logpcg modifications.
 {{{
-be1105en$ gunzip -c hypre_lobpcg_modifications.tgz | tar -xof -
+be1105en$ gunzip -c $HOME/hypre_lobpcg_modifications.tgz | tar -xof -
 }}}
-While in the src subdirectory and install hypre with standard setup.  
-Note: this will compiles the BLOPEX source.
+While in the src subdirectory, install hypre with standard setup.  
+Note: this will compile the BLOPEX source.
 Note: the ./nopoe is required for IBM platforms (see Hypre user's manual, Chapter 7.2).
 {{{
 be1105en$ ./nopoe ./configure
@@ -99,27 +98,48 @@ be1105en$ ls -l mpi_struct*
 
 = Test Results =
 
-The test is executed on UCAR Bluefire system in April 2009.  This is an AIX operating system and the IBM XL C/C++ compiler (xlc) and IBM version of lapack libraries are used.  
+The test is executed on UCAR Bluefire system in May 2010.  This is an AIX operating system and the IBM XL C/C++ compiler (xlc) and IBM version of lapack libraries are used.  
 
 == STRUCT test ===
+{{{
+be1005en$ cat mpi_struct.lsf
+#!/bin/csh
+#
+# LSF batch script to run an MPI application
+#
+#BSUB -P 37481005                   # project number
+##BSUB -x                            # exlusive use of node (not_shared)
+#BSUB -W 10:00                      # wall clock time (in minutes)
+#BSUB -n 64                         # number of tasks
+#BSUB -a poe                        # select the poe elim
+##BSUB -R "span[ptile=64]"           # run 64 task per node
+#BSUB -J mpi_struct                # job name
+#BSUB -o mpi_struct.%J.out          # output filename
+#BSUB -e mpi_struct.%J.err          # error filename 
+#BSUB -q share                      # queue
 
-./struct -solver 10 -n 64 64 64 -P 4 4 4 -lobpcg -pcgitr 0
+# set this env for launch as default binding
+setenv TARGET_CPU_LIST "-1"
+ mpirun.lsf /usr/local/bin/launch ./struct -solver 10 -n 64 64 64 -P 4 4 4 -lobpcg  -pcgitr 0 
+}}}
 
 The eigenvalues computed are
 {{{
 Eigenvalue lambda       Residual              
-4.4827998188625719e-04  3.4605760440036511e-07
+4.48279981743157e-04    2.62909485966864e-07
 }}}
 
 BLOPEX execution times
 {{{
 6 iterations
+=============================================
+Solve phase times:
+=============================================
 PCG Solve:
-  wall clock time = 9.470000 seconds
+  wall clock time = 4.630000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 9.028213 seconds
-  cpu MFLOPS      = 0.000000
-}}}
+  cpu clock time  = 4.609700 seconds
+  cpu MFLOPS      = 0.000000}}}
 
 Job execution times
 {{{
