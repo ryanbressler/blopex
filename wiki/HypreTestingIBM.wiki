@@ -1,4 +1,4 @@
-#summary BLOPEX Hypre 2.4.0b testing on UCAR Bluefire (IBM)
+#summary BLOPEX Hypre 2.6.0b testing on UCAR Bluefire (IBM)
 <wiki:toc max_depth="1" />
 
 = Introduction =
@@ -7,11 +7,11 @@ How to test BLOPEX under Beta version of Hypre on Bluefire (IBM).  Hypre does no
 = Setup Hypre =  
 
 Goto https://computation.llnl.gov/casc/hypre/software.html and download hypre. 
-For example the latest beta version of hypre is hypre-2.4.0b.tar.gz
+For example the latest beta version of hypre is hypre-2.6.0b.tar.gz
 
 Extract hypre files from download file.
 {{{
-be1105en$ gunzip -c hypre-2.4.0b.tar.gz | tar -xof -
+be1105en$ gunzip -c hypre-2.6.0b.tar.gz | tar -xof -
 }}}
 Copy the BLOPEX modifications tar file hypre_lobpcg_modification.tgz to
 {{{
@@ -19,9 +19,9 @@ be1105en$ cp hypre_lobpcg_modifications.tgz hypre-2.4.0b/src
 }}}
 Change working directory to hypre source code directory.
 {{{
-be1105en$ cd hypre-2.4.0b/src
+be1105en$ cd hypre-2.6.0b/src
 be1105en$ pwd
-/blhome/dmccuan/hypre-2.4.0b/src
+/blhome/dmccuan/hypre-2.6.0b/src
 }}}
 Install the logpcg modifications.
 {{{
@@ -44,7 +44,7 @@ This creates executables struct and ij.
 {{{
 be1105en$ cd test
 be1105en$ pwd
-/blhome/dmccuan/hypre-2.4.0b/src/test
+/blhome/dmccuan/hypre-2.6.0b/src/test
 be1105en$ make
 ......
 Building new_ij ...
