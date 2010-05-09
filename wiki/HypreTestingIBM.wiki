@@ -139,63 +139,102 @@ PCG Solve:
   wall clock time = 4.630000 seconds
   wall MFLOPS     = 0.000000
   cpu clock time  = 4.609700 seconds
-  cpu MFLOPS      = 0.000000}}}
-
-Job execution times
-{{{
-Resource usage summary:
-
-    CPU time   :   1323.34 sec.
-    Max Memory :        29 MB
-    Max Swap   :        24 MB
-
-    Max Processes  :         6
-    Max Threads    :        10
+  cpu MFLOPS      = 0.000000
 }}}
 
 == IJ test ==
 
-./ij -lobpcg -n 50 50 50 -pcgitr 0 -vrand 96 -seed 1
+{{{
+be1005en$ cat mpi_ij.lsf
+#!/bin/csh
+#
+# LSF batch script to run an MPI application
+#
+#BSUB -P 37481005                   # project number
+##BSUB -x                            # exlusive use of node (not_shared)
+#BSUB -W 10:00                      # wall clock time (in minutes)
+#BSUB -n 10                         # number of tasks
+#BSUB -a poe                        # select the poe elim
+##BSUB -R "span[ptile=64]"           # run 64 task per node
+#BSUB -J mpi_ij                 # job name
+#BSUB -o mpi_ij.%J.out          # output filename
+#BSUB -e mpi_ij.%J.err          # error filename 
+#BSUB -q share                      # queue
 
-The first 10 eigenvalues computed are
+# set this env for launch as default binding
+setenv TARGET_CPU_LIST "-1"
+ mpirun.lsf /usr/local/bin/launch ./ij -lobpcg -n 50 50 50 -pcgitr 0 -vrand 96 -seed 1
+The first few eigenvalues computed are
+}}}
 
 {{{ 
 Eigenvalue lambda       Residual              
-1.1380027577735664e-02  4.8953248756283098e-09
-2.2745665707950596e-02  5.3347793118004116e-09
-2.2745665707953416e-02  4.9061578272060589e-09
-2.2745665707955796e-02  5.0516150816646865e-09
-3.4111303838161001e-02  3.4990279741859855e-09
-3.4111303838166282e-02  1.9479807632388333e-09
-3.4111303838168891e-02  3.5753876490713000e-09
-4.1640485684018340e-02  7.9576179689033350e-10
-4.1640485684021476e-02  8.6006747881411309e-10
-4.1640485684025182e-02  8.4367991930050566e-09
-4.5476941968386475e-02  2.4535743998412773e-09
-5.3006123814229637e-02  6.5343884561675320e-09
-5.3006123814233037e-02  4.9558820820555858e-09
-5.3006123814234606e-02  9.8469808900638760e-09
+  1.13800275777369e-02    4.89532361198085e-09
+  2.27456657079491e-02    5.23651180092394e-09
+  2.27456657079526e-02    5.54157538576400e-09
+  2.27456657079561e-02    4.46313137226598e-09
+  3.41113038381640e-02    3.34392903105364e-09
+  3.41113038381707e-02    3.59684589893089e-09
+  3.41113038381710e-02    2.16836581877328e-09
+  4.16404856840192e-02    8.37499996905196e-09
+  4.16404856840206e-02    8.65544066661302e-09
+  4.16404856840226e-02    9.56972716502999e-10
+  4.54769419683833e-02    2.45794568105811e-09
+  5.30061238142314e-02    8.90985834786345e-09
+  5.30061238142333e-02    7.72720854716801e-09
+  5.30061238142363e-02    8.01016025969816e-09
+  5.30061238142385e-02    8.50898851924983e-09
+  5.30061238142395e-02    5.22601299093058e-09
 }}}
 
 BLOPEX execution times
 {{{
 100 iterations
+=============================================
+Solve phase times:
+=============================================
 LOBPCG Solve:
-  wall clock time = 120.390000 seconds
+  wall clock time = 114.460000 seconds
   wall MFLOPS     = 0.000000
-  cpu clock time  = 118.929832 seconds
+  cpu clock time  = 113.715337 seconds
   cpu MFLOPS      = 0.000000
 }}}
 
-Job execution times
+== ex11.c test ==
+
+This test was added for hypre-2.6.0b and is located in directory src/examples.  The Makefile there is setup for linux and is not maintained for other operating systems.  The simplest way to compiles and run this is to move it to directory src/test and modify the Makefile there (which does support aix) to compile ex11.  Add the following lines to Makefile using your favorite editor. Note the 2nd and 3rd line must begin with a tab (not spaces).  This is the standard Makefile convention.
 {{{
-Resource usage summary:
-
-    CPU time   :   1201.16 sec.
-    Max Memory :      1271 MB
-    Max Swap   :      1279 MB
-
-    Max Processes  :        16
-    Max Threads    :       120
+ex11: fij_mv.o fparcsr_mv.o fparcsr_ls.o ex11.o
+        @echo "Building" $@ "... "
+        ${LINK_CC} -o $@ fij_mv.o fparcsr_mv.o fparcsr_ls.o $@.o ${FFLAGS} ${LFLAGS}
 }}}
- 
+
+Compile ex11.c
+{{{
+>>make ex11
+}}}
+
+And test with the following lsf file.
+{{{
+be1005en$ cat mpi_ex11.lsf
+#!/bin/csh
+#
+# LSF batch script to run an MPI application
+#
+#BSUB -P 37481005                   # project number
+##BSUB -x                            # exlusive use of node (not_shared)
+#BSUB -W 10:00                      # wall clock time (in minutes)
+#BSUB -n 4                         # number of tasks
+#BSUB -a poe                        # select the poe elim
+##BSUB -R "span[ptile=64]"           # run 64 task per node
+#BSUB -J mpi_ex11                 # job name
+#BSUB -o mpi_ex11.%J.out          # output filename
+#BSUB -e mpi_ex11.%J.err          # error filename 
+#BSUB -q share                      # queue
+
+# set this env for launch as default binding
+setenv TARGET_CPU_LIST "-1"
+ mpirun.lsf /usr/local/bin/launch ./ex11
+}}}
+
+
