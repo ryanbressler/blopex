@@ -164,9 +164,9 @@ be1005en$ cat mpi_ij.lsf
 # set this env for launch as default binding
 setenv TARGET_CPU_LIST "-1"
  mpirun.lsf /usr/local/bin/launch ./ij -lobpcg -n 50 50 50 -pcgitr 0 -vrand 96 -seed 1
-The first few eigenvalues computed are
 }}}
 
+The first few eigenvalues computed are
 {{{ 
 Eigenvalue lambda       Residual              
   1.13800275777369e-02    4.89532361198085e-09
