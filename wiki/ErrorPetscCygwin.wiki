@@ -3,7 +3,7 @@
 
 = Introduction =
 
-Getting some errors of the test of  BLOPEX Complex under Petsc-3.1-p2 on Cygwin 
+Getting some errors of the test of  BLOPEX Complex under Petsc-3.1-p2 on Cygwin in Windows XP
 
 = Setup Petsc =  
 
