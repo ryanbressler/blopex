@@ -68,98 +68,131 @@ For example:
 Save the output result in file testdouble.doc.
 {{{
 Partitioning: 1 1 1
-Preconditioner setup, seconds: 0.000608
-Initial Max. Residual   2.39094944828294e+00
-Iteration 1 	bsize 3 	maxres   1.40974603809037e+00
-Iteration 2 	bsize 3 	maxres   5.26363753650121e-01
-Iteration 3 	bsize 3 	maxres   3.14290197742993e-01
-Iteration 4 	bsize 3 	maxres   9.41239727607964e-02
-Iteration 5 	bsize 3 	maxres   2.71535492759968e-02
-Iteration 6 	bsize 3 	maxres   8.39578753798627e-03
-Iteration 7 	bsize 3 	maxres   1.62604485844861e-03
-Iteration 8 	bsize 3 	maxres   3.45269637060868e-04
-Iteration 9 	bsize 3 	maxres   5.01544721670845e-05
-Iteration 10 	bsize 3 	maxres   1.99447231907575e-05
-Iteration 11 	bsize 3 	maxres   5.53987092566509e-06
-Iteration 12 	bsize 2 	maxres   1.57440393034012e-06
-Iteration 13 	bsize 2 	maxres   2.71131468175827e-07
-Iteration 14 	bsize 2 	maxres   5.63114795119421e-08
-Iteration 15 	bsize 2 	maxres   1.99080884910654e-08
-Iteration 16 	bsize 1 	maxres   6.42500126660348e-09
+Preconditioner setup, seconds: 0.001005
+Solving standard eigenvalue problem with preconditioning
+
+block size4
+No constraints
+Initial Max. Residual   2.40609319513876e+00
+Iteration 1 	bsize 4 	maxres   1.40642211978996e+00
+Iteration 2 	bsize 4 	maxres   5.02760800609410e-01
+Iteration 3 	bsize 4 	maxres   3.93623262505509e-01
+Iteration 4 	bsize 4 	maxres   1.60680169022797e-01
+Iteration 5 	bsize 4 	maxres   3.77313261807019e-02
+Iteration 6 	bsize 4 	maxres   1.12801976826879e-02
+Iteration 7 	bsize 4 	maxres   1.66006100058035e-03
+Iteration 8 	bsize 4 	maxres   3.61387759393677e-04
+Iteration 9 	bsize 4 	maxres   7.37015225576054e-05
+Iteration 10 	bsize 4 	maxres   2.66979360160027e-05
+Iteration 11 	bsize 3 	maxres   7.01936652023119e-06
+Iteration 12 	bsize 3 	maxres   1.60098479070793e-06
+Iteration 13 	bsize 3 	maxres   4.53263182259180e-07
+Iteration 14 	bsize 3 	maxres   5.98853182054774e-08
+Iteration 15 	bsize 3 	maxres   1.30136443945144e-08
+Iteration 16 	bsize 3 	maxres   3.11832407459781e-09
 
 Eigenvalue lambda       Residual              
-  2.43042158313016e-01    2.06075491123769e-09
-  4.79521039879650e-01    4.46203426266394e-09
-  4.79521039879652e-01    6.42500126660348e-09
+  2.43042158313016e-01    2.10410583168116e-09
+  4.79521039879646e-01    3.11832407459781e-09
+  4.79521039879650e-01    2.98754868633799e-09
+  4.79521039879653e-01    2.68672608547834e-09
 
 16 iterations
-Solution process, seconds: 1.923329e-01
+Solution process, seconds: 5.043915e-01
 }}}
 
 We first run driver_fiedler for the matrix provided in _L-matrix-double.petsc_.
 For example:
 {{{
->> ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 3 -itr 20 >test1.doc
+>> ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 4 -itr 20 >1.doc
 }}}
-Save the output result in file test1.doc.
+Save the output result in file 1.doc.
 
 {{{
-Preconditioner setup, seconds: 0.076990
-Initial Max. Residual   1.45518043157658e+00
-Iteration 1 	bsize 3 	maxres   8.15822827240446e-04
-Iteration 2 	bsize 3 	maxres   2.40127078204264e-04
-Iteration 3 	bsize 3 	maxres   1.12407387047927e-04
-Iteration 4 	bsize 3 	maxres   5.36919960040654e-05
-Iteration 5 	bsize 3 	maxres   3.22166378786430e-05
-Iteration 6 	bsize 2 	maxres   1.37404514278325e-05
-Iteration 7 	bsize 2 	maxres   5.79978572390536e-06
-Iteration 8 	bsize 1 	maxres   1.48717028588284e-06
-Iteration 9 	bsize 1 	maxres   3.55034347259269e-07
-Iteration 10 	bsize 1 	maxres   1.39867893025934e-07
-Iteration 11 	bsize 1 	maxres   7.41945605627964e-08
-Iteration 12 	bsize 1 	maxres   3.88668439209947e-08
-Iteration 13 	bsize 1 	maxres   1.28881289961934e-08
-Iteration 14 	bsize 1 	maxres   4.05536869263948e-09
+Preconditioner setup, seconds: 0.206715
+Solving standard eigenvalue problem with preconditioning
+block size 4
+
+1 constraint
+Initial Max. Residual   1.45519099953812e+00
+Iteration 1 	bsize 4 	maxres   9.05087940709310e-04
+Iteration 2 	bsize 4 	maxres   2.39221179416152e-04
+Iteration 3 	bsize 4 	maxres   1.87262105933628e-04
+Iteration 4 	bsize 4 	maxres   2.05953528268151e-04
+Iteration 5 	bsize 4 	maxres   7.09301312527200e-05
+Iteration 6 	bsize 3 	maxres   2.18857830352927e-05
+Iteration 7 	bsize 3 	maxres   7.38935901673601e-06
+Iteration 8 	bsize 2 	maxres   3.37368636921290e-06
+Iteration 9 	bsize 2 	maxres   2.35199689607197e-06
+Iteration 10 	bsize 2 	maxres   1.04900158672169e-06
+Iteration 11 	bsize 2 	maxres   2.93046178784941e-07
+Iteration 12 	bsize 1 	maxres   1.17199707404717e-07
+Iteration 13 	bsize 1 	maxres   4.97717504594874e-08
+Iteration 14 	bsize 1 	maxres   2.60491750604494e-08
+Iteration 15 	bsize 1 	maxres   1.12406936225263e-08
+Iteration 16 	bsize 1 	maxres   9.91941916669244e-09
 
 Eigenvalue lambda       Residual              
-  3.24057229834819e-06    1.13454736714304e-09
-  9.46022689452516e-06    2.28965192080072e-09
-  2.01380536840438e-05    4.05536869263948e-09
+  3.24057229832643e-06    7.86279163265225e-10
+  9.46022689441448e-06    2.02253778797195e-09
+  2.01380537109246e-05    9.91941916669244e-09
+  2.39583260612299e-05    6.19645713745670e-09
 
-14 iterations
-Solution process, seconds: 3.506331e+02
+16 iterations
+Solution process, seconds: 7.210370e+02
 Final eigenvalues:
 3.240572e-06
 9.460227e-06
 2.013805e-05
+2.395833e-05
 }}}
 
 Now we run similar tests for the matrix provided in _DL-matrix-double.petsc_.
 {{{
-$./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3  -itr 20 >test2.doc
+$./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 4  -itr 20 >2.doc
 }}}
-Save the output result in file test2.doc.
+Save the output result in file 2.doc.
 
 {{{
-Initial Max. Residual   9.31442380281522e-01
-Iteration 1 	bsize 3 	maxres   1.04209119599699e-02
-Iteration 2 	bsize 3 	maxres   5.69432261384482e-03
-Iteration 3 	bsize 3 	maxres   1.08259655175457e-03
-..........
-Iteration 17 	bsize 3 	maxres   5.32624741487571e-05
-Iteration 18 	bsize 3 	maxres   5.26499262381087e-05
-Iteration 19 	bsize 3 	maxres   4.48712832976272e-05
-Iteration 20 	bsize 3 	maxres   4.82871050489235e-05
+Preconditioner setup, seconds: 0.187320
+Solving standard eigenvalue problem with preconditioning
+block size 4
+
+1 constraint
+
+Initial Max. Residual   9.30504349241123e-01
+Iteration 1 	bsize 4 	maxres   1.60933722979713e-02
+Iteration 2 	bsize 4 	maxres   9.71254073702964e-03
+Iteration 3 	bsize 4 	maxres   1.93810873354354e-03
+Iteration 4 	bsize 4 	maxres   7.88025911920671e-04
+Iteration 5 	bsize 4 	maxres   3.33356209786235e-04
+Iteration 6 	bsize 4 	maxres   2.75095160484097e-04
+Iteration 7 	bsize 4 	maxres   2.08525962509773e-04
+Iteration 8 	bsize 4 	maxres   1.64269285688367e-04
+Iteration 9 	bsize 4 	maxres   1.65574819609620e-04
+Iteration 10 	bsize 4 	maxres   1.27822989524027e-04
+Iteration 11 	bsize 4 	maxres   1.04802219934669e-04
+Iteration 12 	bsize 4 	maxres   1.11437834825403e-04
+Iteration 13 	bsize 4 	maxres   1.05002753508993e-04
+Iteration 14 	bsize 4 	maxres   7.37718385144399e-05
+Iteration 15 	bsize 4 	maxres   7.04144115253489e-05
+Iteration 16 	bsize 4 	maxres   4.11646007287232e-05
+Iteration 17 	bsize 4 	maxres   4.11114688194940e-05
+Iteration 18 	bsize 4 	maxres   3.94082303167608e-05
+Iteration 19 	bsize 4 	maxres   4.71440345324343e-05
+Iteration 20 	bsize 4 	maxres   3.37555345080628e-05
 
 Eigenvalue lambda       Residual              
-  4.02544378183548e-05    6.39412824459574e-06
-  4.03050265221568e-05    2.16914554179753e-05
-  4.06041171449838e-05    4.82871050489235e-05
+  4.02180330475384e-05    2.40839602288392e-05
+  4.02557767575617e-05    8.55127947199847e-06
+  4.03477225760208e-05    3.31952148670252e-05
+  4.05149879367504e-05    3.37555345080628e-05
 
 20 iterations
-Solution process, seconds: 3.137963e+00
+Solution process, seconds: 4.487084e+00
 Final eigenvalues:
-4.025444e-05
-4.030503e-05
-4.060412e-05
+4.021803e-05
+4.025578e-05
+4.034772e-05
+4.051499e-05
 }}}
