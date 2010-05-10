@@ -1,18 +1,18 @@
-#summary BLOPEX Double PETSc testing on Cygwin
+#summary BLOPEX Double and 64 bit PETSc testing on Cygwin
 <wiki:toc max_depth="2" />
 
 = Introduction =
 
-Getting the test of  BLOPEX Double under Petsc-3.1-p2 on Cygwin 
+We do the test of  BLOPEX Double and 64bit under Petsc-3.1-p2 on Cygwin 
 
 = Setup Petsc =  
 
-To use blopex_solve_double using the  Petsc first download the development version from the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
+First download the development version from the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
 In particular, if you install in windows, see http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows. One can download Cygwin from http://cygwin.com/.
 
-I download Petsc-3.1-p2 in L:/pei/petsc_double. To install files issue command:
+I download Petsc-3.1-p2 in L:/pei/petsc_double_64. To install files issue command:
 {{{
->> cd  /cygdrive/l/pei/petsc_double
+>> cd  /cygdrive/l/pei/petsc_double_64
 >> gunzip -c petsc-3.1-p2.tar.gz | tar -xof - 
 }}}
 This creates files in directory petsc-3.1-p2 
@@ -25,14 +25,14 @@ Then
 
 Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
 
-Assuming you are in your home directory such as /cygdrive/l/pei/petsc_double, install as follows:
+Assuming you are in your home directory such as /cygdrive/l/pei/petsc_double_64, install as follows:
 {{{
 >> tar -zxvf blopex_petsc_interface.tar.gz
 }}}
 
 Configure Petsc as follows:
 {{{
->> ./config/configure.py  --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_double/blopex_petsc_abstract.tar.gz 
+>> ./config/configure.py  --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_double_64/blopex_petsc_abstract.tar.gz --with-64-bit-indices
 }}}
 
 After configuration is finished issue the command
@@ -47,16 +47,19 @@ Now create executables for the blopex driver
 {{{
 >> cd petsc-3.1-p2/src/contrib/blopex/driver
 >> make driver
->> ./driver -n_eigs 4 -itr 20  >testdouble.doc
+>> ./driver -n_eigs 4 -itr 20  >test1.doc
 }}}
-The output file is saved as testdouble.doc
+The output file is saved as test1.doc
 {{{
-Partitioning: 1 1 1
-Preconditioner setup, seconds: 0.001005
+Partitioning: 1 0 1
+Preconditioner setup, seconds: 0.000648
+
 Solving standard eigenvalue problem with preconditioning
+
 block size 4
 
 No constraints
+
 
 Initial Max. Residual   2.40609319513876e+00
 Iteration 1 	bsize 4 	maxres   1.40642211978996e+00
@@ -83,17 +86,17 @@ Eigenvalue lambda       Residual
   4.79521039879653e-01    2.68672608547834e-09
 
 16 iterations
-Solution process, seconds: 5.043915e-01
+Solution process, seconds: 3.299436e-01
 }}}
 Now create executables for the blopex driver_fiedler 
 {{{
 >> cd petsc-3.1-p2/src/contrib/blopex/driver_fiedler
 >> make driver_fiedler
->>./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 4 -itr 20 >1.doc
+>>./driver_fiedler -matrix L-matrix-double_64.petsc -n_eigs 4 -itr 20 >test2.doc
 }}}
-The output file is saved as 1.doc
+The output file is saved as test2.doc
 {{{
-Preconditioner setup, seconds: 0.206715
+Preconditioner setup, seconds: 0.136864
 
 Solving standard eigenvalue problem with preconditioning
 
@@ -126,7 +129,7 @@ Eigenvalue lambda       Residual
   2.39583260612299e-05    6.19645713745670e-09
 
 16 iterations
-Solution process, seconds: 7.210370e+02
+Solution process, seconds: 5.784891e+02
 Final eigenvalues:
 3.240572e-06
 9.460227e-06
@@ -134,17 +137,18 @@ Final eigenvalues:
 2.395833e-05
 }}}
 {{{
->>./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 4 -itr 20 >2.doc
+>>./driver_fiedler -matrix DL-matrix-double_64.petsc -n_eigs 4 -itr 20 >test3.doc
 }}}
-The output file is saved as 2.doc
+The output file is saved as test3.doc
 {{{
-Preconditioner setup, seconds: 0.187320
+Preconditioner setup, seconds: 0.120175
 
 Solving standard eigenvalue problem with preconditioning
 
 block size 4
 
 1 constraint
+
 
 Initial Max. Residual   9.30504349241123e-01
 Iteration 1 	bsize 4 	maxres   1.60933722979713e-02
@@ -175,7 +179,7 @@ Eigenvalue lambda       Residual
   4.05149879367504e-05    3.37555345080628e-05
 
 20 iterations
-Solution process, seconds: 4.487084e+00
+Solution process, seconds: 4.920553e+00
 Final eigenvalues:
 4.021803e-05
 4.025578e-05
