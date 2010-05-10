@@ -3,7 +3,7 @@
 
 = Introduction =
 
-How to test BLOPEX Double under Petsc-3.0.0 on Windows XP
+How to test BLOPEX Double under Petsc-3.1-p2 on Windows XP
 
 = Setup Petsc =  
 
@@ -11,34 +11,31 @@ To use blopex_solve_double using the  Petsc first download the development versi
 the Petsc website at http://www.mcs.anl.gov/petsc/petsc-as/download/index.html
 In particular, if you install in windows, see http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows. One can download Cygwin from http://cygwin.com/.
 
-I download Petsc-3.0.0 in L:/pei/petsc_1. To install files issue command:
+I download Petsc-3.1-p2 in L:/pei/petsc_double. To install files issue command:
 {{{
->> cd  /cygdrive/l/pei/petsc_1
->> gunzip -c petsc-3.0.0.tar.gz | tar -xof - 
+>> cd  /cygdrive/l/pei/petsc_double
+>> gunzip -c petsc-3.1-p2.tar.gz | tar -xof - 
 }}}
-This creates files in directory petsc-3.0.0 
+This creates files in directory petsc-3.1-p2
 
-Download the blopex_petsc_interface.tar.gz and blopex_abstract_Mar_2010.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
-
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part Petsc.  Assuming you are in your home directory such as /cygdrive/l/pei/petsc_1, install as follows:
+Then
 {{{
->> cp blopex_petsc_interface.tar.gz  petsc-3.0.0/src/contrib/blopex/
->> cd petsc-3.0.0/src/contrib/blopex
->> tar -xvf blopex_petsc_interface.tar.gz
+cd petsc-3.1-p2
+export PETSC_DIR=$PWD
+}}}
+
+Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex and then move them to your home directory.
+
+Assuming you are in your home directory such as /cygdrive/l/pei/petsc_double, install as follows:
+{{{
+>> tar -zxvf blopex_petsc_interface.tar.gz
 }}}
 
 Configure Petsc as follows:
 {{{
->> ./config/configure.py  --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_1/blopex_abstract_Mar_2010.tar.gz
+>> ./config/configure.py  --download-f-blas-lapack=1 --download-mpich=1 --download-blopex=/cygdrive/l/pei/petsc_double/blopex_petsc_abstract.tar.gz
 }}}
 
-Now two environment variables must be setup:
-{{{
->> PETSC_DIR=/cygdrive/l/pei/petsc_1/petsc-3.0.0
->> export PETSC_DIR
->> PETSC_ARCH=cygwin-c-debug
->> export PETSC_ARCH
-}}}
 
 After configuration is finished issue the command
 {{{
@@ -50,7 +47,7 @@ After configuration is finished issue the command
  
 Now create executables for the blopex drivers 
 {{{
->> cd petsc-3.0.0/src/contrib/blopex/driver
+>> cd petsc-3.1-p2/src/contrib/blopex/driver
 >> make driver
 >> cd ../driver_fiedler
 >> make driver_fiedler
@@ -66,9 +63,9 @@ driver builds a 7pt laplacian for solution and calls  lobpcg_solve_double, since
 
 For example:
 {{{
->> ./driver -n_eigs 3 -itr 20 >testdriver.doc
+>> ./driver -n_eigs 4 -itr 20 >testdouble.doc
 }}}
-Save the output result in file testdriver.doc.
+Save the output result in file testdouble.doc.
 {{{
 Partitioning: 1 1 1
 Preconditioner setup, seconds: 0.000608
