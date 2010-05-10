@@ -1,4 +1,4 @@
-#summary Errors with BLOPEX Double PETSc testing on Cygwin
+#summary BLOPEX Double PETSc testing on Cygwin
 <wiki:toc max_depth="2" />
 
 = Introduction =
