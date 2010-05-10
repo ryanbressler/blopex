@@ -42,7 +42,8 @@ After configuration is finished issue the command
 }}}
 
 = Execution of Tests =  
- Now create executables for the blopex driver 
+
+Now create executables for the blopex driver 
 {{{
 >> cd petsc-3.1-p2/src/contrib/blopex/driver
 >> make driver
