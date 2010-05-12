@@ -17,8 +17,9 @@ rm -r petsc-3.1-p2
 
 To install files issue command:
 {{{
->> gunzip -c petsc-dev.tar.gz | tar -xof -
+>> tar -zxvf petsc-lite-3.1-p2.tar.gz
 }}}
+
 This creates files in directory petsc-3.1-p2.
 
 A special config file is needed. This is a python script that acts as a wrapper on the normal configure.py. Frost has a version of this for Petsc 3.0 at /contrib/bgl/petsc/petsc-3.0.0-p4/bgl-ibm-goto_lapack.py. We must make changes for Petsc 3.1.  Copy it to your home directory.
