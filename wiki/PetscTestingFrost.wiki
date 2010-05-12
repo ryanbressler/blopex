@@ -173,6 +173,23 @@ Eigenvalue lambda       Residual
 Solution process, seconds: 1.077944e+00
 }}}
 
+=== driver_diag ===
+
+cqsub -n 2 -t 00:10:00 ./driver_diag -N 1000000 -n_eigs 3 -tol 1e-6 -itr 20
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual
+  1.18514681741652e+00    2.05852723173605e+02
+  2.21912019728413e+00    2.35335764278854e+02
+  3.24440742392664e+00    2.54876796330367e+02
+
+20 iterations
+Solution process, seconds: 1.598297e+00
+}}}
+ 
+Note: couldn't allocate sufficient memory for 9000000 which was the maximum tested on xvia.
+
 == Configure for complex ==
 
 === driver ===
@@ -246,20 +263,3 @@ Final eigenvalues:
 9.433218e-01
 9.465716e-01
 }}}
-
-=== driver_diag ===
-
-cqsub -n 2 -t 00:10:00 ./driver_diag -N 1000000 -n_eigs 3 -tol 1e-6 -itr 20
-
-Eigenvalues computed
-{{{
-Eigenvalue lambda       Residual
-  1.18514681741652e+00    2.05852723173605e+02
-  2.21912019728413e+00    2.35335764278854e+02
-  3.24440742392664e+00    2.54876796330367e+02
-
-20 iterations
-Solution process, seconds: 1.598297e+00
-}}}
- 
-Note: couldn't allocate sufficient memory for 9000000 which was the maximum tested on xvia.
