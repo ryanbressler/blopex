@@ -79,7 +79,7 @@ This creates file reconfigure.py which is now executed.
 Now two environment variables must be setup as specified in the configuration run. Note by default we are running under the csh shell.
 {{{
 >> setenv PETSC_ARCH bgl-ibm-goto-O3_440d  
->> setenv PETSC_DIR /home/dmccuan/petsc-dev
+>> setenv PETSC_DIR /home/dmccuan/petsc-3.1-p2
 }}}
 
 We will also need these set when compiling the blopex_petsc drivers.
