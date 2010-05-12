@@ -9,7 +9,7 @@ How to test BLOPEX under Beta version of Petsc on IBM Linux system Frost.
 
 To use blopex_solve_double or blopex_solve_complex using the 
 Beta release of Petsc first download the development version from 
-the Petsc website at ftp://info.mcs.anl.gov/pub/petsc-3.1-p2.tar.gz .
+the Petsc website at http://www.mcs.anl.gov/petsc/petsc-2/download/index.html .
  
 
 To install files issue command:
