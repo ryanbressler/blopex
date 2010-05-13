@@ -57,10 +57,10 @@ This setup script will work for Linux, GNU, Lapack systems.  Other systems can b
 
 If you are going to test with Petsc configured for 64bit integers, you should be aware of the following:
 
- # You use the option `--with-64-bit-indices` to configure Petsc.  The type PetscInt will be defined with the interger type your compiler needs for 64bit integers (usually `long long`).
+ # You use the option `--with-64-bit-indices` to configure Petsc.  The type `PetscInt` will be defined with the interger type your compiler needs for 64bit integers (usually `long long`).
  # Petsc configuration won't allow you to do this with blopex unless blopex.py (see above) has the following line added after "self.complex =1"; "self.requires32bitint = 0". This tells the configurator that blopex is coded to use 64bit integers (or 32bit). 
- # We want the Petsc abstract, interface, and driver code to be compiled with 64bit integers.  This is accomplished by having a special version of fortran_options.h which includes "petsc.h" (where PetscInt is defined) and forces our preprocessor variable BlopexInt equal to PetscInt.  This is the same approach that we have for HYPRE.  The Petsc version of fortran_options.h is in "blopex_petsc/utilities/".
- # In driver_fiedler.c matrices are read in a Petsc Format.  These files can be created by matlab pgms (see m files in source directory blopex_petsc).  When created integers are written as either 32bit or 64bit.  This must match with the definition of PetscInt.  Consequently, both 32bit and 64bit versions of our test files are needed.  The 64bit versions contain "_64" in the file name.
+ # We want the Petsc abstract, interface, and driver code to be compiled with 64bit integers.  This is accomplished by having a special version of fortran_options.h which includes "petsc.h" (where `PetscInt` is defined) and forces our preprocessor variable BlopexInt equal to PetscInt.  This is the same approach that we have for HYPRE.  The Petsc version of fortran_options.h is in "blopex_petsc/utilities/".
+ # In driver_fiedler.c matrices are read in a Petsc Format.  These files can be created by matlab pgms (see m files in source directory blopex_petsc).  When created integers are written as either 32bit or 64bit.  This must match with the definition of `PetscInt`.  Consequently, both 32bit and 64bit versions of our test files are needed.  The 64bit versions contain "_64" in the file name.
 
 = An alternative testing method for developers =
 
