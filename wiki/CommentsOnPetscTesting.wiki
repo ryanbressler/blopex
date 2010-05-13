@@ -36,9 +36,10 @@ Note that the drivers are not compiled in this step.  Now the driver can be comp
 = Testing Petsc with BLOPEX changes =
 
 The changes needed to incorporate a new release of BLOPEX into PETSC are defined in two tar files.
-
- # http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz
- # http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
+{{{
+ http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz
+ http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz
+}}}
 
 To setup PETSC perform the following steps:
 
