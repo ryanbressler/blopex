@@ -51,7 +51,7 @@ To setup PETSC perform the following steps:
  # The blopex_petsc_interface tar contains an edited version of blopex.py to allow for complex scalars and 64bit integers, so you don't have to edit the blopex.py file.
  # Then configure PETSC using the "--download-blopex" option as described above with the blopex_petsc_abstract.tar.gz.  Follow this with a "make all test" and then make and execute the drivers.
  
-This setup script will work for Linux, GNU, Lapack systems.  Other systems can be more complicated.  Refer to the Wiki's for details.
+*This setup script will work well for most Linux, GNU, Lapack systems.  Other systems can be more complicated.  Refer to the Wiki's for details.*
 
 = 64bit testing =
 
