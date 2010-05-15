@@ -1,8 +1,8 @@
-#summary One-sentence summary of this page.
+#summary Petsc Testing on Linux using ACML libs at LLNL
 
 = Introduction =
 
-Add your content here.
+How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configured for 64bit integers and complex using the ACML libraries at LLNL.
 
 
 = Details =
