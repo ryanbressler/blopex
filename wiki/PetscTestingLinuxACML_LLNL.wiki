@@ -7,7 +7,8 @@ How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configu
 
 = Details =
 
-See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML for most of the installation details.
+See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML and
+http://code.google.com/p/blopex/wiki/PetscTestingLinux for most of the installation details.
 
 
 
