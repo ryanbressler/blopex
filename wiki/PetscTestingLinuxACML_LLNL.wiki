@@ -16,3 +16,39 @@ config/configure.py --with-blas-lapack-dir=/g/g22/argen1/lib/acml-4-4-0-gfortran
 int64/gfortran64_mp_int64/lib --with-scalar-type=complex --with-64-bit-indices --download-
 blopex=/g/g22/argen1/Downloads/Petsc/blopex_petsc_abstract.tar.gz
 }}}
+
+= Execution of Tests =
+
+
+{{{
+driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 200
+}}}
+
+{{{
+Preconditioner setup, seconds: 0.026089
+Solving standard eigenvalue problem with preconditioning
+block size 3
+1 constraint
+
+Initial Max. Residual   9.32569736871893e-01
+Iteration 1     bsize 3         maxres   1.25435910893594e-02
+Iteration 2     bsize 3         maxres   1.12169888204856e-02
+Iteration 3     bsize 3         maxres   2.01586998110087e-03
+Iteration 4     bsize 3         maxres   1.26519755131709e-03
+.................
+Iteration 197   bsize 3         maxres   3.84901434292814e-06
+Iteration 198   bsize 3         maxres   3.82215117346368e-06
+Iteration 199   bsize 3         maxres   3.84794342322297e-06
+Iteration 200   bsize 3         maxres   3.83687176782694e-06
+
+Eigenvalue lambda       Residual              
+  4.01468223580437e-05    3.83687176782694e-06
+  4.01897713934938e-05    3.28372181438621e-06
+  4.02222246852095e-05    3.53631825207124e-06
+
+200 iterations
+Solution process, seconds: 9.115923e+01
+Final eigenvalues:
+4.014682e-05
+4.018977e-05
+}}}
