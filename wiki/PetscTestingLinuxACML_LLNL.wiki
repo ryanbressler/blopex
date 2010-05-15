@@ -19,6 +19,43 @@ blopex=/g/g22/argen1/Downloads/Petsc/blopex_petsc_abstract.tar.gz
 
 = Execution of Tests =
 
+{{{
+srun -n2 -ppdebug driver -n_eigs 3 -itr 20
+}}}
+
+{{{
+Partitioning: 1 2 1
+Preconditioner setup, seconds: 0.000696
+Solving standard eigenvalue problem with preconditioning
+block size 3
+No constraints
+
+Initial Max. Residual   2.36275597190805e+00
+Iteration 1     bsize 3         maxres   1.36854860556819e+00
+Iteration 2     bsize 3         maxres   4.60249737516755e-01
+Iteration 3     bsize 3         maxres   1.81142996391104e-01
+Iteration 4     bsize 3         maxres   5.36018111602656e-02
+Iteration 5     bsize 3         maxres   1.69306765406134e-02
+Iteration 6     bsize 3         maxres   4.50314165014696e-03
+Iteration 7     bsize 3         maxres   1.02045240578399e-03
+Iteration 8     bsize 3         maxres   1.99167510305146e-04
+Iteration 9     bsize 3         maxres   3.96751512817884e-05
+Iteration 10    bsize 3         maxres   9.15214998030157e-06
+Iteration 11    bsize 3         maxres   2.52806768270152e-06
+Iteration 12    bsize 2         maxres   8.96269840598450e-07
+Iteration 13    bsize 2         maxres   1.89462955843519e-07
+Iteration 14    bsize 2         maxres   3.71156225287738e-08
+Iteration 15    bsize 2         maxres   9.27903687029665e-09
+
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    2.33732855712450e-09
+  4.79521039879647e-01    7.46893054591811e-09
+  4.79521039879661e-01    9.27903687029665e-09
+
+15 iterations
+Solution process, seconds: 3.313789e-01
+}}}
+
 
 {{{
 driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 200
