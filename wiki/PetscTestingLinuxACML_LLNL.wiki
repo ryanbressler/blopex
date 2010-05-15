@@ -2,7 +2,7 @@
 
 = Introduction =
 
-How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configured for 64bit integers and complex using the ACML libraries at LLNL.
+How to setup and test BLOPEX under version 3.1 of Petsc on Linux at LLNL (Atlas machine) with Petsc, e.g., configured for 64bit integers and complex using the ACML libraries at LLNL.
 
 
 = Details =
@@ -11,9 +11,9 @@ See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML and
 http://code.google.com/p/blopex/wiki/PetscTestingLinux for most of the installation details.
 
 I downloaded a special version of {{{BlasLapack.py}}} (provided by Andrew)
-and replaced {{{.../config/BuildSystem/config/packages/BlasLapack.py}}} for the ACML lib.
+and replaced {{{.../config/BuildSystem/config/packages/BlasLapack.py}}} for testing of the ACML library.
 
-We document the configuration step here using Petsc for both complex and 64bit: 
+Document the configuration step here using Petsc for both complex and 64bit: 
 {{{
 config/configure.py --with-blas-lapack-dir=/g/g22/argen1/lib/acml-4-4-0-gfortran-64bit-
 int64/gfortran64_mp_int64/lib --with-scalar-type=complex --with-64-bit-indices --download-
