@@ -10,9 +10,7 @@ How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configu
 See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML and
 http://code.google.com/p/blopex/wiki/PetscTestingLinux for most of the installation details.
 
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+We document the configuration step here using Petsc for both complex and 64bit: 
+{{{
+config/configure.py --with-blas-lapack-dir=/g/g22/argen1/lib/acml-4-4-0-gfortran-64bit-int64/gfortran64_mp_int64/lib --with-scalar-type=complex --with-64-bit-indices --download-blopex=/g/g22/argen1/Downloads/Petsc/blopex_petsc_abstract.tar.gz
+}}}
