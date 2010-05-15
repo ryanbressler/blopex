@@ -10,6 +10,9 @@ How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configu
 See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML and
 http://code.google.com/p/blopex/wiki/PetscTestingLinux for most of the installation details.
 
+I downloaded a special version of BlasLapack.py (provided by Andrew)
+and replaced config/BuildSystem/config/packages/BlasLapack.py for the ACML lib.
+
 We document the configuration step here using Petsc for both complex and 64bit: 
 {{{
 config/configure.py --with-blas-lapack-dir=/g/g22/argen1/lib/acml-4-4-0-gfortran-64bit-
@@ -19,10 +22,12 @@ blopex=/g/g22/argen1/Downloads/Petsc/blopex_petsc_abstract.tar.gz
 
 = Execution of Tests =
 
+To execute driver:
 {{{
 srun -n2 -ppdebug driver -n_eigs 3 -itr 20
 }}}
 
+This gives the following results:
 {{{
 Partitioning: 1 2 1
 Preconditioner setup, seconds: 0.000696
@@ -56,11 +61,13 @@ Eigenvalue lambda       Residual
 Solution process, seconds: 3.313789e-01
 }}}
 
-
+driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64"`. 
+To execute Fiedler driver for example: 
 {{{
 driver_fiedler -matrix DL-matrix-complex_64.petsc -n_eigs 3 -itr 200
 }}}
 
+This gives the following results:
 {{{
 Preconditioner setup, seconds: 0.026089
 Solving standard eigenvalue problem with preconditioning
