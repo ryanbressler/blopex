@@ -10,6 +10,7 @@ How to setup and test BLOPEX under version 3.1 of Petsc on Linux at LLNL (Atlas 
 See http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML and
 http://code.google.com/p/blopex/wiki/PetscTestingLinux for most of the installation details.
 
+Petsc version petsc-3.1-p1 was used.
 I downloaded a special version of {{{BlasLapack.py}}} (provided by Andrew)
 and replaced {{{.../config/BuildSystem/config/packages/BlasLapack.py}}} for testing of the ACML library.
 
