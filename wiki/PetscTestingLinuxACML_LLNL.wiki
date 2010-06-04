@@ -1,4 +1,4 @@
-#summary Petsc Testing on Linux using ACML libs at LLNL
+#summary (retired with appearance of PETSc 3.1-p3) Petsc Testing on Linux using ACML libs at LLNL
 
 = Introduction =
 
