@@ -1,4 +1,4 @@
-#summary Comments on Blopex Testing in Petsc
+#summary (retired with appearance of PETSc 3.1-p3) Comments on Blopex Testing in Petsc
 <wiki:toc max_depth="3" />
 
 = How Petsc works with Blopex =
