@@ -1,4 +1,4 @@
-#summary BLOPEX Complex and 64bit Petsc testing with MKL on Linux
+#summary (retired with appearance of PETSc 3.1-p3) BLOPEX Complex and 64bit Petsc testing with MKL on Linux
 <wiki:toc max_depth="1" />
 
 = Introduction =
