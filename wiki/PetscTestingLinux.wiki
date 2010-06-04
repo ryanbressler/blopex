@@ -1,18 +1,16 @@
-#summary (retired with appearance of PETSc 3.1-p3) BLOPEX Petsc testing on Linux
-<wiki:toc max_depth="1" />
+#summary BLOPEX Petsc 3.1-p3 or above testing on Linux
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
-How to test BLOPEX under version 3.1 of Petsc on Linux with Petsc, e.g., configured for 64bit integers and/or complex.
-
-Refer to wiki `CommentsOnPetscTesting` for a more technical discussion on how Blopex is setup in Petsc.  
+How to test BLOPEX under version 3.1-p3 or above of Petsc on Linux (including 64bit integers and/or complex).
 
 = Setup Petsc =  
 
 Remove all existing versions of petsc and BLOPEX before starting a new configure. 
-Petsc version 3.1-p1 had a bug which affected compilation of blopex driver's. It is currently fixed in 3.1-p2, so make sure that you download new petsc-lite-3.1.tar.gz
+Make sure that you download Petsc 3.1-p3 or above
 
-Download ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz , which excludes documentation and is a lot smaller distribution tar. 
+Download  ftp://info.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1.tar.gz, which excludes documentation and is a lot smaller distribution tar. 
 
 We assume you are in your home directory, $HOME at this point.
 
@@ -20,13 +18,13 @@ To unpack Petsc files issue command:
 {{{
 >> tar -zxvf petsc-lite-3.1.tar.gz
 }}}
-This creates a directory, e.g., petsc-3.1-p2. 
+This creates a directory, e.g., petsc-3.1-p3. 
 Rename it, if you plan to test different combinations, e.g., to 
-petsc-3.1-p2-int64-complex
+petsc-3.1-p3-int64-complex
 
 Change directory to it, e.g.,
 {{{
->> cd petsc-3.1-p2
+>> cd petsc-3.1-p3
 }}}
 
 The PETSC_DIR environment variable must be setup:
@@ -39,19 +37,13 @@ If you test different combinations of configuration at the same time,
 do it in separate terminal windows, and setup  PETSC_DIR in every window separately
 as needed for different directories.  
 
-Download the blopex_petsc_interface.tar.gz and blopex_petsc_abstract.tar.gz from the Blopex Google Code site http://code.google.com/p/blopex into your home directory.  
-
-blopex_petsc_interface.tar.gz contains the changes to the blopex interface which is distributed as part of Petsc.  This tar assumes you are in the base Petsc directory, specified by PETSC_DIR. Install as follows:
-{{{
->> tar -zxvf $HOME/blopex_petsc_interface.tar.gz
-}}}  
-
 This test configures Petsc for both complex and 64bit: 
 {{{
->> ./config/configure.py --with-shared --with-debugging=1 --with-scalar-type=complex --download-blopex=$HOME/blopex_petsc_abstract.tar.gz --with-64-bit-indices
+>> ./config/configure.py --with-shared --with-debugging=1 --with-scalar-type=complex --download-blopex=1 --with-64-bit-indices
 }}}
 
-Note that the blopex abstract code comes from your home directory.  If you specify --download-blopex=1 it will be downloaded from a Petsc internet site, which is version 1.0 of Blopex that does not have complex or 64bit support. 
+In petsc-3.1-p3 and above, 
+--download-blopex=1 will downloaded BLOPEX from a Petsc internet site, which is version 1.1 of Blopex with complex or 64bit support. 
 
 Petsc runs with either double or complex objects but not both.  
 To test the blopex routines for real (the default) configure Petsc without the 
@@ -67,28 +59,31 @@ You may need to start an MPI daemon prior to this. E.g., in Fedora 12  and mpich
 >> module load mpich2-x86_64
 >> mpd&
 }}}
+See http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12
 
-= Setup blopex_petsc =  
+= Compile blopex_petsc drivers =  
  
-Now create executables for the blopex drivers 
+Now create executables for every of 4 BLOPEX drivers in PETSc:
 {{{
 >> cd src/contrib/blopex/driver
 >> make driver
+>> cd ../driver_diag
+>> make driver_diag
 >> cd ../driver_fiedler
 >> make driver_fiedler
+>> cd ../driver_fortran
+>> make ex2f_blopex
 }}}
 
 = Execution of Tests =
 
-There are two test drivers located in subdirectories of blopex_petsc:
-driver and driver_fiedler.  The executables for these are in directories
-petsc_dir/src/contrib/blopex/driver and petsc_dir/src/contrib/blopex/driver_fiedler.
+There are 4 test drivers located in subdirectories of blopex_petsc:
+driver,  driver_diag,  driver_fiedler and driver_fortran.  
+
+== Driver "driver" ==
 
 driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex 
 if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double). 
-
-Both the Blopex abstract and interface code use the "PetscInt" type to determine how to define integers.  This forces the Blopex interger type to always match what is in Petsc. 
-
 
 To execute driver:
 {{{
@@ -97,7 +92,7 @@ or
 >> ./driver -n_eigs 3 -itr 20
 }}}
 
-This gives the following results:
+This gives the following results (actual numbers may vary!):
 {{{
 Partitioning: 1 1 1
 Preconditioner setup, seconds: 0.000369
@@ -144,7 +139,78 @@ Eigenvalue lambda       Residual
 Solution process, seconds: 2.897029e-01
 }}}
 
-driver_fiedler accepts as input matrices in Petsc format.  These matrices must be setup for either 32bit or 64bit arithematic.  The test matrices are setup for double (real) or complex and for 32bit or 64bit.  The 64bit version have a file name containing "_64"`. 
+If PETSc was compiled with the --download-hypre=1 option 
+(this only works without using --with-64-bit-indices or --with-scalar-type=complex
+since hypre does not support any of these options), one can run the driver 
+using hypre preconditioner, e.g. 
+
+{{{
+./driver -ksp_type preonly -pc_type hypre -pc_hypre_type boomeramg 
+
+Partitioning: 1 1 1
+Preconditioner setup, seconds: 0.006566
+
+Solving standard eigenvalue problem with preconditioning
+
+block size 1
+
+No constraints
+
+
+Initial Max. Residual   2.39770129154100e+00
+Iteration 1 	bsize 1 	maxres   1.24191384284174e+00
+Iteration 2 	bsize 1 	maxres   1.44195944071613e-01
+Iteration 3 	bsize 1 	maxres   3.16282446481776e-02
+Iteration 4 	bsize 1 	maxres   6.92778009970852e-03
+Iteration 5 	bsize 1 	maxres   1.09875006356576e-03
+Iteration 6 	bsize 1 	maxres   1.17458938039469e-04
+Iteration 7 	bsize 1 	maxres   1.06516470504257e-05
+Iteration 8 	bsize 1 	maxres   1.34756419128339e-06
+Iteration 9 	bsize 1 	maxres   3.10899995292549e-07
+Iteration 10 	bsize 1 	maxres   6.06378675481750e-08
+Iteration 11 	bsize 1 	maxres   4.27013783896497e-09
+
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    4.27013783896497e-09
+
+11 iterations
+Solution process, seconds: 1.088190e-02
+}}}
+
+== Driver "driver_diag" ==
+
+driver_diag solves ann eigenvalue problem for a diagonal matrix. 
+
+DONALD, PLEASE ADD THE DESCRIPTION HERE!
+
+A typical run example: 
+
+{{{
+>> mpirun -np 2 ./driver_diag
+Preconditioner setup, seconds: 0.000669
+
+Solving standard eigenvalue problem with preconditioning
+
+block size 1
+
+1 constraint
+
+
+Initial Max. Residual   2.97427246688596e+01
+
+Eigenvalue lambda       Residual              
+  4.89206836167546e+01    2.97427246688596e+01
+
+0 iterations
+Solution process, seconds: 2.892017e-03
+Final eigenvalues:
+4.892068e+01
+}}}
+
+== Driver "driver_fiedler" ==
+
+driver_fiedler accepts as input matrices in Petsc format.  These matrices must be setup for either 32bit or 64bit arithematic, ral or complex.  The test matrices are setup for double (real) or complex and for 32bit or 64bit.  The 64bit version have a file name containing "_64"`. All our matrices for testing can be downloaded from 
+http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
 
 For example:
 {{{
@@ -227,3 +293,32 @@ The *complex files* are complex versions of the L and DL double matrices (with i
 plus test_complex1.petsc (40x40 134 nz hpd random),
 test_complex2.petsc (1000x1000 50786 nz hpd random) and 
 test_complex3 (10876 nz hpd random). 
+
+If PETSc was compiled with the --download-hypre=1 option (this only works without using --with-64-bit-indices or --with-scalar-type=complex since hypre does not support any of these options), one can run the driver_fiedler using hypre preconditioner, e.g.
+
+{{{
+>> ./driver_fiedler -matrix DL-matrix-double.petsc -ksp_type preonly -pc_type hypre -pc_hypre_type boomeramg 
+}}} 
+
+In this case, the matrix itself, DL-matrix-double.petsc, is used by hypre to construct 
+a boomeramg preconditioner. Since the matrix is singular, which hypre does not support, the results may be unpredictable. 
+
+== Driver "driver_fortran" ==
+
+The directory driver_fortran contains a driver, which is actually called 
+"ex2f_blopex". This is a modified version of the Fortran example ex2f.F from the PETSc
+source distribution (Version 2.3.3-p4) that illustrates a way of using
+BLOPEX with PETSc from Fortran.  A typical run: 
+{{{
+>> ./ex2f_blopex 
+BLOPEX complete in  12 iterations
+eval   1 is 0.205227064E-01 residual 0.1767E-07
+eval   2 is 0.512014707E-01 residual 0.4739E-07
+eval   3 is 0.512014707E-01 residual 0.2178E-06
+eval   4 is 0.818802350E-01 residual 0.8697E-06
+eval   5 is 0.101982840E+00 residual 0.4592E-06
+}}}
+
+This driver DOES NOT WORK in complex AND 64-bit integers. 
+DOES it work with complex OR 64-bit integers? 
+Do we want to update it so that it always works? 
