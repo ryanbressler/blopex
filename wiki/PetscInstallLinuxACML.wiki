@@ -58,23 +58,20 @@ to set up the MPI, e.g., by running
 module load openmpi-x86_64
 
 Download and extract the latest PETSc, at the moment this is 
-ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz 
+ftp://info.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1.tar.gz
 
 Extract using *tar xzvf* , cd to PETSc dir and run 
 
 PETSC_DIR=$PWD; export PETSC_DIR
 
-To test the old BLOPEX, run 
+Version petsc-3.1-p3 and later already includes the latest BLOPEX code! 
+To test BLOPEX, run 
 
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --download-hypre=1
+./configure PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --download-hypre=1
 
 PETSC_ARCH=linux-openmpi-acml4-4-0-gfortran-64bit; export PETSC_ARCH
 
 make all
-
-To test the latest BLOPEX, instead of using the --download-blopex=1 option,  
-follow PetscTestingLinux instructions to test the latest BLOPEX, see 
-http://code.google.com/p/blopex/wiki/PetscTestingLinux
 
 Note the Hypre is real and 32-bit-indices only, so an attempt to use 
 --download-hypre=1 either with --with-scalar-type=complex or with --with-64-bit-indices would give an error. 
@@ -115,17 +112,14 @@ If you cannot be root, contact the sysadmin.
 <pre>
 Here is a complete setup example: 
  
-wget ftp://info.mcs.anl.gov/pub/petsc/petsc-lite-3.1.tar.gz 
-wget http://blopex.googlecode.com/files/blopex_petsc_interface.tar.gz 
-wget http://blopex.googlecode.com/files/blopex_petsc_abstract.tar.gz 
+wget ftp://info.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1.tar.gz 
 tar xzvf petsc-lite-3.1.tar.gz 
-mv petsc-3.1-p2 petsc-3.1-p2-int64-complex-ACML 
+mv petsc-3.1-p3 petsc-3.1-p3-int64-complex-ACML 
 cd petsc-3.1-p2-int64-complex-ACML 
 PETSC_DIR=$PWD; export PETSC_DIR 
 module load openmpi-x86_64 
 LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; 
-tar -zxvf ../blopex_petsc_interface.tar.gz 
-./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64  --with-scalar-type=complex --with-64-bit-indices --download-blopex=../blopex_petsc_abstract.tar.gz 
+./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64  --with-scalar-type=complex --with-64-bit-indices --download-blopex=1
 make all 
 LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH 
 make test 
