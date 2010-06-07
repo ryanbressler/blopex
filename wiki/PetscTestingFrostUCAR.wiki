@@ -7,12 +7,12 @@ How to test BLOPEX under version 3.1-p3 of PETSc on IBM Linux system Frost.
 
 = Setup Petsc =  
 
-To use blopex_solve_double or blopex_solve_complex using Petsc first download the development version from
+To use blopex_solve_double or blopex_solve_complex using Petsc first download the current release from
 the Petsc website at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
 
 If your already have version 3.1-p3 installed remove it.
 {{{
-rm -r petsc-3.1-p23
+rm -r petsc-3.1-p3
 }}}
 
 To install files issue command:
@@ -63,7 +63,7 @@ blopex_petsc_test.tar.gz contains the test files for use with driver_fiedler and
 
 Start the configuration process as follows to configure for complex scalars and 64bit integers:
 {{{
->> ./config/bgl-ibm-goto_lapack.py --with-shared --with-debugging=1 --with-scalar-type=complex  --download-blopex=1 --with-64-bit-indices
+>> ./config/bgl-ibm-goto_lapack.py --with-shared --with-debugging=1 --with-scalar-type=complex --download-blopex=1 --with-64-bit-indices
 }}}
 
 Or use the following to configure for real scalars:
@@ -84,7 +84,7 @@ This creates file reconfigure.py which is now executed.
 Now two environment variables must be setup as specified in the configuration run. Note by default we are running under the csh shell.
 {{{
 >> setenv PETSC_ARCH bgl-ibm-goto-O3_440d  
->> setenv PETSC_DIR /home/dmccuan/petsc-3.1-p2
+>> setenv PETSC_DIR /home/dmccuan/petsc-3.1-p3
 }}}
 
 We will also need these set when compiling the blopex_petsc drivers.
