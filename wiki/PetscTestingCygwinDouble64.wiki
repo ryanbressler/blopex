@@ -4,7 +4,7 @@
 = Introduction =
 How to test BLOPEX under version 3.1 of Petsc on Cygwin in Windows 7, e.g., configured for 64bit integers and double. 
 = Setup Petsc =  
-To use blopex_solve_double or blopex_solve_complex using Petsc first download the development version from the Petsc website at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
+To use blopex_solve_double or blopex_solve_complex using Petsc first download Petsc at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
 To install files issue command:
 {{{
 >> tar -zxvf petsc-lite-3.1-p3.tar.gz
