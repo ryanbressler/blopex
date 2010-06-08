@@ -273,7 +273,7 @@ Solution process, seconds: 1.416870e+02
 
 === driver_fortran ===
 
-cqsub -n 2 -t 00:10:00 ./ex2f_blopex -n_eigs 3 -tol 1e-6 -itr 100
+cqsub -n 2 -t 00:10:00 ./ex2f_blopex 
 
 Solution
 {{{
@@ -283,9 +283,4 @@ eval   2 is  .512014707E-01 residual  .1479E-06
 eval   3 is  .512014707E-01 residual  .2956E-06
 eval   4 is  .818802350E-01 residual  .4227E-06
 eval   5 is  .101982840E+00 residual  .9285E-06
-WARNING! There are options you set that were not used!
-WARNING! could be spelling mistake, etc!
-Option left: name:-itr value: 100
-Option left: name:-n_eigs value: 3
-Option left: name:-tol value: 1e-6
 }}}
