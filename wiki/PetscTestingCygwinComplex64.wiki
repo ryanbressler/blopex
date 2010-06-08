@@ -21,7 +21,7 @@ Start the configuration process as follows to configure for complex scalars and 
 }}}
 Or you can install mpich2 on windows under cygwin. The installation of mpich2 is the same as installation on linux.
 {{{
->> ./config/configure.py  --with-cc=mpicc --with-fc=mpif77 --with-cxx=mpicxx --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indice
+>> ./config/configure.py  --with-cc=mpicc --with-fc=mpif77 --with-cxx=mpicxx --with-f-blas-lapack=/cygdrive/c/cygwin/lib --with-mpich-dir=/cygdrive/c/cygwin/usr/local/bin/mpich2-install   --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indice
 }}}
 
 After configuration is finished issue the command
@@ -161,6 +161,4 @@ Final eigenvalues:
 2.241534e+00
 3.268335e+00
 }}}
-
-
 
