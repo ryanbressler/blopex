@@ -8,8 +8,7 @@ How to test BLOPEX under version 3.1 of Petsc with MKL library on Linux , e.g., 
 
 = Setup Petsc =  
 
-To use blopex_solve_double or blopex_solve_complex using Petsc first download the development version from
-the Petsc website at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
+To use blopex_solve_double or blopex_solve_complex using Petsc first download Petsc at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
 
 To install files issue command:
 {{{
@@ -308,7 +307,7 @@ Final eigenvalues:
 
 === driver_fortran ===
 
-./ex2f_blopex -n_eigs 3 -itr 20
+./ex2f_blopex
 
 Solution
 {{{
@@ -323,13 +322,5 @@ eval   3 is 0.512014707E-01 residual 0.2178E-06
 eval   4 is 0.818802350E-01 residual 0.8697E-06
 
 eval   5 is 0.101982840E+00 residual 0.4591E-06
-
-WARNING! There are options you set that were not used!
-
-WARNING! could be spelling mistake, etc!
-
-Option left: name:-itr value: 20
-
-Option left: name:-n_eigs value: 3
 
 }}}
