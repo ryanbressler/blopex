@@ -1,4 +1,4 @@
-#summary (retired with appearance of PETSc 3.1-p3) BLOPEX Complex Petsc testing on UCAR Frost (IBM)
+#summary (obsolete with appearance of PETSc 3.1-p3, keep for the record) BLOPEX Complex Petsc testing on UCAR Frost (IBM)
 <wiki:toc max_depth="3" />
 
 = Introduction =
