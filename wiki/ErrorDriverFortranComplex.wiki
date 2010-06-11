@@ -1,0 +1,106 @@
+#summary driver_fortran Complex Error
+
+= Introduction =
+
+driver_fortran in petsc-3.1-p3 gives errors for for complex scalars and (or?) 64-bit integers
+
+= In cygwin=
+
+== Setup Petsc ==
+
+Start the configuration process as follows to configure for complex scalars and 64bit integers.
+{{{
+>> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indices
+}}}
+
+One is not supposed to compile blopex_c.c directly in 
+driver_fortran. Only the ex2f_blopex executable must be complied by 
+{{{
+>> make ex2f_blopex
+}}}
+
+== Error of making ex2f_blopex ???==
+
+Peizhen, if you are trying 
+{{{
+>> make blopex_c
+}}}
+you must not, please see above. Please repeat only making ex2f_blopex and report here.
+
+The errors as following (but running what command?):
+
+{{{
+/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpicxx -o blo
+pex_c.o -c -Wall -Wwrite-strings -Wno-strict-aliasing -g -I/cygdrive/c/petsc/pet
+sc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/petsc/petsc_blop
+ex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/petsc/petsc_blopex_1/pe
+tsc-3.1-p3/include -I/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-de
+bug/include -D__INSDIR__=src/contrib/blopex/driver_fortran/ blopex_c.c
+blopex_c.c: In function `void petsc_lobpcg_solve_c_(_p_Vec**, int*, int*, int*,
+double*, double*, double*, void*, void*, void*, void*, void*, int*)':
+blopex_c.c:166: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:167: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:168: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:153: warning: unused variable `j'
+make: [blopex_c.o] Error 1 (ignored)
+gfortran: blopex_c.o: No such file or directory
+make: [ex2f_blopex] Error 1 (ignored)
+
+}}}
+
+=In Linux==
+
+Start the configuration process as follows to configure for complex scalars and 64bit integers.
+{{{
+>> ./configure --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-64-bit-indices --with-scalar-type=complex
+}}}
+
+
+== Making ex2f_blopex OK==
+
+{{{
+>> make ex2f_blopex
+mpif90 -c  -Wall -Wno-unused-variable -g   -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1/include -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/usr/include/mpich2-x86_64   -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/usr/include/mpich2-x86_64    -o ex2f_blopex.o ex2f_blopex.F
+mpicc -o blopex_c.o -c -Wall -Wwrite-strings -Wno-strict-aliasing -g3 -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/usr/include/mpich2-x86_64 -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1/include -I/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/include -I/usr/include/mpich2-x86_64 -D__INSDIR__=src/contrib/blopex/driver_fortran/ blopex_c.c
+blopex_c.c: In function ‘petsc_lobpcg_solve_c_’:
+blopex_c.c:155: warning: unused variable ‘j’
+mpif90 -Wall -Wno-unused-variable -g   -o ex2f_blopex ex2f_blopex.o blopex_c.o -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/lib -lpetsc   -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/lib -lBLOPEX -Wl,-rpath,/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib -L/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib -lacml -lm -L/usr/lib64/mpich2/lib -L/usr/lib/gcc/x86_64-redhat-linux/4.4.3 -ldl -lmpich -lopa -lpthread -lrt -lgcc_s -lmpichf90 -lgfortran -lm -L/usr/libexec/gcc/x86_64-redhat-linux/4.4.3 -L/usr/libexec/gcc/x86_64-redhat-linux -L/usr/lib/gcc/x86_64-redhat-linux -lm -ldl -lmpich -lopa -lpthread -lrt -lgcc_s -ldl 
+/bin/rm -f ex2f_blopex.o
+}}}
+
+= Error of running ex2f_blopex=
+
+Please see the errors as following:
+
+{{{
+>> ./ex2f_blopex
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: Caught signal number 11 SEGV: Segmentation Violation, probably memory access out of range
+[0]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+[0]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/petsc-as/documentation/troubleshooting.html#Signal[0]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+[0]PETSC ERROR: likely location of problem given in stack below
+[0]PETSC ERROR: ---------------------  Stack Frames ------------------------------------
+[0]PETSC ERROR: Note: The EXACT line numbers in the stack are not available,
+[0]PETSC ERROR:       INSTEAD the line number of the start of the function
+[0]PETSC ERROR:       is given.
+[0]PETSC ERROR: --------------------- Error Message ------------------------------------
+[0]PETSC ERROR: Signal received!
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: Petsc Release Version 3.1.0, Patch 2, unknown
+[0]PETSC ERROR: See docs/changes/index.html for recent updates.
+[0]PETSC ERROR: See docs/faq.html for hints about trouble shooting.
+[0]PETSC ERROR: See docs/index.html for manual pages.
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: ./ex2f_blopex on a linux-gnu named opt by aknyazev Fri Jun  4 09:33:59 2010
+[0]PETSC ERROR: Libraries linked from /home/aknyazev/work/petsc/petsc-3.1/linux-gnu-c-debug/lib
+[0]PETSC ERROR: Configure run at Fri Jun  4 09:11:16 2010
+[0]PETSC ERROR: Configure options --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-64-bit-indices --with-scalar-type=complex
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: User provided function() line 0 in unknown directory unknown file
+application called MPI_Abort(MPI_COMM_WORLD, 59) - process 0
+}}}
