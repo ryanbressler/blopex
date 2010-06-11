@@ -1,0 +1,42 @@
+#summary driver_fortran Complex Error in Cygwin
+<wiki:toc max_depth="3" />
+
+= Introduction =
+
+All tests work fine in Cygwin using the newest Petsc version petsc-3.1-p3 and both double and complex verions of Blopex, except for driver_fortan for complex scalar. 
+
+= Setup Petsc =
+
+Start the configuration process as follows to configure for complex scalars and 64bit integers.
+{{{
+>> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indices
+}}}
+
+
+= Error of making ex2f_blopex=
+
+Please see the errors as following:
+
+{{{
+/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpicxx -o blo
+pex_c.o -c -Wall -Wwrite-strings -Wno-strict-aliasing -g -I/cygdrive/c/petsc/pet
+sc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/petsc/petsc_blop
+ex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/petsc/petsc_blopex_1/pe
+tsc-3.1-p3/include -I/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-de
+bug/include -D__INSDIR__=src/contrib/blopex/driver_fortran/ blopex_c.c
+blopex_c.c: In function `void petsc_lobpcg_solve_c_(_p_Vec**, int*, int*, int*,
+double*, double*, double*, void*, void*, void*, void*, void*, int*)':
+blopex_c.c:166: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:167: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:168: error: invalid conversion from `void*' to `void (*)(void*, void*
+, void*)'
+blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:153: warning: unused variable `j'
+make: [blopex_c.o] Error 1 (ignored)
+gfortran: blopex_c.o: No such file or directory
+make: [ex2f_blopex] Error 1 (ignored)
+
+}}}
