@@ -2,7 +2,7 @@
 
 = Introduction =
 
-driver_fortran in petsc-3.1-p3 gives errors for complex scalars both for 32-bit and 64-bit integers. It works in double, however, both for for 32-bit and 64-bit (double-check!) integers. 
+driver_fortran in petsc-3.1-p3 gives errors for complex scalars both for 32-bit and 64-bit integers. It works in double, however, both for for 32-bit and 64-bit integers. 
 
 = In cygwin=
 
