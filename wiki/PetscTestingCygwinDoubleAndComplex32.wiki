@@ -92,7 +92,7 @@ Solution process, seconds: 2.653677e+00
 }}}
 
 === driver_fiedler  L-Matrix-complex.petsc ===
-driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, ral or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64"`. All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz 
+driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithmetic, real or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64"`. All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz 
 
 ./driver_fiedler -matrix L-matrix-complex.petsc -n_eigs 2 -itr 10
 
