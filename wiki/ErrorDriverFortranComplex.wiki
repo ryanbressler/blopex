@@ -13,6 +13,17 @@ Start the configuration process as follows to configure for complex scalars and 
 >> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indices
 }}}
 
+(AK:  
+http://code.google.com/p/blopex/wiki/PetscTestingCygwinDouble64
+uses 
+{{{
+>>  ./configure --with-f-blas-lapack=/cygdrive/c/cygwin/lib --with –mpich-dir=/cygdrive/c/cygwin/usr/local/bin/mpich2-install  --download-blopex=1 --with-64-bit-indices
+}}}
+and driver_fortran compiles just fine. Why do you need to specify --with-clanguage=cxx ?
+
+I guess that it forces compilation of C codes using a C++ compiler, and blopex_c.c
+is not written careful enough to handle it.)
+
 One is not supposed to compile blopex_c.c directly in 
 driver_fortran. Only the ex2f_blopex executable must be complied by 
 {{{
