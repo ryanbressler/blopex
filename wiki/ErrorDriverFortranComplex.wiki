@@ -2,7 +2,7 @@
 
 = Introduction =
 
-driver_fortran in petsc-3.1-p3 gives errors for for complex scalars and (or?) 64-bit integers
+driver_fortran in petsc-3.1-p3 gives errors for for complex scalars both for 32-bit and 64-bit integers. It works in double, however, both for for 32-bit and 64-bit integers. 
 
 = In cygwin=
 
@@ -21,8 +21,9 @@ driver_fortran. Only the ex2f_blopex executable must be complied by
 
 == Error of making ex2f_blopex ==
 
-
 The errors as following (running make ex2f_blopex):
+
+(This looks like that error previous error, already removed, using the C++ compiler. I am not sure that this is complex-related. Please compare closely your configure for double (which works) and complex and make sure that the only difference is --with-scalar-type=complex AK)
 
 {{{
 $ make ex2f_blopex
@@ -70,13 +71,82 @@ make: [ex2f_blopex] Error 1 (ignored)
 
 =In Linux==
 
+== complex scalars and 32bit integers (ACML and OPENMPI) ==
+
+=== PETSc configuration ===
+
+Start the configuration process as follows to configure for complex scalars and 32bit integers.
+{{{
+>> module load openmpi-x86_64
+>> LD_LIBRARY_PATH=/usr/lib64/mpich2/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+>> PETSC_DIR=$PWD; export PETSC_DIR
+>> ./configure --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-scalar-type=complex
+}}}
+
+
+=== Making ex2f_blopex OK===
+
+{{{
+>> make ex2f_blopex
+mpif90 -c  -Wall -Wno-unused-variable -g   -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/include -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/usr/include/openmpi-x86_64 -I/usr/lib64/openmpi/lib   -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/usr/include/openmpi-x86_64 -I/usr/lib64/openmpi/lib    -o ex2f_blopex.o ex2f_blopex.F
+mpicc -o blopex_c.o -c -Wall -Wwrite-strings -Wno-strict-aliasing -g3 -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/usr/include/openmpi-x86_64 -I/usr/lib64/openmpi/lib -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/include -I/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/include -I/usr/include/openmpi-x86_64 -I/usr/lib64/openmpi/lib -D__INSDIR__=src/contrib/blopex/driver_fortran/ blopex_c.c
+blopex_c.c: In function ‘petsc_lobpcg_solve_c_’:
+blopex_c.c:153: warning: unused variable ‘j’
+mpif90 -Wall -Wno-unused-variable -g   -o ex2f_blopex ex2f_blopex.o blopex_c.o -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/lib -lpetsc   -lX11 -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/lib -lBLOPEX -Wl,-rpath,/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib -L/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib -lacml -L/usr/lib64/openmpi/lib -L/usr/lib/gcc/x86_64-redhat-linux/4.4.3 -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lgcc_s -lpthread -lmpi_f90 -lmpi_f77 -lgfortran -lm -lm -L/usr/libexec/gcc/x86_64-redhat-linux/4.4.3 -L/usr/libexec/gcc/x86_64-redhat-linux -L/usr/lib/gcc/x86_64-redhat-linux -lm -lm -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lgcc_s -lpthread -ldl 
+/bin/rm -f ex2f_blopex.o
+}}}
+
+=== Error of running ex2f_blopex===
+
+{{{
+>> ./ex2f_blopex
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: Caught signal number 11 SEGV: Segmentation Violation, probably memory access out of range
+[0]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+[0]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/petsc-as/documentation/troubleshooting.html#Signal[0]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+[0]PETSC ERROR: likely location of problem given in stack below
+[0]PETSC ERROR: ---------------------  Stack Frames ------------------------------------
+[0]PETSC ERROR: Note: The EXACT line numbers in the stack are not available,
+[0]PETSC ERROR:       INSTEAD the line number of the start of the function
+[0]PETSC ERROR:       is given.
+[0]PETSC ERROR: --------------------- Error Message ------------------------------------
+[0]PETSC ERROR: Signal received!
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: Petsc Release Version 3.1.0, Patch 3, Fri Jun  4 15:34:52 CDT 2010
+[0]PETSC ERROR: See docs/changes/index.html for recent updates.
+[0]PETSC ERROR: See docs/faq.html for hints about trouble shooting.
+[0]PETSC ERROR: See docs/index.html for manual pages.
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: ./ex2f_blopex on a linux-gnu named opt by aknyazev Sat Jun 12 11:14:13 2010
+[0]PETSC ERROR: Libraries linked from /home/aknyazev/work/petsc/petsc-3.1-p3_ACML_OPENMPI_complex/linux-gnu-c-debug/lib
+[0]PETSC ERROR: Configure run at Sat Jun 12 10:51:10 2010
+[0]PETSC ERROR: Configure options --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-scalar-type=complex
+[0]PETSC ERROR: ------------------------------------------------------------------------
+[0]PETSC ERROR: User provided function() line 0 in unknown directory unknown file
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD 
+with errorcode 59.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+}}}
+
+== complex scalars and 64bit integers (ACML and MPICH2)==
+
+=== PETSc configuration ===
+
 Start the configuration process as follows to configure for complex scalars and 64bit integers.
 {{{
+>> module load mpich2-x86_64
+>> mpd&
+>> LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+>> PETSC_DIR=$PWD; export PETSC_DIR
 >> ./configure --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-64-bit-indices --with-scalar-type=complex
 }}}
 
 
-== Making ex2f_blopex OK==
+=== Making ex2f_blopex OK===
 
 {{{
 >> make ex2f_blopex
@@ -88,9 +158,7 @@ mpif90 -Wall -Wno-unused-variable -g   -o ex2f_blopex ex2f_blopex.o blopex_c.o -
 /bin/rm -f ex2f_blopex.o
 }}}
 
-= Error of running ex2f_blopex=
-
-Please see the errors as following:
+=== Error of running ex2f_blopex===
 
 {{{
 >> ./ex2f_blopex
