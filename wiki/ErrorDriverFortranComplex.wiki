@@ -19,17 +19,20 @@ driver_fortran. Only the ex2f_blopex executable must be complied by
 >> make ex2f_blopex
 }}}
 
-== Error of making ex2f_blopex ???==
+== Error of making ex2f_blopex ==
 
-Peizhen, if you are trying 
-{{{
->> make blopex_c
-}}}
-you must not, please see above. Please repeat only making ex2f_blopex and report here.
 
-The errors as following (but running what command?):
+The errors as following (running make ex2f_blopex):
 
 {{{
+$ make ex2f_blopex
+/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpif90 -c  -W
+all -Wno-unused-variable -g  -I/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cyg
+win-cxx-debug/include -I/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/include -I
+/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include   -I/cygd
+rive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/
+petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include    -o ex2f_blopex.o e
+x2f_blopex.F
 /cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpicxx -o blo
 pex_c.o -c -Wall -Wwrite-strings -Wno-strict-aliasing -g -I/cygdrive/c/petsc/pet
 sc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/include -I/cygdrive/c/petsc/petsc_blop
@@ -48,9 +51,21 @@ blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*)'
 blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*)'
 blopex_c.c:153: warning: unused variable `j'
 make: [blopex_c.o] Error 1 (ignored)
+/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpif90 -Wall
+-Wno-unused-variable -g  -o ex2f_blopex ex2f_blopex.o blopex_c.o -Wl,-rpath,/cyg
+drive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/lib -L/cygdrive/c/pet
+sc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/lib -lpetsc   -Wl,-rpath,/cygdri
+ve/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/lib -L/cygdrive/c/petsc/
+petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/lib -lBLOPEX -llapack -lblas -lrt -
+L/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/lib -L/usr/lib/g
+cc/i686-pc-cygwin/4.3.4 -ldl -lpmpich -lmpich -lgcc_s -lgcc_eh -luser32 -ladvapi
+32 -lshell32 -lmpichf90 -lgfortran -L/usr/lib/gcc/i686-pc-cygwin -L/usr/i686-pc-
+cygwin/bin -lmpichcxx -lstdc++ -lgdi32 -luser32 -ladvapi32 -lkernel32 -lmpichcxx
+ -lstdc++ -ldl -lpmpich -lmpich -lgcc_s -lgcc_eh -luser32 -ladvapi32 -lshell32 -
+ldl
 gfortran: blopex_c.o: No such file or directory
 make: [ex2f_blopex] Error 1 (ignored)
-
+/usr/bin/rm -f ex2f_blopex.o
 }}}
 
 =In Linux==
