@@ -1,4 +1,4 @@
-#summary BLOPEX Complex and Double PETSc 3.1-p3 testing on Cygwin
+#summary BLOPEX Complex and Double 32bit PETSc 3.1-p3 testing on Cygwin
 <wiki:toc max_depth="3" />
 
 = Introduction =
@@ -387,4 +387,32 @@ Final eigenvalues:
 -3.277121e+159
 -3.277121e+159
 -3.277121e+159
+}}}
+
+=== driver_fortran ===
+
+./ex2f_blopex -n_eigs 3 -itr 20
+
+Solution
+{{{
+BLOPEX complete in  12 iterations
+
+eval   1 is 0.205227064E-01 residual 0.1767E-07
+
+eval   2 is 0.512014707E-01 residual 0.4745E-07
+
+eval   3 is 0.512014707E-01 residual 0.2178E-06
+
+eval   4 is 0.818802350E-01 residual 0.8697E-06
+
+eval   5 is 0.101982840E+00 residual 0.4591E-06
+
+WARNING! There are options you set that were not used!
+
+WARNING! could be spelling mistake, etc!
+
+Option left: name:-itr value: 20
+
+Option left: name:-n_eigs value: 3
+
 }}}
