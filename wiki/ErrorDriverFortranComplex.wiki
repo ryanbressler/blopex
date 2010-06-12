@@ -2,7 +2,7 @@
 
 = Introduction =
 
-driver_fortran in petsc-3.1-p3 gives errors for for complex scalars both for 32-bit and 64-bit integers. It works in double, however, both for for 32-bit and 64-bit integers. 
+driver_fortran in petsc-3.1-p3 gives errors for complex scalars both for 32-bit and 64-bit integers. It works in double, however, both for for 32-bit and 64-bit (double-check!) integers. 
 
 = In cygwin=
 
@@ -78,7 +78,7 @@ make: [ex2f_blopex] Error 1 (ignored)
 Start the configuration process as follows to configure for complex scalars and 32bit integers.
 {{{
 >> module load openmpi-x86_64
->> LD_LIBRARY_PATH=/usr/lib64/mpich2/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+>> LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
 >> PETSC_DIR=$PWD; export PETSC_DIR
 >> ./configure --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-scalar-type=complex
 }}}
@@ -140,7 +140,7 @@ Start the configuration process as follows to configure for complex scalars and 
 {{{
 >> module load mpich2-x86_64
 >> mpd&
->> LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
+>> LD_LIBRARY_PATH=/usr/lib64/mpich2/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH
 >> PETSC_DIR=$PWD; export PETSC_DIR
 >> ./configure --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64 --download-blopex=1 --with-64-bit-indices --with-scalar-type=complex
 }}}
