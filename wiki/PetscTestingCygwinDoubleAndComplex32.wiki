@@ -391,7 +391,13 @@ Final eigenvalues:
 
 === driver_fortran ===
 
-./ex2f_blopex -n_eigs 3 -itr 20
+
+Run
+{{{
+>> ./ex2f_blopex 
+}}}
+without any options, since options are not supported by ex2f_blopex.
+
 
 Solution
 {{{
@@ -406,13 +412,4 @@ eval   3 is 0.512014707E-01 residual 0.2178E-06
 eval   4 is 0.818802350E-01 residual 0.8697E-06
 
 eval   5 is 0.101982840E+00 residual 0.4591E-06
-
-WARNING! There are options you set that were not used!
-
-WARNING! could be spelling mistake, etc!
-
-Option left: name:-itr value: 20
-
-Option left: name:-n_eigs value: 3
-
 }}}
