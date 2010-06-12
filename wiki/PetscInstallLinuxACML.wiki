@@ -118,10 +118,9 @@ mv petsc-3.1-p3 petsc-3.1-p3-int64-complex-ACML
 cd petsc-3.1-p2-int64-complex-ACML 
 PETSC_DIR=$PWD; export PETSC_DIR 
 module load openmpi-x86_64 
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; 
+LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH 
 ./config/configure.py PETSC_ARCH=linux-openmpi-acml-4-4-0-gfortran-64bit --with-blas-lapack-dir=/opt/acml-4-4-0-gfortran-64bit/gfortran64  --with-scalar-type=complex --with-64-bit-indices --download-blopex=1
 make all 
-LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib; export LD_LIBRARY_PATH 
 make test 
 cd src/contrib/blopex/driver 
 make driver 
