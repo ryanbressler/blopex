@@ -1,4 +1,4 @@
-#summary BLOPEX Complex and Double 32bit PETSc 3.1-p3 testing on Cygwin
+#summary BLOPEX Complex and Double 32 bit PETSc 3.1-p3 testing on Cygwin
 <wiki:toc max_depth="3" />
 
 = Introduction =
