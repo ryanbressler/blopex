@@ -21,6 +21,8 @@ uses
 >>  ./configure --with-f-blas-lapack=/cygdrive/c/cygwin/lib --with –mpich-dir=/cygdrive/c/cygwin/usr/local/bin/mpich2-install  --download-blopex=1 --with-64-bit-indices
 }}}
 and driver_fortran compiles just fine. Why do you need to specify --with-clanguage=cxx ?
+For complex version in cygwin, it always said 'C Compiler provided doest not support C99 complex' without using cxx or mpicxx compilers.
+
 
 I guess that it forces compilation of C codes using a C++ compiler, and blopex_c.c
 is not written careful enough to handle it.)
