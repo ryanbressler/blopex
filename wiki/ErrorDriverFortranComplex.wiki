@@ -89,7 +89,9 @@ make: [ex2f_blopex] Error 1 (ignored)
 
 Start the configuration process as follows to configure for complex scalars and 32bit integers.
 {{{
->> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/lib --with–mpich-dir=/mpich2-install --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx
+>> ./config/configure.py --with-cc=mpicc --with-fc=mpif90 --with-cxx=mpicxx 
+--with-f-blas-lapack=/lib --with-mpich-dir=/mpich2-install --download-blopex=1 
+--with-scalar-type=complex --with-clanguage=cxx
 }}}
 
 If the c compilers aren't specified in this way and Petsc is configured the same as for the double 32 bit version, only with '--with-scalar-type=complex' as follows:
