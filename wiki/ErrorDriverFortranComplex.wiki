@@ -122,7 +122,7 @@ C Compiler provided doest not support C99 complex
 
 == Error of making ex2f_blopex ==
 
-Once configuration is complete, running make on the fortran_driver in the fortran_driver subdirectory produces the following error:
+Once configuration is complete, running make on the fortran driver in the fortran_driver subdirectory produces the following error:
 
 {{{
 $ make ex2f_blopex
@@ -150,6 +150,18 @@ mpich -lmpich -lopa -lpthread -lgcc_s -lgcc_eh -luser32 -ladvapi32 -lshell32 -ld
 gfortran: blopex_c.o: No such file or directory
 make: [ex2f_blopex] Error 1 (ignored)
 /usr/bin/rm -f ex2f_blopex.o
+}}}
+
+UPDATE: Using the modified blopex_c.c produces a very similar error to the previous version. The only difference is the line numbers the errors occur on and one new error on line 287:
+
+{{{
+blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*, void*, void*)'
+blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*, void*, void*)'
+blopex_c.c:171: error: invalid conversion from `void*' to `void (*)(void*, void*, void*)'
+blopex_c.c:172: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:173: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:287: warning: cannot pass objects of non-POD type `struct std::complex<double>' through `...'; call will abort at runtime
+blopex_c.c:156: warning: unused variable `j'
 }}}
 
 =In Linux==
