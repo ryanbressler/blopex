@@ -41,10 +41,9 @@ driver_fortran. Only the ex2f_blopex executable must be complied by
 
 == Error of making ex2f_blopex ==
 
-The errors as following (running make ex2f_blopex):
+Using the fixed blopex_c.c , I still get the errors as following (running make ex2f_blopex):
 
 (This looks like that error previous error, already removed, using the C++ compiler. I am not sure that this is complex-related. Please compare closely your configure for double (which works) and complex and make sure that the only difference is --with-scalar-type=complex AK)
-
 {{{
 $ make ex2f_blopex
 /cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpif90 -c  -W
@@ -62,15 +61,17 @@ tsc-3.1-p3/include -I/cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-de
 bug/include -D__INSDIR__=src/contrib/blopex/driver_fortran/ blopex_c.c
 blopex_c.c: In function `void petsc_lobpcg_solve_c_(_p_Vec**, int*, int*, int*,
 double*, double*, double*, void*, void*, void*, void*, void*, int*)':
-blopex_c.c:166: error: invalid conversion from `void*' to `void (*)(void*, void*
+blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*, void*
 , void*)'
-blopex_c.c:167: error: invalid conversion from `void*' to `void (*)(void*, void*
+blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*, void*
 , void*)'
-blopex_c.c:168: error: invalid conversion from `void*' to `void (*)(void*, void*
+blopex_c.c:171: error: invalid conversion from `void*' to `void (*)(void*, void*
 , void*)'
-blopex_c.c:169: error: invalid conversion from `void*' to `void (*)(void*)'
-blopex_c.c:170: error: invalid conversion from `void*' to `void (*)(void*)'
-blopex_c.c:153: warning: unused variable `j'
+blopex_c.c:172: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:173: error: invalid conversion from `void*' to `void (*)(void*)'
+blopex_c.c:287: warning: cannot pass objects of non-POD type `struct std::comple
+x<double>' through `...'; call will abort at runtime
+blopex_c.c:156: warning: unused variable `j'
 make: [blopex_c.o] Error 1 (ignored)
 /cygdrive/c/petsc/petsc_blopex_1/petsc-3.1-p3/cygwin-cxx-debug/bin/mpif90 -Wall
 -Wno-unused-variable -g  -o ex2f_blopex ex2f_blopex.o blopex_c.o -Wl,-rpath,/cyg
@@ -87,6 +88,7 @@ ldl
 gfortran: blopex_c.o: No such file or directory
 make: [ex2f_blopex] Error 1 (ignored)
 /usr/bin/rm -f ex2f_blopex.o
+
 }}}
 
 = In cygwin 32 bit =
