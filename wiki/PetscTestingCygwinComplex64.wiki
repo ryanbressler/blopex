@@ -19,6 +19,8 @@ Start the configuration process as follows to configure for complex scalars and 
 {{{
 >> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indices
 }}}
+The option --download-mpich=1 takes very long time. If you do not need MPI, replace it the option --with-mpi=0
+
 Or you can install mpich2 on Windows under Cygwin. The installation of mpich2 under Cygwin is the same as installation on Linux.
 {{{
 >> ./config/configure.py  --with-cc=mpicc --with-fc=mpif77 --with-cxx=mpicxx --with-f-blas-lapack=/cygdrive/c/cygwin/lib --with-mpich-dir=/cygdrive/c/cygwin/usr/local/bin/mpich2-install   --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx --with-64-bit-indice
