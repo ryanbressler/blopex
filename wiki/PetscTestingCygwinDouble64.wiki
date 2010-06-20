@@ -23,6 +23,8 @@ Or  if you haven’t installed mpich on Windows yet,  you can use option  --down
 {{{
 >> ./config/configure. --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-64-bit-indices
 }}}
+The option --download-mpich=1 takes very long time. If you do not need MPI, replace it the option --with-mpi=0
+
 After configuration is finished issue the command
 {{{
 >> make all
