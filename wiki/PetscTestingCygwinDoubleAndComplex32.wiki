@@ -30,14 +30,11 @@ Switch to the Petsc directory and set PETSC_DIR environment variable.
 Start the configuration process as follows to configure for complex scalars and 32bit integers:
 {{{
 >> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx
-
 }}}
 
-Or use the following to configure for real scalars:
-{{{
->> ./config/configure. --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1
+The option --download-mpich=1 takes very long time. If you do not need MPI, replace it the option  --with-mpi=0
 
-}}}
+To configure for real scalars, remove the option --with-scalar-type=complex .
 
 After configuration is finished issue the command
 {{{
