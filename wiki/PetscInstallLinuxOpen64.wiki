@@ -72,3 +72,28 @@ Run configure, e.g.,
 >> ./configure --with-blas-lapack-dir=/opt/acml4.4.0/open64_64_mp --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1
 }}}
 
+Here, we 
+  * use the AMD's ACML library /opt/acml4.4.0/open64_64_mp for BLAS/LAPACK
+  * specify the AMD's OPEN64 compilers, which are already in our PATH by options --with-cc=opencc --with-cxx=openCC --with-fc=openf95 
+  * since this is the real arithmetic and 32-bit integers, we compile blopex and hypre together
+  * we must specify the --download-openmpi=1 or --download-mpich=1 option, since the MPI libraries must be compiled with the same compiler as PETSc. This option not only compiles the MPI libraries, but also creates the local mpicc wrapper to opencc, etc, which is used during the make
+
+Now, we run 
+{{{
+>> make PETSC_ARCH=linux-gnu-c-debug all
+}}}
+and hope that there are no errors. Now, the --download-openmpi=1 or --download-mpich=1 option also creates the local version of mpirun, which must be used instead whatever other mpirun binary you might have pre-installed on your system. So we add it in front of the PATH, in my case (it will also depend on the specified PETSC_ARCH)
+
+{{{
+>> PATH=/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
+>>  which mpirun
+~/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/bin/mpirun
+}}}
+
+We also need to add the newly compiled local version of MPI libs to LD_LIBRARY_PATH by 
+{{{
+>> LD_LIBRARY_PATH=/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+}}}
+
+
+make PETSC_ARCH=linux-gnu-c-debug test
