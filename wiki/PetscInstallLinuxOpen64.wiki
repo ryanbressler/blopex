@@ -1,11 +1,11 @@
-#summary PETSc install with AMD's OPEN64 compiler in Fedora 13: errors
+#summary PETSc install with AMD's OPEN64 compiler in Fedora 13
 
 = Introduction =
 
 How To install PETSc with AMD's OPEN64 compiler in Fedora13 64 bit
 (assuming bash shell)
 
-= Details =
+= Preliminaries =
 
 The basic system info:
 
@@ -36,12 +36,13 @@ Each library comes in two different flavours, regular and mp, e.g.,
 
 According to Ch. 2 of the ACML manual, see  
 http://developer.amd.com/assets/acml_userguide.pdf
-one should use the mp version on a multi-CPU/core nodes.
+one should use the mp version on a multi-CPU/core nodes.However, using the mp libraries requires having pre-installed MPI libraries (compiled with OPEN64 ?), which complicates the PETSc configure, which also asks for an MPI setup. I (AK) guess that a clean setup using the mp version of ACML and PETSc with MPI compiled using OPEN64 basically requires having an MPI library (either ONEMMPI or MPICH2) pre-compiled with OPEN64 and pre-installed, so that it could be used by both the mp version of ACML and PETSc with MPI. In this test, I do the simple combination, where a non-mp version of ACML is used and PETSc downloads and complies (with OPEN64) the MPI.
 
-You need set the path to the libraries by running
+
+We need set the path to the libraries by running
 
 {{{
->> LD_LIBRARY_PATH=/opt/acml4.4.0/open64_64_mp/lib; export LD_LIBRARY_PATH
+>> LD_LIBRARY_PATH=/opt/acml4.4.0/open64_64/lib; export LD_LIBRARY_PATH
 }}}
 
 If SELinux is active, disable SELinux temporarily by running (as root) 
@@ -65,15 +66,34 @@ Extract using *tar xzvf* , rename the PETSc dir as you like, cd to PETSc dir and
 >> PETSC_DIR=$PWD; export PETSC_DIR
 }}}
 
-Version petsc-3.1-p3 and later already includes the latest BLOPEX code! 
+Version petsc-3.1-p3 and later already includes the latest BLOPEX code!
+
+== PETSc configure without MPI ==
+
+First you may (a must in petsc-3.1-p3) need to edit the file config/PETSc/packages/blopex.py and remove all instances of self.mpi there. BLOPEX does not require any MPI by itself. 
+
+Second, 
+
+{{{
+>> ./configure --with-blas-lapack-dir=/opt/acml4.4.0/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --with-mpi=0 
+>> make all
+>> make test 
+}}}
+
+The "make all" may display some errors (actually warnings) in PETSc which can be ignored. 
+the rest of the installation of BLOPEX (compiling the drivers) is standard. 
+
+
+== PETSc configure with MPI ==
+
 Run configure, e.g., 
 
 {{{
->> ./configure --with-blas-lapack-dir=/opt/acml4.4.0/open64_64_mp --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1
+>> ./configure --with-blas-lapack-dir=/opt/acml4.4.0/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1
 }}}
 
 Here, we 
-  * use the AMD's ACML library /opt/acml4.4.0/open64_64_mp for BLAS/LAPACK
+  * use the AMD's ACML library /opt/acml4.4.0/open64_64 for BLAS/LAPACK
   * specify the AMD's OPEN64 compilers, which are already in our PATH by options --with-cc=opencc --with-cxx=openCC --with-fc=openf95 
   * since this is the real arithmetic and 32-bit integers, we compile blopex and hypre together
   * we must specify the --download-openmpi=1 or --download-mpich=1 option, since the MPI libraries must be compiled with the same compiler as PETSc. This option not only compiles the MPI libraries, but also creates the local mpicc wrapper to opencc, etc, which is used during the make
