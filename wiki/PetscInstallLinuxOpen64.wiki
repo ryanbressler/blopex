@@ -121,7 +121,11 @@ We also need to add the newly compiled local version of MPI libs to LD_LIBRARY_P
 }}}
 passes OK. 
 
-But trying to compile the BLOPEX driver gives an error: 
+But trying to compile any BLOPEX driver gives the same error, 
+
+*undefined reference to `lobpcg_solve_double'*
+
+For example: 
 {{{
 >> make driver
 /home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/bin/mpicc -o driver.o -c -g -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -D__INSDIR__=src/contrib/blopex/driver/ driver.c
