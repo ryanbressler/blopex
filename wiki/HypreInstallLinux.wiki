@@ -244,7 +244,7 @@ $
 
 A few things to note:
 
-1. In the mpirun command, I was unable to use the {{{-x}}} argument and replaced with the {{{-env}}} argument. The program also runs by changing the {{{LD_LIBRARY_PATH}}} environment variable and then just running {{{mpirun -np 16 ./ij -lobpcg}}}.
+1. In the {{{mpirun}}} command, I was unable to use the {{{-x}}} argument and replaced with the {{{-env}}} argument. The program also runs by changing the {{{LD_LIBRARY_PATH}}} environment variable and then just running {{{mpirun -np 16 ./ij -lobpcg}}}.
 
 2. Another install of Hypre was also done using the ACML gfortran64_mp libraries.
 
@@ -255,17 +255,30 @@ $ ./configure --with-lapack-libs="acml_mp acml_mv m" --with-lapack-lib-dirs="/tm
 
 Run:
 {{{
-$ mpirun -np 16 -env LD_LIBRARY_PATH /usr/lib64/mpich2/lib:/tmp/bryan/acml4.4.0/gfortran64_mp/lib ./ij -lobpcg
-
-$ mpirun -np 16 -env LD_LIBRARY_PATH /usr/lib64/mpich2/lib:/tmp/bryan/acml4.4.0/gfortran64_mp/lib ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
+$ export LD_LIBRARY_PATH=/usr/lib64/mpich2/lib:/tmp/bryan/acml4.4.0/gfortran64_mp/lib
+$ ./ij -lobpcg
+$ ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 }}}
 
-
-The gfortran64_mp libraries ran *much slower* (hundreds of times slower) than the regular gfortran64 libraries for the two example problems shown above.
 
 3. LOBPCG is running fine, but I am still getting some errors in some of the test examples. For example, compiling ex5.c, I am getting an error that says:
 
 {{{
 ../hypre/lib/libHYPRE.a(par_gsmg.o): In function `hypre_BoomerAMGFitVectors':
 par_gsmg.c:(.text+0x1a40): undefined reference to `dgels_'
+}}}
+
+The following is another correct install using precompiled libraries from Fedora:
+
+{{{
+$ tar xzvf hypre-2.6.0b.tar.gz
+$ mv hypre-2.6.0b hypre8
+$ cd hypre8/src
+$ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
+$ tar xzvf hypre_lobpcg_modifications.tar.gz
+$ ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"
+$ make all
+$ make test
+$ cd test
+$ mpirun -np 16 ./ij -lobpcg
 }}}
