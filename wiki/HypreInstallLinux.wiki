@@ -7,10 +7,13 @@ Installing and running HYPRE 2.6.0b with our modifications on linux.
 Tested on:
     * AK's Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
     * PZ's Intel(R) Pentium(R) ,4 CPU, 3.06GHz, 3.24 GB, IntelMKL 10.1.1.019
+    * xvia  Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM mpich2, ACML 4.4.0.
 
 THIS INFO NEEDS TO BE UPDATED.
 
 = Details =
+
+== Preliminaries ==
 
 First download the compressed hypre file:
 You can download from the official HYPRE web site, or you can download directly version 2.6.0b with the following command:
@@ -52,8 +55,12 @@ $ tar xzvf hypre_lobpcg_modifications.tar.gz
 
 The above applies our modification to hypre 1.6.0b
 
+== Configuring and compiling ==
+
 Hypre configure is not too smart and relies on a user to tell where all the compilers are and what flags to use. This is easy if you plan to use mpiich2 or openmpi, see 
 http://code.google.com/p/blopex/wiki/openmpiandmpich2switchinFedora12 
+
+If you do not do anything and the mpich2 RPM is installed (check with rpm -q mpich2) it is the default (check with which mpirun) 
 
 Suppose that you use openmpi on 64bit, make sure to load its environment by 
 
@@ -111,8 +118,6 @@ In Fedora 12 64-bit, the location is /usr/lib64/ , so you run
 $ ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"  
 }}}
 
-<font color=red>THE LATTER IS NOT TESTED.</font>
-
 Now, the following makes HYPRE
 
 {{{
@@ -133,6 +138,8 @@ $ make test
 
 which complies and links all the drivers in the test directory. If you get errors at this point, you have problems with linking to the external headers and/or the libraries. These are, again, set up by relevant parameters in env, as well as configure options. 
 
+== Running == 
+
 There are several BLOPEX-related drivers the test directory, e.g., the simplest tests to run are: 
 
 {{{
@@ -147,11 +154,17 @@ $ mpirun -np 2 ./ij -lobpcg
 $ mpirun -np 2 ./struct -lobpcg
 }}}
 
-If you get errors here like "error while loading shared libraries: libacml.so: cannot open shared object file", this means that the executable has been compiled using shared libraries, so you need to provide the location of the shared libraries in the execution line using LD_LIBRARY_PATH, cf. http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML , e.g., like  
+If you get errors here like "error while loading shared libraries: libacml.so: cannot open shared object file", this means that the executable has been compiled using shared libraries, so you need to provide the location of the shared libraries in the execution line using LD_LIBRARY_PATH, cf. http://code.google.com/p/blopex/wiki/PetscInstallLinuxACML , e.g., for OPENMPI, 
 
 {{{
 $ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./ij -lobpcg
 $ mpirun -np 2 -x LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./struct -lobpcg
+}}}
+
+or, for MPICH2, 
+{{{
+$ mpirun -np 2 -env LD_LIBRARY_PATH /usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./ij -lobpcg
+$ mpirun -np 2 -env LD_LIBRARY_PATH /usr/lib64/openmpi/lib:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib ./struct -lobpcg
 }}}
 
 Alternatively, set the LD_LIBRARY_PATH in your environment by (bash shell), e.g., 
@@ -201,28 +214,22 @@ to see the familiar output coming from the LOBPCG function.
 
 For details on hypre Linux testing see http://code.google.com/p/blopex/wiki/HypreTestingLinux
 
-=Further Testing=
+== Complete examples ==
 
+=== ACML 4.4.0 and the default mpich2 ===  
 
-Tests were also run with the following specs:
-
-Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM
-mpich2, ACML 4.4.0 and ACML 4.3.0.
-
-The following is a correct install:
 {{{
 $ tar xzvf hypre-2.6.0b.tar.gz
 $ mv hypre-2.6.0b hypre1
 $ cd hypre1/src
 $ ./configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/tmp/bryan/acml4.4.0/gfortran64/lib"
 $ make all
+$ export LD_LIBRARY_PATH=/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
 $ make test
 $ cd test
 $ mpirun -np 16 ./ij -lobpcg
 
-./ij: error while loading shared libraries: libacml.so: cannot open shared object file: No such file or directory
-
-$ mpirun -np 16 -env LD_LIBRARY_PATH /usr/lib64/mpich2/lib:/tmp/bryan/acml4.4.0/gfortran64/lib ./ij -lobpcg
+$ mpirun -np 16 ./ij -lobpcg
 
 ...
 
@@ -242,11 +249,27 @@ LOBPCG Solve:
 $
 }}}
 
-A few things to note:
+HOW DOES THE ABOVE USE hypre_lobpcg_modifications.tar.gz ?
 
-1. In the {{{mpirun}}} command, I was unable to use the {{{-x}}} argument and replaced with the {{{-env}}} argument. The program also runs by changing the {{{LD_LIBRARY_PATH}}} environment variable and then just running {{{mpirun -np 16 ./ij -lobpcg}}}.
 
-2. Another install of Hypre was also done using the ACML gfortran64_mp libraries.
+=== Precompiled BLAS/LAPACK libraries from Fedora ===
+
+{{{
+$ tar xzvf hypre-2.6.0b.tar.gz
+$ mv hypre-2.6.0b hypre8
+$ cd hypre8/src
+$ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
+$ tar xzvf hypre_lobpcg_modifications.tar.gz
+$ ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"
+$ make all
+$ make test
+$ cd test
+$ mpirun -np 16 ./ij -lobpcg
+}}}
+
+PLEASE REPORT THE TIMING!
+
+=== ACML gfortran64_mp libraries ===
 
 Configure:
 {{{
@@ -260,25 +283,15 @@ $ ./ij -lobpcg
 $ ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 }}}
 
+The mp libraries already should use all 16 CPUs. If you in addition run it with mpirun -np 16, you effectively use 16x16=256 CPUs (in virtual mode). That should be roughly similar to running mpirun -np 256 with non-mp libraries.
 
-3. LOBPCG is running fine, but I am still getting some errors in some of the test examples. For example, compiling ex5.c, I am getting an error that says:
+PLEASE REPORT THE TIMING DIFFERENCE COMPARED TO NON-MP! 
+
+=Still needs checking=
+
+LOBPCG is running fine, but I (BS) am still getting some errors in some of the test examples. For example, compiling ex5.c, I am getting an error that says:
 
 {{{
 ../hypre/lib/libHYPRE.a(par_gsmg.o): In function `hypre_BoomerAMGFitVectors':
 par_gsmg.c:(.text+0x1a40): undefined reference to `dgels_'
-}}}
-
-The following is another correct install using precompiled libraries from Fedora:
-
-{{{
-$ tar xzvf hypre-2.6.0b.tar.gz
-$ mv hypre-2.6.0b hypre8
-$ cd hypre8/src
-$ wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
-$ tar xzvf hypre_lobpcg_modifications.tar.gz
-$ ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"
-$ make all
-$ make test
-$ cd test
-$ mpirun -np 16 ./ij -lobpcg
 }}}
