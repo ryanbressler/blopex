@@ -28,7 +28,24 @@ Change directory to BLOPEX abstract code directory and issue make command.
 >>make
 }}}
 
-Change directory to the code for the complex serial_driver.  
+Note: On some computers, one may have to edit Makefile.inc in the blopex_abstract directory and change the lines:
+
+{{{
+# cc = gcc
+ cc = mex
+}}}
+
+to
+
+{{{
+ cc = gcc
+# cc = mex
+}}}
+
+as the mex compiler may not be installed.
+
+
+Next, change directory to the code for the complex serial_driver.  
 {{{
 >>cd BLOPEX/blopex_serial_complex
 }}}
