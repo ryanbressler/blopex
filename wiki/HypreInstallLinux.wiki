@@ -224,11 +224,9 @@ $ mv hypre-2.6.0b hypre1
 $ cd hypre1/src
 $ ./configure --with-lapack-libs="acml acml_mv m" --with-lapack-lib-dirs="/tmp/bryan/acml4.4.0/gfortran64/lib"
 $ make all
-$ export LD_LIBRARY_PATH=/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
+$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/acml-4-4-0-gfortran-64bit/gfortran64/lib
 $ make test
 $ cd test
-$ mpirun -np 16 ./ij -lobpcg
-
 $ mpirun -np 16 ./ij -lobpcg
 
 ...
@@ -298,9 +296,12 @@ $ ./ij -lobpcg
 $ ./ij -lobpcg -n 64 64 64 -pcgitr 0 -vrand 20 -seed 1
 }}}
 
-The mp libraries already should use all 16 CPUs. If you in addition run it with mpirun -np 16, you effectively use 16x16=256 CPUs (in virtual mode). That should be roughly similar to running mpirun -np 256 with non-mp libraries.
+The mp libraries already should use all 16 CPUs. If you in addition run it with mpirun -np 16, you effectively use 16x16=256 CPUs (in virtual mode). That should be roughly similar to running mpirun -np 256 with non-mp libraries, so not advisable.
 
-PLEASE REPORT THE TIMING DIFFERENCE COMPARED TO NON-MP! 
+PLEASE REPORT THE TIMING DIFFERENCE COMPARED TO NON-MP!
+
+*Note:* This install is running on only one processor. Will report times when we figure out how to get it to run on all processors. (It is only running on one processor with PETSc as well).
+
 
 =Still needs checking=
 
