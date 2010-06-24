@@ -265,9 +265,24 @@ $ make all
 $ make test
 $ cd test
 $ mpirun -np 16 ./ij -lobpcg
-}}}
 
-PLEASE REPORT THE TIMING!
+...
+
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    2.74167648768121e-09
+
+12 iterations
+=============================================
+Solve phase times:
+=============================================
+LOBPCG Solve:
+  wall clock time = 0.020000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.030000 seconds
+  cpu MFLOPS      = 0.000000
+
+$
+}}}
 
 === ACML gfortran64_mp libraries ===
 
