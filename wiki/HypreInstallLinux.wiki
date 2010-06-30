@@ -53,7 +53,7 @@ Uncompress:
 $ tar xzvf hypre_lobpcg_modifications.tar.gz
 }}}
 
-The above applies our modification to hypre 1.6.0b
+The above applies our modification to hypre 2.6.0b
 
 == Configuring and compiling ==
 
