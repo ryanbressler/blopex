@@ -11,6 +11,27 @@ This fix works in Linux.
 driver_fortran in petsc-3.1-p3 gives errors for complex scalars both for 32-bit and 64-bit integers. 
 It works in double, however, both for 32-bit and 64-bit integers. 
 
+= Fix for C++ Issues =
+
+I have encountered two errors connected to C++.  
+
+The first is type conversion errors in assigning the void function pointers that appear in the parameters of petsc_lobpcg_solve_c_ in blopex_c.c .  C++ is much more strict about this than C.  I added explict type casting to conversion and this fixed that problem.  
+
+The second problem occurs in the link step which gives error "ex2f_blopex.F:391: undefined reference to `petsc_lobpcg_solve_c_".
+Using command "objdump blopex_c.o -t" I discovered the object name in blopex_c.o is "_Z21petsc_lobpcg_solve_c_PP6_p_VecPiS2_S2_PdS3_S3_PFvPvS4_S4_ES6_S6_PFvS4_ES8_S2_" which sure isn't "petsc_lobpcg_solve_c_".  After a lot of time searching the internet I found the following.
+
+C++ generates names in the object files that include codes for parameters.  Fortran does not and C does not.   To compile with C++ and force object names to be fortran compatible we need to surround the C++ function with  extern "C" { .,.....}.  And so we don't mess things up for the normal C compiles we only do this if PETSC_CLANGUAGE_ is set.  
+
+I've checked out in XVIA using g++ and gcc compilers and it works well. 
+
+I have moved to the new code for blopex_c.c in driver_fortran to google source.
+That's the only thing that has changes.  
+
+To test:
+(1) install PETSc as normal
+(2) download blopex_c.c from the google source code and move to $PETSC_DIR/src/contrib/blopex/driver_fortran/.
+(3) complete test as normal doing make and execute ex2f_blopex
+
 = In cygwin=
 
 == Setup Petsc ==
