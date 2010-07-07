@@ -22,9 +22,9 @@ Using command "objdump blopex_c.o -t" I discovered the object name in blopex_c.o
 
 C++ generates names in the object files that include codes for parameters.  Fortran does not and C does not.   To compile with C++ and force object names to be fortran compatible we need to surround the C++ function with  extern "C" { .,.....}.  And so we don't mess things up for the normal C compiles we only do this if PETSC_CLANGUAGE_CXX is set.  
 
-I've checked out in XVIA using g++ and gcc compilers and it works well. 
+I've checked out in XVIA using g++ and gcc compilers and it works well there. 
 
-I have moved to the new code for blopex_c.c in driver_fortran to google source.
+I have moved the new code for blopex_c.c in driver_fortran to google source.
 That's the only thing that has changes.  
 
 To test:
