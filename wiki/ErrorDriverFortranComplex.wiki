@@ -185,6 +185,8 @@ blopex_c.c:287: warning: cannot pass objects of non-POD type `struct std::comple
 blopex_c.c:156: warning: unused variable `j'
 }}}
 
+UPDATE 2: The second revision to the blopex_c.c file has fixed the problem. The fortran driver now compiles and runs in Cygwin 32bit. The test results have been posted on the PetscTestingCygwinDoubleAndComplex32 Wiki. 
+
 =In Linux==
 
 == complex scalars and 32bit integers (ACML and OPENMPI) ==
