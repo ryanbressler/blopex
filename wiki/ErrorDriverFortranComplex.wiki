@@ -1,4 +1,4 @@
-#summary driver_fortran Complex Error
+#summary driver_fortran Complex Error fixed
 
 = Introduction =
 
@@ -60,8 +60,12 @@ driver_fortran. Only the ex2f_blopex executable must be complied by
 >> make ex2f_blopex
 }}}
 
-== Error of making ex2f_blopex ==
+==  making ex2f_blopex ==
+Using the latest blopex_c.c, ex2f_blopex works well in Cygwin and 64 bit or 32 bit.
+The test results have been posted on the PetscTestingCygwinComplex64 Wiki for 64bit.
+For 32bit see PetscTestingCygwinDoubleAndComplex32 Wiki.
 
+==previous error making ex2f_blopex ==
 Using the fixed blopex_c.c , I still get the errors as following (running make ex2f_blopex):
 
 (This looks like that error previous error, already removed, using the C++ compiler. I am not sure that this is complex-related. Please compare closely your configure for double (which works) and complex and make sure that the only difference is --with-scalar-type=complex AK)
