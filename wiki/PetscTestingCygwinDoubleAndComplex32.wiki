@@ -5,11 +5,6 @@
 
 How to test BLOPEX under version 3.1 of Petsc on Cygwin in Windows Vista , e.g., configured for 32bit integers and complex. 
 
-
-System configuration: 
-
-  * AMD Phenom 9500, 4 CPU, 2.20GHz, 3.00 GB of RAM
-
 = Setup Petsc =  
 
 To use blopex_solve_double or blopex_solve_complex using Petsc first download Petsc at http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p3.tar.gz
@@ -29,10 +24,16 @@ Switch to the Petsc directory and set PETSC_DIR environment variable.
 
 Start the configuration process as follows to configure for complex scalars and 32bit integers:
 {{{
->> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/cygdrive/c/cygwin/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx
+>> ./config/configure.py  --with-cc=gcc --with-fc=gfortran --with-cxx=g++ --with-f-blas-lapack=/lib --download-mpich=1 --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx
 }}}
 
 The option --download-mpich=1 takes very long time. If you do not need MPI, replace it the option  --with-mpi=0
+
+Or you can install mpich2 on Windows under Cygwin. The installation of mpich2 under Cygwin is the same as installation on Linux. In this case configure as follows:
+{{{
+>> ./config/configure.py --with-cc=mpicc --with-fc=mpif90 --with-cxx=mpicxx --with-f-blas-lapack=/lib 
+--with-mpich-dir=/mpich2-install --download-blopex=1 --with-scalar-type=complex --with-clanguage=cxx
+}}}
 
 To configure for real scalars, remove the option --with-scalar-type=complex .
 
@@ -275,6 +276,26 @@ Final eigenvalues:
 
 3.268335e+00
 
+}}}
+
+=== driver_fortran ===
+
+
+./ex2f_blopex 
+
+Solution
+{{{
+BLOPEX complete in  13 iterations
+
+eval   1 is 0.205227064E-01 residual 0.3433E-07
+
+eval   2 is 0.512014707E-01 residual 0.1338E-06
+
+eval   3 is 0.512014707E-01 residual 0.1571E-06
+
+eval   4 is 0.818802350E-01 residual 0.6035E-06
+
+eval   5 is 0.101982840E+00 residual 0.7529E-06
 }}}
 
 
