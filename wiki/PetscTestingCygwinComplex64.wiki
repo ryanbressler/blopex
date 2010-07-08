@@ -163,3 +163,17 @@ Final eigenvalues:
 2.241534e+00
 3.268335e+00
 }}}
+
+=== driver_fortran ===
+
+./ex2f_blopex
+
+Eigenvalues computed
+{{{
+BLOPEX complete in  13 iterations
+eval   1 is 0.205227064E-01 residual 0.3433E-07
+eval   2 is 0.512014707E-01 residual 0.1338E-06
+eval   3 is 0.512014707E-01 residual 0.1571E-06
+eval   4 is 0.818802350E-01 residual 0.6035E-06
+eval   5 is 0.101982840E+00 residual 0.7529E-06
+}}}
