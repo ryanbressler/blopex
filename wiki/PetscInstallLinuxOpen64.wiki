@@ -1,4 +1,4 @@
-#summary PETSc install with AMD's OPEN64 compiler in Fedora 13: errors
+#summary PETSc install with AMD's OPEN64 compiler in Fedora 13: ERRORS
 
 = Introduction =
 
