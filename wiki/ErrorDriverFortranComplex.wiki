@@ -1,15 +1,10 @@
-#summary driver_fortran Complex Error fixed
+#summary (historic) C++/FORTRAN error fixed in driver_fortran/blopex_c.c
 
 = Introduction =
 
-Donald has made a possible fix, which now needs to be tested. 
-Fist, replace the existing blopex_c.c with the new 
+Donald has made a possible fix, 
 http://blopex.googlecode.com/svn/trunk/blopex_petsc/driver_fortran/blopex_c.c
-
-This fix works in Linux. 
-
-driver_fortran in petsc-3.1-p3 gives errors for complex scalars both for 32-bit and 64-bit integers. 
-It works in double, however, both for 32-bit and 64-bit integers. 
+It has been submitted to PETSc and will appear in petsc-3.1-p4.  
 
 = Fix for C++ Issues =
 
