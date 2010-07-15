@@ -1,0 +1,24 @@
+#summary Documentation needed for our PETSc test drivers
+
+= Introduction =
+
+Our PETSc test drivers are very poorly documented. 
+To such an extreme that it is in some cases impossible to conclude from their 
+results if they actually work. 
+Let us provide the description of the drivers here, to be added to the headers 
+of the c codes and/or readme files later.  
+
+
+= Details =
+
+  *  *driver*
+
+
+  *  *driver_diag*
+
+
+
+  *  *driver_fiedler*
+
+
+  *  *driver_fortran*
