@@ -23,12 +23,23 @@ of the c codes and/or readme files later.
 
 is an example of a PETSc call (BLOPEX call in this case) from FORTRAN 90. This is a modified version of the Fortran example ex2f.F from the PETSc source distribution (Version 2.3.3-p4). I calls the LOBPCG solver from BLOPEX with blocksize=5 and displays the final eigenvalues and the corresponding residuals. There is no history output. The executable *ex2f_blopex* not accept any command-line options. 
 
-*ex2f_blopex* solves a standard eigenvalue problem for the negative 2D Laplacian approximated on the standard 5-point stencil. 
+*ex2f_blopex* solves a standard eigenvalue problem for a matrix A, which is the negative 2D Laplacian approximated on the standard 5-point stencil. Technically, *ex2f_blopex* solves a generalized eigenvalue problem, but the second, "mass," matrix is just an identity. 
 
-Still need to answer:  
- * What is the domain and mesh size? 
- * What the exact eigenvalues actually are? 
- * Does it use preconditioning? Which one? 
+The domain is a square, the mesh is 30-by-30, the mesh step is one, the BC are Dirichlet.  
+The exact eigenvalues using http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d specifically calling   
+{{{
+>> [A,lambda]=laplacian([30,30],5); lambda
+}}}
+are
+{{{
+     2.052270643241941e-02
+     5.120147071122071e-02
+     5.120147071122071e-02
+     8.188023499002201e-02
+     1.019828404161120e-01
+}}}
+
+The default KSP preconditioning is used for the matrix A. The default KSP type is GMRES with a restart of 30, using modified Gram-Schmidt orthogonalization, see KSPCreate PETSc docs. 
 
 Here is an example of a typical one-CPU run:  
 
@@ -42,11 +53,28 @@ eval   4 is 0.818802350E-01 residual 0.8697E-06
 eval   5 is 0.101982840E+00 residual 0.4592E-06 
 }}}
 
+Here is an example of a typical 4-CPU run:  
+{{{
+mpirun -np 4 ./ex2f_blopex
+BLOPEX complete in  13 iterations
+eval   1 is 0.205227064E-01 residual 0.2477E-07
+eval   2 is 0.512014707E-01 residual 0.1560E-06
+eval   3 is 0.512014707E-01 residual 0.2785E-06
+eval   4 is 0.818802350E-01 residual 0.7383E-06
+eval   5 is 0.101982840E+00 residual 0.9081E-06
+}}}
+
+The residuals will vary with the number of CPUs and on different computers.  
+
+*ex2f_blopex* computes 5 eigenpairs simultaneously in a block and displays only the final results. To see the complete convergence history, edit the code *blopex_c.c* and replace 0 with 2 in lines 241 and 262. 
+
 *BLOPEX 1.1 changes in in blopex_c.c* :
 
  # Add checks for PETSC_USE_COMPLEX to call correct function for lobpcg_solve
  # Add type casting when moving void parameter points
- # Surround petsc_lobpcg_solve_c_ with  extern "C" { .... }.
-This is to enforce compatibility of object names between fortran and C++.
+ # Surround petsc_lobpcg_solve_c_ with  extern "C" { .... }. This is to enforce compatibility of object names between fortran and C++.
 
-*Possible improvement.* Check the most recent version of the Fortran example ex2f.F from the PETSc source and try to sync with it. 
+*Possible improvement.* 
+
+ # Check the most recent version of the Fortran example ex2f.F and the related C code from the PETSc source and try to sync with them. 
+ # What does the code actually do in complex arithmetic? 
