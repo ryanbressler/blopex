@@ -21,7 +21,7 @@ of the c codes and/or readme files later.
 
 == *driver_fortran* == 
 
-is an example of a PETSc call (BLOPEX call in this case) from FORTRAN 90. This is a modified version of the Fortran example ex2f.F from the PETSc source distribution (Version 2.3.3-p4). I calls the LOBPCG solver from BLOPEX with blocksize=5 and displays the final eigenvalues and the corresponding residuals. There is no history output. The executable *ex2f_blopex* not accept any command-line options. 
+is an example of a PETSc call (BLOPEX call in this case) from FORTRAN 90. This is a modified version of the Fortran example ex2f.F from the PETSc source distribution (Version 2.3.3-p4). It calls the LOBPCG solver from BLOPEX with blocksize=5 and displays the final eigenvalues and the corresponding residuals. There is no history output. The executable *ex2f_blopex* not accept any command-line options. 
 
 *ex2f_blopex* solves a standard eigenvalue problem for a matrix A, which is the negative 2D Laplacian approximated on the standard 5-point stencil. Technically, *ex2f_blopex* solves a generalized eigenvalue problem, but the second, "mass," matrix is just an identity. 
 
