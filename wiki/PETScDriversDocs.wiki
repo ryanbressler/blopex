@@ -9,16 +9,44 @@ Let us provide the description of the drivers here, to be added to the headers
 of the c codes and/or readme files later.  
 
 
-= Details =
-
-  *  *driver*
+== *driver* ==
 
 
-  *  *driver_diag*
+== *driver_diag* ==
 
 
 
-  *  *driver_fiedler*
+== *driver_fiedler* ==
 
 
-  *  *driver_fortran*
+== *driver_fortran* == 
+
+is an example of a PETSc call (BLOPEX call in this case) from FORTRAN 90. This is a modified version of the Fortran example ex2f.F from the PETSc source distribution (Version 2.3.3-p4). I calls the LOBPCG solver from BLOPEX with blocksize=5 and displays the final eigenvalues and the corresponding residuals. There is no history output. The executable *ex2f_blopex* not accept any command-line options. 
+
+*ex2f_blopex* solves a standard eigenvalue problem for the negative 2D Laplacian approximated on the standard 5-point stencil. 
+
+Still need to answer:  
+ * What is the domain and mesh size? 
+ * What the exact eigenvalues actually are? 
+ * Does it use preconditioning? Which one? 
+
+Here is an example of a typical one-CPU run:  
+
+{{{
+./ex2f_blopex
+BLOPEX complete in  12 iterations
+eval   1 is 0.205227064E-01 residual 0.1767E-07
+eval   2 is 0.512014707E-01 residual 0.4771E-07
+eval   3 is 0.512014707E-01 residual 0.2177E-06
+eval   4 is 0.818802350E-01 residual 0.8697E-06
+eval   5 is 0.101982840E+00 residual 0.4592E-06 
+}}}
+
+*BLOPEX 1.1 changes in in blopex_c.c* :
+
+ # Add checks for PETSC_USE_COMPLEX to call correct function for lobpcg_solve
+ # Add type casting when moving void parameter points
+ # Surround petsc_lobpcg_solve_c_ with  extern "C" { .... }.
+This is to enforce compatibility of object names between fortran and C++.
+
+*Possible improvement.* Check the most recent version of the Fortran example ex2f.F from the PETSc source and try to sync with it. 
