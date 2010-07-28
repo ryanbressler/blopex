@@ -136,3 +136,109 @@ collect2: ld returned 1 exit status
 make: [driver] Error 1 (ignored)
 /bin/rm -f driver.o
 }}}
+
+= Attempted Solution =
+
+This is an attempt to remedy the above error.
+
+== Preliminaries == 
+
+The basic system info:
+
+{{{
+>> uname -a
+Linux xvia.cudenver.edu 2.6.27.41-170.2.117.fc10.x86_64 #1 SMP Thu Dec 10 10:36:29 EST 2009 x86_64 x86_64 x86_64 GNU/Linux
+}}}
+
+Assuming the Open64 compilers and the ACML libraries have already been installed, as outlined above, add their locations to the PATH and LD_LIBRARY_PATH,
+
+{{{
+>>PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
+>>LD_LIBRARY_PATH=/home/guests/adougher/acml-4-4-0-open64/open64_64/lib; export LD_LIBRARY_PATH
+}}} 
+
+Extract PETSc and set the PETSC_DIR variable as outlined above:
+
+{{{
+>>tar -xzvf petsc-lite-3.1-p3.tar.gz
+>>mv petsc-3.1-p3 petsc-3.1-p3_double_MPI_hypre
+>>cd petsc-3.1-p3_double_MPI_hypre
+>>PETSC_DIR=$PWD; export PETSC_DIR
+}}}
+
+== Configuration ==
+
+It appears that the error 'undefined reference to 'lobpcg_solve_double'' only occurs when the option '--download-hypre=1' is used during the configuration process. This option prevents compilation of the 'lobpcg.c' file in the Blopex source, which contains the `lobpcg_solve_double' function. More information can be found in PETSc's configure.log (after configuring), in the section detailing the output of running make on Blopex. In an attempt to work around this, the following steps were taken:
+
+1. After extracting PETSc and setting the PETSC_DIR variable as outlined above, type
+{{{
+>> cd config/PETSc/packages
+}}}
+
+2. From here, open the blopex.py file with a text editor and replace:
+{{{
+ 14   def setupDependencies(self, framework):
+ 15     PETSc.package.NewPackage.setupDependencies(self, framework)
+ 16     self.blasLapack = framework.require('config.packages.BlasLapack',self)
+ 17     if self.framework.argDB.has_key('download-hypre') and not self.framework.argDB['download-hypre'] == 0:
+ 18       self.hypre      = framework.require('PETSc.packages.hypre',self)
+ 19       self.deps       = [self.mpi,self.blasLapack,self.hypre]
+ 20     elif self.framework.argDB.has_key('with-hypre-dir') or self.framework.argDB.has_key('with-hypre-include') or self.framework.argDB.has_key('with-hypre-lib'): 
+ 21       self.hypre      = framework.require('PETSc.packages.hypre',self) 
+ 22       self.deps       = [self.mpi,self.blasLapack,self.hypre] 
+ 23     else: 
+ 24       self.deps       = [self.mpi,self.blasLapack] 
+ 25     return
+}}}
+
+With:
+
+{{{
+ 14   def setupDependencies(self, framework):
+ 15     PETSc.package.NewPackage.setupDependencies(self, framework)
+ 16     self.blasLapack = framework.require('config.packages.BlasLapack',self) 
+ 17     if self.framework.argDB.has_key('download-hypre') and self.framework.argDB['download-hypre']:
+ 18       self.hypre      = framework.require('PETSc.packages.hypre',self)
+ 19       self.deps       = [self.blasLapack,self.hypre]
+ 20     else:
+ 21       self.deps       = [self.blasLapack]
+ 22     return
+}}}
+
+These changes are taken from a recent patch released by PETSc. More information can be found at http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/diff/d18f05bf9eef/config/PETSc/packages/blopex.py.
+
+3. Run the configuration and make as usual,
+
+{{{
+>>./configure --with-blas-lapack-dir=/home/guests/adougher/acml-4-4-0-open64/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1 
+>>make PETSC_ARCH=linux-gnu-c-debug all
+}}} 
+
+4. Set the environment variables for the newly compiled MPI executables and libraries,
+
+{{{
+>>PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
+>>LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+}}}
+
+5. Run the test examples with,
+{{{
+>>make PETSC_ARCH=linux-gnu-c-debug test
+}}}
+
+Once again, the test passes OK but all of the drivers fail to compile with the error:
+*undefined reference to `lobpcg_solve_double'*
+As described above.
+
+For Example:
+{{{
+>>make driver
+/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin/mpicc -o driver.o -c -g -I/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/include -I/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/include -I/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/include -I/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/include -D__INSDIR__=src/contrib/blopex/driver/ driver.c
+/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin/mpicc -g  -o driver driver.o  -Wl,-rpath,/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib -L/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib -lpetsc   -lX11 -Wl,-rpath,/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib -L/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib -lBLOPEX -lHYPRE -lmpi_cxx -Wl,-rpath,/opt/x86_open64-4.2.4/lib/gcc-lib/x86_64-open64-linux/4.2.4 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib64 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib -lstdc++ -Wl,-rpath,/home/guests/adougher/acml-4-4-0-open64/open64_64/lib -L/home/guests/adougher/acml-4-4-0-open64/open64_64/lib -lacml -lnsl -laio -lrt -L/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib -L/opt/x86_open64-4.2.4/lib/gcc-lib/x86_64-open64-linux/4.2.4 -L/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -L/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc -L/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib64 -L/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lacml_mv -lmv -lpthread -lopen64rt -lgcc_s -lmpi_f90 -lmpi_f77 -lm -lm -lfortran -lm -lm -lffio -lm -lm -Wl,-rpath,/opt/x86_open64-4.2.4/lib/gcc-lib/x86_64-open64-linux/4.2.4 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib/gcc -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib64 -Wl,-rpath,/opt/x86_open64-4.2.4/open64-gcc-4.2.0/lib -lm -lm -lm -lm -lm -lm -lmpi_cxx -lstdc++ -lmpi_cxx -lstdc++ -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lacml_mv -lmv -lpthread -lopen64rt -lgcc_s -ldl 
+driver.o: In function `main':
+xvia.cudenver.edu:/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/src/contrib/blopex/driver/driver.c:346: undefined reference to `lobpcg_solve_double'
+collect2: ld returned 1 exit status
+make: [driver] Error 1 (ignored)
+/bin/rm -f driver.o
+}}} 
+
