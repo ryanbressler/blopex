@@ -11,14 +11,14 @@ The basic system info:
 
 {{{
 >> uname -a
-Linux opt4 2.6.33.5-124.fc13.x86_64 #1 SMP Fri Jun 11 09:38:12 UTC 2010 x86_64 x86_64 x86_64 GNU/Linux
+Linux opt4 2.6.33.6-147.fc13.x86_64 #1 SMP Tue Jul 6 22:32:17 UTC 2010 x86_64 x86_64 x86_64 GNU/Linux
 }}}
 
 Download from http://developer.amd.com/cpu/open64/ and install the AMD's OPEN64 compiler. 
-The default location is /opt/x86_open64-4.2.3.2/ (depending on the version number). Make sure that you add the OPEN64 binaries location to your PATH: 
+The default location is /opt/x86_open64-4.2.4/ (depending on the version number). Make sure that you add the OPEN64 binaries location to your PATH: 
 
 {{{
->> PATH=/opt/x86_open64-4.2.3.2/bin/:$PATH; export PATH
+>> PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
 >>  which opencc
 /opt/x86_open64-4.2.3.2/bin/opencc
 }}}
@@ -42,7 +42,7 @@ one should use the mp version on a multi-CPU/core nodes.However, using the mp li
 We need set the path to the libraries by running
 
 {{{
->> LD_LIBRARY_PATH=/opt/acml4.4.0/open64_64/lib; export LD_LIBRARY_PATH
+>> LD_LIBRARY_PATH=/opt/acml4.4.0/open64_64/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
 }}}
 
 If SELinux is active, disable SELinux temporarily by running (as root) 
@@ -68,11 +68,13 @@ Extract using *tar xzvf* , rename the PETSc dir as you like, cd to PETSc dir and
 
 Version petsc-3.1-p3 and later already includes the latest BLOPEX code!
 
+However, post petsc-3.1-p3 release, the file config/PETSc/packages/blopex.py has been changed, so replace it with 
+
+http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/raw-file/b76320dbb01d/config/PETSc/packages/blopex.py
+
 == PETSc configure without MPI ==
 
-First you may (a must in petsc-3.1-p3) need to edit the file config/PETSc/packages/blopex.py and remove all instances of self.mpi there. BLOPEX does not require any MPI by itself. 
-
-Second, 
+In PETSc, the --download-hypre=1 option is only available with MPI, so no hypre here:
 
 {{{
 >> ./configure --with-blas-lapack-dir=/opt/acml4.4.0/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --with-mpi=0 
@@ -83,8 +85,11 @@ Second,
 The "make all" may display some errors (actually warnings) in PETSc which can be ignored. 
 the rest of the installation of BLOPEX (compiling the drivers) is standard. 
 
+BLOPEX test rivers get compiled and run. 
 
-== PETSc configure with MPI ==
+driver_diag does not converge after Iteration 32767 -SOMETHING WRONG???
+
+== PETSc configure with MPI and with hypre ==
 
 Run configure, e.g., 
 
@@ -119,27 +124,24 @@ We also need to add the newly compiled local version of MPI libs to LD_LIBRARY_P
 {{{
 >> make PETSC_ARCH=linux-gnu-c-debug test
 }}}
-passes OK. 
+passes OK.
 
-But trying to compile any BLOPEX driver gives the same error, 
+Using the original config/PETSc/packages/blopex.py from petsc-3.1-p3 and trying to compile any BLOPEX driver gives the same error, *undefined reference to `lobpcg_solve_double'*
 
-*undefined reference to `lobpcg_solve_double'*
+However, updating the config/PETSc/packages/blopex.py as described above solves the problem. 
 
-For example: 
+There is still an error in driver_fortran, however, which is not present if there is no hypre: 
+
 {{{
->> make driver
-/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/bin/mpicc -o driver.o -c -g -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/include -I/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/include -D__INSDIR__=src/contrib/blopex/driver/ driver.c
-/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/bin/mpicc -g  -o driver driver.o  -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib -lpetsc   -lX11 -Wl,-rpath,/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib -L/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib -lBLOPEX -lHYPRE -lmpi_cxx -Wl,-rpath,/opt/x86_open64-4.2.3.2/lib/gcc-lib/x86_64-open64-linux/4.2.3.2 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib64 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib -lstdc++ -Wl,-rpath,/opt/acml4.4.0/open64_64/lib -L/opt/acml4.4.0/open64_64/lib -lacml -lnsl -lrt -L/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/linux-gnu-c-debug/lib -L/opt/x86_open64-4.2.3.2/lib/gcc-lib/x86_64-open64-linux/4.2.3.2 -L/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -L/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc -L/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib64 -L/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lacml_mv -lmv -lpthread -lopen64rt -lgcc_s -lmpi_f90 -lmpi_f77 -lm -lm -lfortran -lm -lm -lffio -lm -lm -Wl,-rpath,/opt/x86_open64-4.2.3.2/lib/gcc-lib/x86_64-open64-linux/4.2.3.2 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc/x86_64-redhat-linux/4.2.0 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib/gcc -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib64 -Wl,-rpath,/opt/x86_open64-4.2.3.2/open64-gcc-4.2.0/lib -lm -lm -lm -lm -lm -lm -lmpi_cxx -lstdc++ -lmpi_cxx -lstdc++ -ldl -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lacml_mv -lmv -lpthread -lopen64rt -lgcc_s -ldl 
-driver.o: In function `main':
-opt4.(none):/home/aknyazev/work/petsc/petsc-3.1-p3-OPENMPI_OPEN64_hypre/src/contrib/blopex/driver/driver.c:346: undefined reference to `lobpcg_solve_double'
-collect2: ld returned 1 exit status
-make: [driver] Error 1 (ignored)
-/bin/rm -f driver.o
+ex2f_blopex.F:388: undefined reference to `petsc_lobpcg_solve_c__'
 }}}
+
+which still needs to be investigated. 
+
 
 = Attempted Solution =
 
-This is an attempt to remedy the above error.
+This is an attempt to remedy the above error. 
 
 == Preliminaries == 
 
@@ -154,7 +156,7 @@ Assuming the Open64 compilers and the ACML libraries have already been installed
 
 {{{
 >>PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
->>LD_LIBRARY_PATH=/home/guests/adougher/acml-4-4-0-open64/open64_64/lib; export LD_LIBRARY_PATH
+>>LD_LIBRARY_PATH=/home/guests/adougher/acml-4-4-0-open64/open64_64/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
 }}} 
 
 Extract PETSc and set the PETSC_DIR variable as outlined above:
@@ -241,4 +243,3 @@ collect2: ld returned 1 exit status
 make: [driver] Error 1 (ignored)
 /bin/rm -f driver.o
 }}} 
-
