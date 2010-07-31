@@ -139,9 +139,9 @@ ex2f_blopex.F:388: undefined reference to `petsc_lobpcg_solve_c__'
 which still needs to be investigated. 
 
 
-= Attempted Solution =
+= Attempted Solutions =
 
-This is an attempt to remedy the above error. 
+This section details two different attempts to remedy the above error. The first involves using the hypre_lobpcg_modifications, as described on the Wiki http://code.google.com/p/blopex/wiki/HypreInstallLinux, during the PETSc configuration process. The second involves replacing the blopex.py file in PETSc's config/PETSc/packages directory with a modified version. 
 
 == Preliminaries == 
 
@@ -152,7 +152,7 @@ The basic system info:
 Linux xvia.cudenver.edu 2.6.27.41-170.2.117.fc10.x86_64 #1 SMP Thu Dec 10 10:36:29 EST 2009 x86_64 x86_64 x86_64 GNU/Linux
 }}}
 
-Assuming the Open64 compilers and the ACML libraries have already been installed, as outlined above, add their locations to the PATH and LD_LIBRARY_PATH,
+Assuming the Open64 compilers and the ACML libraries have already been installed as outlined above, add their locations to the PATH and LD_LIBRARY_PATH,
 
 {{{
 >>PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
@@ -170,67 +170,181 @@ Extract PETSc and set the PETSC_DIR variable as outlined above:
 
 == Configuration ==
 
-It appears that the error 'undefined reference to 'lobpcg_solve_double'' only occurs when the option '--download-hypre=1' is used during the configuration process. This option prevents compilation of the 'lobpcg.c' file in the Blopex source, which contains the `lobpcg_solve_double' function. More information can be found in PETSc's configure.log (after configuring), in the section detailing the output of running make on Blopex. In an attempt to work around this, the following steps were taken:
+It appears that the error 'undefined reference to 'lobpcg_solve_double'' only occurs when the option '--download-hypre=1' is used during the configuration process. This option prevents compilation of the 'lobpcg.c' file in the Blopex source, which contains the `lobpcg_solve_double' function. More information can be found in PETSc's configure.log (after configuring), in the section detailing the output of running make on Blopex. In an attempt to work around this, two separate approaches were taken.
 
-1. After extracting PETSc and setting the PETSC_DIR variable as outlined above, type
+== Building PETSc with the hypre_lobpcg_modifications ==
+
+After extracting PETSc and setting PETSC_DIR as described above, from the PETSC_DIR directory create an externalpackages directory,
 {{{
->> cd config/PETSc/packages
+>> mkdir externalpackages
+}}}
+This is the directory that would typically be created during PETSc's configuration process and which contains the optional downloaded packages.
+
+Now, go into the externalpackages directory and download the Hypre version 2.6.0b tar file,
+{{{
+>> wget https://computation.llnl.gov/casc/hypre/download/hypre-2.6.0b.tar.gz
 }}}
 
-2. From here, open the blopex.py file with a text editor and replace:
+This is the version the lobpcg modifications apply to. Next, extract the tar file
 {{{
- 14   def setupDependencies(self, framework):
- 15     PETSc.package.NewPackage.setupDependencies(self, framework)
- 16     self.blasLapack = framework.require('config.packages.BlasLapack',self)
- 17     if self.framework.argDB.has_key('download-hypre') and not self.framework.argDB['download-hypre'] == 0:
- 18       self.hypre      = framework.require('PETSc.packages.hypre',self)
- 19       self.deps       = [self.mpi,self.blasLapack,self.hypre]
- 20     elif self.framework.argDB.has_key('with-hypre-dir') or self.framework.argDB.has_key('with-hypre-include') or self.framework.argDB.has_key('with-hypre-lib'): 
- 21       self.hypre      = framework.require('PETSc.packages.hypre',self) 
- 22       self.deps       = [self.mpi,self.blasLapack,self.hypre] 
- 23     else: 
- 24       self.deps       = [self.mpi,self.blasLapack] 
- 25     return
+>> tar -xzvf hypre-2.6.0b.tar.gz
 }}}
 
-With:
-
+Once it's finished decompressing, enter the newly created hypre-2.6.0b/src directory and download and extract the modifications,
 {{{
- 14   def setupDependencies(self, framework):
- 15     PETSc.package.NewPackage.setupDependencies(self, framework)
- 16     self.blasLapack = framework.require('config.packages.BlasLapack',self) 
- 17     if self.framework.argDB.has_key('download-hypre') and self.framework.argDB['download-hypre']:
- 18       self.hypre      = framework.require('PETSc.packages.hypre',self)
- 19       self.deps       = [self.blasLapack,self.hypre]
- 20     else:
- 21       self.deps       = [self.blasLapack]
- 22     return
+>> cd hypre-2.6.0b/src 
+>> wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz 
+>> tar -xzvf hypre_lobpcg_modifications.tar.gz  
 }}}
 
-These changes are taken from a recent patch released by PETSc. More information can be found at http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/diff/d18f05bf9eef/config/PETSc/packages/blopex.py.
-
-3. Run the configuration and make as usual,
-
+These steps apparently prevent PETSc from downloading any different version of Hypre which doesn't include the modifications, and enables it to instead build with the version and modifications already placed in the externalpackages directory. Once this is finished, go back to the PETSC_DIR and configure and make as usual,
 {{{
 >>./configure --with-blas-lapack-dir=/home/guests/adougher/acml-4-4-0-open64/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1 
 >>make PETSC_ARCH=linux-gnu-c-debug all
 }}} 
 
-4. Set the environment variables for the newly compiled MPI executables and libraries,
+then set the environment variables for the newly compiled MPI executables and libraries,
 
 {{{
 >>PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
 >>LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
 }}}
 
-5. Run the test examples with,
+and finally, run the test examples with,
+{{{
+>>make PETSC_ARCH=linux-gnu-c-debug test
+}}}
+
+== Execution of Tests ==
+
+Please refer to PetscTestingLinux for detailed information on compiling the test drivers and for descriptions of the test programs.
+
+=== driver ===
+
+./driver -n_eigs 3 -itr 20 
+
+Eigenvalues computed
+
+{{{
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    2.06075490352847e-09
+  4.79521039879647e-01    4.48572176067276e-09
+  4.79521039879651e-01    6.12193552889692e-09
+
+16 iterations
+Solution process, seconds: 2.088950e-01
+}}}
+
+=== driver_fiedler L-matrix-double.petsc ===
+
+./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 3 -itr 20
+
+Eigenvalues computed 
+
+{{{
+Eigenvalue lambda       Residual              
+  3.24057229834313e-06    1.08833213380078e-09
+  9.46022689451779e-06    2.29001450830037e-09
+  2.01380536841231e-05    4.00864901330522e-09
+
+14 iterations
+Solution process, seconds: 4.504892e+02
+Final eigenvalues:
+3.240572e-06
+9.460227e-06
+2.013805e-05
+}}}
+
+=== driver_fiedler DL-matrix-double.petsc ===
+
+./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3 -itr 20
+
+Eigenvalues computed 
+
+{{{
+Eigenvalue lambda       Residual              
+  4.02544378187438e-05    6.39434318176225e-06
+  4.03050265255928e-05    2.16914469096021e-05
+  4.06041171489967e-05    4.82871020481127e-05
+
+20 iterations
+Solution process, seconds: 2.383949e+00
+Final eigenvalues:
+4.025444e-05
+4.030503e-05
+4.060412e-05
+}}}
+
+
+=== driver_diag ===
+
+./driver_diag -n_eigs 3 -tol 1e-6 -itr 20 
+
+Eigenvalues computed
+
+{{{
+Eigenvalue lambda       Residual              
+  1.20073961845418e+00    2.12082902033478e+00
+  2.23691202635804e+00    2.42856885314614e+00
+  3.26199055793936e+00    2.63494500802700e+00
+
+20 iterations
+Solution process, seconds: 2.626896e-02
+Final eigenvalues:
+1.200740e+00
+2.236912e+00
+3.261991e+00
+
+}}}
+
+=== driver_fortran ===
+
+./ex2f_blopex
+
+Solution: 
+
+{{{
+BLOPEX complete in  12 iterations
+eval   1 is 0.205227064E-01 residual 0.1767E-07
+eval   2 is 0.512014707E-01 residual 0.4884E-07
+eval   3 is 0.512014707E-01 residual 0.2175E-06
+eval   4 is 0.818802350E-01 residual 0.8697E-06
+eval   5 is 0.101982840E+00 residual 0.4591E-06
+}}}
+
+== Buidling PETSc with a replaced blopex.py == 
+
+After extracting PETSc and setting the PETSC_DIR variable as outlined above, type
+{{{
+>> cd config/PETSc/packages
+}}}
+
+From here, remove the blopex.py file and replace it by downloading the patched version, recently released by PETSc:
+{{{
+>> rm blopex.py
+>> wget http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/raw-file/b76320dbb01d/config/PETSc/packages/blopex.py  
+}}}
+
+Now go back to the PETSC_DIR and, as outlined above, run the configuration and make as usual, 
+{{{
+>>./configure --with-blas-lapack-dir=/home/guests/adougher/acml-4-4-0-open64/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1 
+>>make PETSC_ARCH=linux-gnu-c-debug all
+}}} 
+
+set the environment variables for the newly compiled MPI executables and libraries,
+
+{{{
+>>PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
+>>LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+}}}
+
+and run the test examples,
 {{{
 >>make PETSC_ARCH=linux-gnu-c-debug test
 }}}
 
 Once again, the test passes OK but all of the drivers fail to compile with the error:
 *undefined reference to `lobpcg_solve_double'*
-As described above.
 
 For Example:
 {{{
