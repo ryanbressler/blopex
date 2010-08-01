@@ -3,17 +3,20 @@
 For Petsc testing with driver_fiedler the following files are available.
 
 File names containing "complex" are for complex scalars, with "double" are for real scalars.
+
 File names containinng "_64" are for 64bit integers, otherwise they are for 32bit integers.
+
 It is important to match the files to the Petsc configuration for scalar and integer size. 
+
 The file formats are different for each combination.
 
 After each description typical results are shown.
 
 
- Files with suffix of -complex.petsc, -double.petsc, -complex_64.petsc, -double_64.petsc
- Developer Notes:  These files were original to ver 1.0 of Blopex.  
-                   They were uploaded to Matlab and used to create the complex and 64bit versions.
+*Files with suffix of -complex.petsc, -double.petsc, -complex_64.petsc, -double_64.petsc*
 
+_Developer Notes:_  These files were original to ver 1.0 of Blopex. They were uploaded to Matlab and used to create the complex and 64bit versions.
+{{{
  DL-matrix      65536x65536 tridiagonal values 0-4
 
                 100 iterations -tol 1e-6 -n_eigs 3
@@ -31,11 +34,11 @@ After each description typical results are shown.
                 3.24057e-06    1.22e-07
                 9.46023e-06    5.59e-07
                 2.01380e-05    4.35e-07
+}}}
+*Files just for complex scalars with suffix of .petsc, _64.petsc.*
 
- Files just for complex scalars with suffix of .petsc, _64.petsc.
- Developer Notes:  These files are new to ver 1.1 of Blopex.
-                   They were created in Matlab and downloaded to unix.
-
+_Developer Notes:_  These files are new to ver 1.1 of Blopex. They were created in Matlab and downloaded to unix.
+{{{
  test_complex1  40x40 134 nz hpd random
  
                 20 iterations -tol 1e-5 -n_eigs 3
@@ -62,8 +65,7 @@ After each description typical results are shown.
                 9.6192e+01    4.60e-02
                 9.6248e+01    1.38e-01
                 9.6289e+01    4.43e-02
-
+}}}
 
 
  
-
