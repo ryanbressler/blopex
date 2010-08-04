@@ -57,7 +57,8 @@ After you are done running the codes, restore SELinux by
 >> echo 1 > /selinux/enforce
 }}}
 
-Download and extract the latest PETSc, at the moment this is 
+IMPORTANT: 
+Download and extract the LATEST PETSc, at the moment this is petsc-3.1-p4, at 
 ftp://info.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1.tar.gz
 
 Extract using *tar xzvf* , rename the PETSc dir as you like, cd to PETSc dir and run 
@@ -66,11 +67,7 @@ Extract using *tar xzvf* , rename the PETSc dir as you like, cd to PETSc dir and
 >> PETSC_DIR=$PWD; export PETSC_DIR
 }}}
 
-Version petsc-3.1-p3 and later already includes the latest BLOPEX code!
-
-However, post petsc-3.1-p3 release, the file config/PETSc/packages/blopex.py has been changed, so replace it with 
-
-http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/raw-file/b76320dbb01d/config/PETSc/packages/blopex.py
+Version petsc-3.1-p4 and later already includes the latest BLOPEX code!
 
 == PETSc configure without MPI ==
 
@@ -126,9 +123,7 @@ We also need to add the newly compiled local version of MPI libs to LD_LIBRARY_P
 }}}
 passes OK.
 
-Using the original config/PETSc/packages/blopex.py from petsc-3.1-p3 and trying to compile any BLOPEX driver gives the same error, *undefined reference to `lobpcg_solve_double'*
-
-However, updating the config/PETSc/packages/blopex.py as described above solves the problem. 
+Using petsc-3.1-p3 and trying to compile any BLOPEX driver gives the error, *undefined reference to `lobpcg_solve_double'*. This should be fixed in petsc-3.1-p4 (TEST NEEDED! AK)
 
 There is still an error in driver_fortran, however, which is not present if there is no hypre: 
 
@@ -139,9 +134,10 @@ ex2f_blopex.F:388: undefined reference to `petsc_lobpcg_solve_c__'
 which still needs to be investigated. 
 
 
-= Attempted Solutions =
+= Attempted Solutions (NEEDS TO BE REDONE WITH petsc-3.1-p4 AK)=
 
-This section details two different attempts to remedy the above error. The first involves using the hypre_lobpcg_modifications, as described on the Wiki http://code.google.com/p/blopex/wiki/HypreInstallLinux, during the PETSc configuration process. The second involves replacing the blopex.py file in PETSc's config/PETSc/packages directory with a modified version. 
+This section details two different attempts to remedy the above error. The first (THIS SHOULD BE NO LONGER NECESSARY AK) involves using the hypre_lobpcg_modifications, as described on the Wiki http://code.google.com/p/blopex/wiki/HypreInstallLinux, during the PETSc configuration process. The second involves replacing the blopex.py file in PETSc's config/PETSc/packages directory with a modified version. (THE FILE IS ALREADY REPLACED IN  
+petsc-3.1-p4 - NEEDS RE-TESTING! AK) 
 
 == Preliminaries == 
 
@@ -312,7 +308,7 @@ eval   4 is 0.818802350E-01 residual 0.8697E-06
 eval   5 is 0.101982840E+00 residual 0.4591E-06
 }}}
 
-== Buidling PETSc with a replaced blopex.py == 
+== Buidling PETSc with a replaced blopex.py (OUTDATED with petsc-3.1-p4. JUST TEST petsc-3.1-p4 AK) == 
 
 After extracting PETSc and setting the PETSC_DIR variable as outlined above, type
 {{{
