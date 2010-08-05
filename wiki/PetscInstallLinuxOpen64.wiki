@@ -353,3 +353,54 @@ collect2: ld returned 1 exit status
 make: [driver] Error 1 (ignored)
 /bin/rm -f driver.o
 }}} 
+
+=Testing of the Latest Distribution, petsc-3.1-p4=
+
+This section describes an attempt to build PETSc and the drivers using the latest distribution.
+
+==System Info==
+
+{{{
+>> uname -a
+Linux xvia.cudenver.edu 2.6.27.41-170.2.117.fc10.x86_64 #1 SMP Thu Dec 10 10:36:29 EST 2009 x86_64 x86_64 x86_64 GNU/Linux
+}}}
+
+==Configuration and Build==
+
+Following the standard procedure for configuring and building PETSc with the open64 compilers and the open64 compiled ACML libraries, as outlined at the top of the page, is still producing the *undefined reference to `lobpcg_solve_double'* error when attempting to compile any of the drivers. The complete list of commands for the setup is as follows:
+
+{{{
+>> LD_LIBRARY_PATH=/home/guests/adougher/acml-4-4-0-open64/open64_64/lib:$LB_LIBRARY_PATH; export LD_LIBRARY_PATH
+>> PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
+>> wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.1-p4.tar.gz 
+>> tar xzvf petsc-3.1-p4.tar.gz
+>> mv petsc-3.1-p4 petsc-3.1-p4_double_MPI_hypre
+>> cd petsc-3.1-p4_double_MPI_hypre
+>> PETSC_DIR=$PWD; export PETSC_DIR
+>> ./configure --with-blas-lapack-dir=/home/guests/adougher/acml-4-4-0-open64/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1
+>> make PETSC_ARCH=linux-gnu-c-debug all
+>> PATH=/home/guests/adougher/petsc-3.1-p4_double_MPI_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
+>> LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p4_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+>> make PETSC_ARCH=linux-gnu-c-debug test
+}}}
+
+It is worth noting that I (AD) was never able to get the drivers compiled when replacing the blopex.py file in version 3.1-p3 either. The complete setup for those trials was as follows:
+
+{{{
+>> LD_LIBRARY_PATH=/home/guests/adougher/acml-4-4-0-open64/open64_64/lib:$LB_LIBRARY_PATH; export LD_LIBRARY_PATH
+>> PATH=/opt/x86_open64-4.2.4/bin/:$PATH; export PATH
+>> wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.1-p3.tar.gz 
+>> tar xzvf petsc-3.1-p3.tar.gz
+>> mv petsc-3.1-p3 petsc-3.1-p3_double_MPI_hypre
+>> cd petsc-3.1-p3_double_MPI_hypre/config/PETSc/packages
+>> rm blopex.py
+>> wget http://petsc.cs.iit.edu/petsc/releases/petsc-3.1/raw-file/b76320dbb01d/config/PETSc/packages/blopex.py
+>> cd ..; cd ..; cd ..;
+>> PETSC_DIR=$PWD; export PETSC_DIR
+>> ./configure --with-blas-lapack-dir=/home/guests/adougher/acml-4-4-0-open64/open64_64 --with-cc=opencc --with-cxx=openCC --with-fc=openf95 --download-blopex=1 --download-hypre=1 --download-openmpi=1
+>> make PETSC_ARCH=linux-gnu-c-debug all
+>> PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/bin:$PATH; export PATH
+>> LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+>> make PETSC_ARCH=linux-gnu-c-debug test
+}}} 
+ 
