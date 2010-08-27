@@ -50,7 +50,7 @@ mpirun -np 2 ./driver_diag -N 10000 -n_eigs 3 -tol 1e-6 -itr 20";
 
 == *driver_fiedler* ==
 
-driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, ral or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64"`. All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
+driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, real or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64". All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
 
 driver_fiedler accepts as input the matrix A in Petsc format. These can be setup via some Matlab programs in the PETSc socket interface to Matlab; PetscBinaryRead.m and PetscBinaryWrite.m. These programs read and write Matlab matrices and vectors to files formatted for Petsc. The version from Petsc only supports double. We have modified these programs to also support complex and 64bit integers. Our versions are included in the Google source directory  ../blopex_petsc along with PetscWriteReadExample.m to illustrate how to use them.
 
