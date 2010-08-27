@@ -11,13 +11,66 @@ of the c codes and/or readme files later.
 
 == *driver* ==
 
+driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double).
+{{{
+Usage: mpirun -np <procs> ./driver [-help] [all PETSc options]
+
+Special options:
+-n_eigs <integer>      Number of eigenvalues to calculate
+-tol <real number>     absolute tolerance for residuals
+-full_out              Produce more output
+-freepart              Let PETSC fully determine partitioning
+-seed <integer>        seed for random number generator
+-itr <integer>         Maximal number of iterations
+
+Example:
+mpirun -np 2 ./driver -n_eigs 3 -tol 1e-6 -itr 20
+}}}
 
 == *driver_diag* ==
 
+driver_diag solves an eigenvalue problem for a diagonal matrix.  The diagonal matrix is generated within the program with size (rows) controlled by parameter "-N xxxx" with default of "xxxx=100".  Diagonal entries are 1 through xxxx.
 
+{{{
+Usage: mpirun -np <procs> driver_fiedler [-help] [all PETSc options]
+
+Special options:
+-n_eigs <integer>      Number of eigenvalues to calculate
+-tol <real number>     absolute tolerance for residuals
+-full_out              Produce more output
+-seed <integer>        seed for random number generator
+-itr <integer>         Maximal number of iterations
+-output_file <string>  Filename to write calculated eigenvectors.
+-shift <real number>   Apply shift to 'stiffness' matrix
+-N <integer>           Size of Matrix to create 
+
+Example:
+mpirun -np 2 ./driver_diag -N 10000 -n_eigs 3 -tol 1e-6 -itr 20";
+}}}
 
 == *driver_fiedler* ==
 
+driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, ral or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64"`. All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
+
+driver_fiedler accepts as input the matrix A in Petsc format. These can be setup via some Matlab programs in the PETSc socket interface to Matlab; PetscBinaryRead.m and PetscBinaryWrite.m. These programs read and write Matlab matrices and vectors to files formatted for Petsc. The version from Petsc only supports double. We have modified these programs to also support complex and 64bit integers. Our versions are included in the Google source directory  ../blopex_petsc along with PetscWriteReadExample.m to illustrate how to use them.
+
+{{{
+Usage: mpirun -np <procs> ./driver_fiedler [-help] [all PETSc options]
+
+Special options:
+-matrix <filename>      (mandatory) specify file with 'stiffness' matrix (in petsc format)
+-mass_matrix <filename> (optional) 'mass' matrix for generalized eigenproblem
+-n_eigs <integer>      Number of eigenvalues to calculate
+-tol <real number>     absolute tolerance for residuals
+-full_out              Produce more output
+-seed <integer>        seed for random number generator
+-itr <integer>         Maximal number of iterations
+-output_file <string>  Filename to write calculated eigenvectors.
+-shift <real number>   Apply shift to 'stiffness' matrix 
+
+Example:
+mpirun -np 2 ./driver_fiedler -matrix my_matrix.bin -n_eigs 3 -tol 1e-6 -itr 20";
+}}}
 
 == *driver_fortran* == 
 
