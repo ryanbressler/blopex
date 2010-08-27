@@ -29,7 +29,7 @@ mpirun -np 2 ./driver -n_eigs 3 -tol 1e-6 -itr 20
 
 == *driver_diag* ==
 
-driver_diag solves an eigenvalue problem for a diagonal matrix.  The diagonal matrix is generated within the program with size (rows) controlled by parameter "-N <integer>" with default of 100. Diagonal entries are 1 through the value of N.
+driver_diag solves an eigenvalue problem for a diagonal matrix.  The diagonal matrix is generated within the program with size (rows) controlled by parameter `"-N <integer>"` with default of 100. Diagonal entries are 1 through the value of N.
 
 {{{
 Usage: mpirun -np <procs> driver_fiedler [-help] [all PETSc options]
