@@ -15,7 +15,7 @@ The file formats are different for each combination.
 
 = How the files were created =
 
-These files are setup via some Matlab programs in the PETSc socket interface to Matlab; PetscBinaryRead.m and PetscBinaryWrite.m. These programs read and write Matlab matrices and vectors to files formatted for Petsc. The version from Petsc only supports double. We have modified these programs to also support complex and 64bit integers. Our versions are included in the Google source directory  ../blopex_petsc along with PetscWriteReadExample.m to illustrate how to use them.
+These files are setup via some Matlab programs in the PETSc socket interface to Matlab; `PetscBinaryRead.m` and `PetscBinaryWrite.m`. These programs read and write Matlab matrices and vectors to files formatted for Petsc. The version from Petsc only supports double. We have modified these programs to also support complex and 64bit integers. Our versions are included in the Google source directory  `../blopex_petsc` along with `PetscWriteReadExample.m` to illustrate how to use them.
 
 = Files with suffix of -complex.petsc, -double.petsc, -complex_64.petsc, -double_64.petsc=
 
