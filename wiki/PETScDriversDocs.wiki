@@ -1,4 +1,5 @@
 #summary Documentation needed for our PETSc test drivers
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -9,7 +10,7 @@ Let us provide the description of the drivers here, to be added to the headers
 of the c codes and/or readme files later.  
 
 
-== *driver* ==
+= *driver* =
 
 driver builds a negative 3D laplacian approximated by a 7pt stencil.  In each dimension there are 10 mesh points with step size of 1. The boundary conditions are Dirichlet. This yields a 1000x1000 matrix which is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
 
@@ -29,7 +30,7 @@ This yields 5 smallest eigenvalues of
 
 Default Petsc KSP preconditioning is used by BLOPEX.  This is KSP type of gmres with a restart of 30.  No constraints are used.
 
-Some command line options for BLOPEX are availble:
+Some command line options for BLOPEX are available:
 {{{
 Usage: mpirun -np <procs> ./driver [-help] [all PETSc options]
 
@@ -62,7 +63,7 @@ Eigenvalue lambda       Residual
 
 It is also possible to adjust the mesh dimensions via the Petsc command line options  `-da_grid_x <integer>`, `-da_grid_y <integer>`, and `-da_grix_y <integer>`.
 
-== *driver_diag* ==
+= *driver_diag* =
 
 driver_diag constructs a diagonal matrix of size NxN with diagonal entries from 1 thrugh N.  The value of N defaults to 1000 and can be changed via the parameter `-N <integer>` .  This matrix is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
 
@@ -70,7 +71,7 @@ This driver was implemented to test BLOPEX against very large sparse matrices.  
 
 The smallest eigenvalues are just the values 1,2,3,4,etc.  Default Petsc KSP preconditioning is used by BLOPEX.  This is KSP type of gmres with a restart of 30.  No constraints are used.
 
-Some command line options for BLOPEX are availble:
+Some command line options for BLOPEX are available:
 {{{
 Usage: mpirun -np <procs> driver_fiedler [-help] [all PETSc options]
 
@@ -103,12 +104,19 @@ Eigenvalue lambda       Residual
 19 iterations
 }}}
 
-== *driver_fiedler* ==
+= *driver_fiedler* =
 
 driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, real or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64". All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
 
+These test files are documented in wiki PetscDriverFiedlerTestFiles.
+
 driver_fiedler accepts as input the matrix A in Petsc format. These can be setup via some Matlab programs in the PETSc socket interface to Matlab; PetscBinaryRead.m and PetscBinaryWrite.m. These programs read and write Matlab matrices and vectors to files formatted for Petsc. The version from Petsc only supports double. We have modified these programs to also support complex and 64bit integers. Our versions are included in the Google source directory  ../blopex_petsc along with PetscWriteReadExample.m to illustrate how to use them.
 
+driver_fiedler was written primarily to compute the fiedler vector of a graph laplacian.  This is the eigenvector of the second largest eigenvalue.  Since, a graph  laplacian matrix has 0 eigenvalue with constant eigenvector, a constant vector is used as a orthogonal constraint in BLOPEX.  This is the default for the driver.  With constraint BLOPEX solves for the smallest eigenvalues excluding the constraint.  Since some test files do not have the constant vector as an eigenvector the command option "-no_con" is available to execute BLOPEX without constraints.
+
+Like all other drivers, default Petsc KSP preconditioning is used by BLOPEX.  This is KSP type of gmres with a restart of 30.
+
+Some command line options for BLOPEX are available:
 {{{
 Usage: mpirun -np <procs> ./driver_fiedler [-help] [all PETSc options]
 
@@ -122,12 +130,45 @@ Special options:
 -itr <integer>         Maximal number of iterations
 -output_file <string>  Filename to write calculated eigenvectors.
 -shift <real number>   Apply shift to 'stiffness' matrix 
+-no_con                Do not apply constraint of constant vector
 
 Example:
 mpirun -np 2 ./driver_fiedler -matrix my_matrix.bin -n_eigs 3 -tol 1e-6 -itr 20";
 }}}
 
-== *driver_fortran* == 
+The default command values are `-n_eigs 3 -tol 1e-6 -seed 1 -itr 100`. 
+
+A typical run for the DL-matrix with Petsc configured for real scalars and 32bit integers would be "mpirun -np 2 ./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 3 -tol 1e-6 -itr 30" and give output of
+
+{{{
+Solving standard eigenvalue problem with preconditioning
+
+block size 3
+
+1 constraint
+
+
+Initial Max. Residual   1.45873307290522e+00
+Iteration 1     bsize 3         maxres   8.39697624564061e-04
+Iteration 2     bsize 3         maxres   2.89666836454388e-04
+Iteration 3     bsize 3         maxres   1.11597400132607e-04
+Iteration 4     bsize 2         maxres   6.42740963133184e-05
+Iteration 5     bsize 2         maxres   3.95714680768718e-05
+Iteration 6     bsize 1         maxres   1.37799490772302e-05
+Iteration 7     bsize 1         maxres   3.80150236488940e-06
+Iteration 8     bsize 1         maxres   1.21769060239718e-06
+Iteration 9     bsize 1         maxres   9.35410996347492e-07
+
+Eigenvalue lambda       Residual              
+  3.24059222840027e-06    9.35410996347492e-07
+  9.46022776819983e-06    2.32669917432429e-07
+  2.01381014910642e-05    3.06346512297800e-07
+
+9 iterations
+Solution process, seconds: 1.138196e+02
+}}}
+
+= *driver_fortran* = 
 
 is an example of a PETSc call (BLOPEX call in this case) from FORTRAN 90. This is a modified version of the Fortran example ex2f.F from the PETSc source distribution (Version 2.3.3-p4). It calls the LOBPCG solver from BLOPEX with blocksize=5 and displays the final eigenvalues and the corresponding residuals. There is no history output. The executable *ex2f_blopex* not accept any command-line options. 
 
