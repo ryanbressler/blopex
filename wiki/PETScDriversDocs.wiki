@@ -18,7 +18,7 @@ The exact eigenvalues for this matrix can be computed explicitly using http://ww
 {{{
 >> [A,lambda]=laplacian([10,10,10],{'DD','DD','DD'},5);
 }}}
-This yields
+This yields 5 smallest eigenvalues of
 {{{    
       0.243042158313016
       0.479521039879648
