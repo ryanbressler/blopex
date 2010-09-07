@@ -11,7 +11,25 @@ of the c codes and/or readme files later.
 
 == *driver* ==
 
-driver builds a 7pt laplacian for solution and calls either lobpcg_solve_complex if Petsc is configured for complex (this is controlled by the PETSC_USE_COMPLEX preprocessor variable) or lobpcg_solve_double if Petsc is configured for real (double).
+driver builds a negative 3D laplacian approximated by a 7pt stencil.  In each dimension there are 10 mesh points with step size of 1. The boundary conditions are Dirichlet. This yields a 1000x1000 matrix which is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
+
+The exact eigenvalues for this matrix can be computed explicitly using http://ww.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-3d by calling (in Matlab)
+
+{{{
+>> [A,lambda]=laplacian([10,10,10],{'DD','DD','DD'},5);
+}}}
+This yields
+{{{    
+      0.243042158313016
+      0.479521039879648
+      0.479521039879648
+      0.479521039879648
+      0.71599992144628
+}}}
+
+Default Petsc KSP preconditioning is used by BLOPEX.  This is KSP type of gmres with a restart of 30.  No constraints are used.
+
+Some command line options for BLOPEX are availble:
 {{{
 Usage: mpirun -np <procs> ./driver [-help] [all PETSc options]
 
@@ -26,6 +44,23 @@ Special options:
 Example:
 mpirun -np 2 ./driver -n_eigs 3 -tol 1e-6 -itr 20
 }}}
+
+The defaults values are `-n_eigs 1 -tol 1e-8 -seed 1 -itr 100`. 
+
+A typical 1 cpu run for 5 eigenvalues gives
+
+{{{
+Eigenvalue lambda       Residual              
+  2.43042158313016e-01    1.41962359736518e-09
+  4.79521039879645e-01    5.97064247545570e-09
+  4.79521039879647e-01    2.93208033313447e-09
+  4.79521039879650e-01    4.49862021977072e-09
+  7.15999921446300e-01    6.97319623015366e-09
+
+22 iterations
+}}}
+
+It is also possible to adjust the mesh dimensions via the Petsc command line options  `-da_grid_x <integer>`, `-da_grid_y <integer>`, and `-da_grix_y <integer>`.
 
 == *driver_diag* ==
 
