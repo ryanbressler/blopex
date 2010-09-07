@@ -21,53 +21,48 @@ These files are setup via some Matlab programs in the PETSc socket interface to 
 
 _Developer Notes:_  These files were original to ver 1.0 of Blopex. They were uploaded to Matlab and used to create the complex and 64bit versions.  
 {{{
- DL-matrix      65536x65536 tridiagonal values 0-4
+ L-matrix       65536x65536 graph laplacian of 256x256 lattice with edge weights from 0 to 4.  
 
-                100 iterations -tol 1e-6 -n_eigs 3
-
-                Eigenvalue    Residual
-                4.0147e-5     4.72e-06
-                4.0190e-5     3.96e-06
-                4.0222e-5     4.12e-06
-
- L-matrix       65536x65536 diagonal values 0-4
+                Smallest eigenvalue is zero with constant eigenvector.  
+                Use constant eigenvector as a constraint. 
  
-                10 iterations -tol 1e-6 -n_eigs 3
-   
-                Eigenvalue    Residual
-                3.24057e-06    1.22e-07
-                9.46023e-06    5.59e-07
-                2.01380e-05    4.35e-07
+                Eigenvalue lambda       Residual
+                3.24059222840027e-06    9.35410996347492e-07
+                9.46022776819983e-06    2.32669917432429e-07
+                2.01381014910642e-05    3.06346512297800e-07
+
+
+ DL-matrix      65536x65536 diagonal matrix.  This is diagonals of L-matrix.
+
+                Run driver_fiedler with option "-no_con". 
+
+                Eigenvalue lambda       Residual
+                4.01353070143515e-05    9.87582687494317e-07
+                4.01786421412531e-05    9.77760412738074e-07
+                4.02078484063386e-05    9.53862533095977e-07
 }}}
 
 =Files just for complex scalars with suffix of .petsc, _64.petsc.=
 
-_Developer Notes:_  These files are new to ver 1.1 of Blopex. They were created in Matlab and downloaded to unix.  They are hermition postitive definite, sparse, with randomly generated values.  
+_Developer Notes:_  These files are new to ver 1.1 of Blopex. They were created in Matlab and downloaded to unix.  They are hermition postitive definite, sparse, with randomly generated values.  These are the only files with imaginary values.  They do not have a constant eigenvector and driver_fiedler should be run with option "no_con"; otherwise solution of eigenvalues is to about 1e-3 at which point they stagnate there and do not improve.     
 {{{
  test_complex1  40x40 134 nz hpd random
- 
-                20 iterations -tol 1e-5 -n_eigs 3
-
-                Eigenvalue    Residual
-                9.3173e-01     2.57e-03
-                9.4332e-01     1.68e-03
-                9.4656e-01     4.37e-03
+  
+              Eigenvalue lambda       Residual
+              9.31610207578953e-01    6.96955369464395e-07
+              9.43228356410202e-01    9.67561486865887e-07
+              9.45843781717145e-01    9.05928218002553e-07
 
  test_complex2  1000x1000 50786 nz hpd random
 
-                20 iterations -tol 1e-5 -n_eigs 3
-
-                Eigenvalue    Residual
-                5.8390e-01    6.86e-03
-                5.9282e-01    4.60e-03
-                5.9574e-01    8.66e-03
+              Eigenvalue lambda       Residual
+              5.83754860883465e-01    9.47692074183951e-07
+              5.92733440713132e-01    9.30055866146296e-07
+              5.95423063672527e-01    8.89839810686321e-07
 
  test_complex3  1000x1000 10876 nz hpd random
 
-                20 iterations -tol 1e-5 -n_eigs 3
-
-                Eigenvalue    Residual
-                9.6192e+01    4.60e-02
-                9.6248e+01    1.38e-01
-                9.6289e+01    4.43e-02
-}}}
+              Eigenvalue lambda       Residual
+              9.61904495051511e+01    7.59173881115497e-07
+              9.62288325907204e+01    8.48299651119655e-07
+             9.62817871735585e+01    9.43808423633657e-07}}}
