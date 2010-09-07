@@ -45,7 +45,7 @@ Example:
 mpirun -np 2 ./driver -n_eigs 3 -tol 1e-6 -itr 20
 }}}
 
-The defaults values are `-n_eigs 1 -tol 1e-8 -seed 1 -itr 100`. 
+The default command values are `-n_eigs 1 -tol 1e-8 -seed 1 -itr 100`. 
 
 A typical 1 cpu run for 5 eigenvalues gives
 
@@ -64,8 +64,13 @@ It is also possible to adjust the mesh dimensions via the Petsc command line opt
 
 == *driver_diag* ==
 
-driver_diag solves an eigenvalue problem for a diagonal matrix.  The diagonal matrix is generated within the program with size (rows) controlled by parameter `"-N <integer>"` with default of 100. Diagonal entries are 1 through the value of N.
+driver_diag constructs a diagonal matrix of size NxN with diagonal entries from 1 thrugh N.  The value of N defaults to 1000 and can be changed via the parameter `-N <integer>` .  This matrix is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
 
+This driver was implemented to test BLOPEX against very large sparse matrices.  Given enough memory, it has been run with over 7 million rows.
+
+The smallest eigenvalues are just the values 1,2,3,4,etc.  Default Petsc KSP preconditioning is used by BLOPEX.  This is KSP type of gmres with a restart of 30.  No constraints are used.
+
+Some command line options for BLOPEX are availble:
 {{{
 Usage: mpirun -np <procs> driver_fiedler [-help] [all PETSc options]
 
@@ -81,6 +86,21 @@ Special options:
 
 Example:
 mpirun -np 2 ./driver_diag -N 10000 -n_eigs 3 -tol 1e-6 -itr 20";
+}}}
+
+The default command values are `-n_eigs 3 -tol 1e-6 -seed 1 -itr 100 -N 1000`. 
+
+A typical 1 cpu run for 5 eigenvalues and matrix of 100000 rows gives
+
+{{{
+Eigenvalue lambda       Residual
+  1.00000000000029e+00    1.70085222055097e-07
+  2.00000000000974e+00    2.01071302476260e-07
+  3.00000000000907e+00    2.14158734063248e-07
+  4.00000000000096e+00    7.29490422057064e-07
+  4.99999999997239e+00    8.75458902728146e-07
+
+19 iterations
 }}}
 
 == *driver_fiedler* ==
