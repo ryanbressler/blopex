@@ -403,4 +403,28 @@ It is worth noting that I (AD) was never able to get the drivers compiled when r
 >> LD_LIBRARY_PATH=/home/guests/adougher/petsc-3.1-p3_double_MPI_hypre/linux-gnu-c-debug/lib:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
 >> make PETSC_ARCH=linux-gnu-c-debug test
 }}} 
- 
+
+= Details for Cygwin Install =
+
+The purpose of this section is to describe a successful PETSc install in Cygwin using the MPICH2 compilers and with both the '--download-blopex' and '--download-hypre' options specified in the configure line.  
+
+The basic system info:
+
+{{{
+>> uname -a
+CYGWIN_NT-6.0 HomePC 1.7.5(0.225/5/3) 2010-04-12 19:07 i686 Cywing
+}}}
+
+For this install the latest distribution of PETSc is used, and at the configure line pre-installed MPICH2 compilers and BLAS/LAPACK libraries are specfied.  The complete setup is as follows:
+
+{{{
+>> export PATH=/mpich2-install/bin:$PATH
+>> wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p4.tar.gz
+>> tar xzvf petsc-lite-3.1-p4.tar.gz
+>> cd petsc-3.1-p4
+>> PETSC_DIR=$PWD; export PETSC_DIR
+>> ./config/configure.py --with-cc=mpicc --with-fc=mpif90 --with-cxx=mpicxx with-f-blas-lapack=/lib --with-mpich-dir=/mpich2-install --download-blopex=1 --download-hypre=1
+>> make all; make test
+}}} 
+
+With this setup, all of the blopex drivers compile and run without errors.
