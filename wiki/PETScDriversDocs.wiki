@@ -170,7 +170,9 @@ Solution process, seconds: 1.138196e+02
 
 The test above finds Fiedler vectors of the graph Laplacian L. To find the similar vectors for the normalized graph Laplacian, i.e., inv(DL)L, use "mpirun -np 2 ./driver_fiedler -matrix L-matrix-double.petsc -mass_matrix DL-matrix-double.petsc -n_eigs 3 -tol 1e-6 -itr 30". Here, DL is simply a diagonal of the matrix L. Both L and inv(DL)L have a zero eigenvalue with the eigenvector made of 1's, so the constraint of constant vector makes sense. Without it, i.e. with an extra option "-no_con", the driver will also find this trivial eigenpair, which is already known analytically. 
 
-The driver can also be used with any matrices provided by a user, in which case the option "-no_con" will be necessary. 
+The driver can also be used with other matrices provided by a user, in which case the option "-no_con" will be necessary. 
+
+DONALD, PLEASE CHECK THIS: An assumption is made in the driver_fiedler that the sparsity pattern of the DL matrix is a subset of the sparsity pattern of the DL matrix!
 
 = *driver_fortran* = 
 
