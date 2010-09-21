@@ -14,7 +14,7 @@ of the c codes and/or readme files later.
 
 driver builds a negative 3D laplacian approximated by a 7pt stencil.  In each dimension there are 10 mesh points with step size of 1. The boundary conditions are Dirichlet. This yields a 1000x1000 matrix which is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
 
-The exact eigenvalues for this matrix can be computed explicitly using http://ww.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-3d by calling (in Matlab)
+The exact eigenvalues for this matrix can be computed explicitly using http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-3d by calling (in Matlab)
 
 {{{
 >> [A,lambda]=laplacian([10,10,10],{'DD','DD','DD'},5);
