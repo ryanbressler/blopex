@@ -8,6 +8,7 @@ Tested on:
     * AK's Fedora 12 64bit, Two AMD Opteron CPUs, 16GB RAM.
     * PZ's Intel(R) Pentium(R) ,4 CPU, 3.06GHz, 3.24 GB, IntelMKL 10.1.1.019
     * xvia  Fedora 10 OS, 4 Quad Core Opteron 2.0 Ghz CPUs, 64 GB RAM mpich2, ACML 4.4.0.
+    * game1 Fedora 12 64bit, Quad Core Intel i7 965, 12GB RAM
 
 THIS INFO NEEDS TO BE UPDATED.
 
