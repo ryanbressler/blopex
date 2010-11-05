@@ -28,8 +28,8 @@ The complete setup for the installation used here is as follows:
 >> cd hypre-2.6.0b_mpich2.1/src
 >> wget http://blopex.googlecode.com/files/hypre_lobpcg_modifications.tar.gz
 >> tar xzvf hypre_lobpcg_modifications.tar.gz
->> cd test; rm test_ij.c;
->> wget http://math.ucdenver.edu/~adougher/image_seg_test_replace/test_ij.c;
+>> cd test; rm ij.c;
+>> wget http://math.ucdenver.edu/~adougher/image_seg_test_replace/ij.c;
 >> cd ..; mpd&
 >> ./configure --with-lapack-libs="lapack blas" --with-lapack-lib-dirs="/usr/lib64"
 >> make; make test
