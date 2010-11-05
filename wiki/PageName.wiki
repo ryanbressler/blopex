@@ -78,18 +78,12 @@ Now, back in the MATLAB terminal, run the following:
 >> back_to_image
 }}}
 
-Here back_to_image is a modified segment_demo script, which uses the previous variables to carry out the conversion back into an image. With this the image has been segmented based on the computed fiedler vector and the segmented image has been written to a file along with an eigenvector image.  Here are some examples of using this procedure:
+Here back_to_image is a modified segment_demo script, which uses the previous variables to carry out the conversion back into an image. With this the image has been segmented based on the computed fiedler vector and the segmented image has been written to a file along with an eigenvector image.  
+
+Some examples of using this procedure can be found here:
+
+http://math.ucdenver.edu/~adougher/images/
 
 
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/Structural.gif">
 
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/s_segmented_image.gif">
-
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/s_eigen_image.gif">
-
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/Muybridge_race_horse_animated.gif">
-
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/segmented_image.gif">
-
-<IMG SRC="http://math.ucdenver.edu/~adougher/images/eigen_image.gif">
     
