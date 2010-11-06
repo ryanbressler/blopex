@@ -1,0 +1,185 @@
+#summary Double 32-bit Testing with Visual Studio 2008 C/C++ compiler in Cygwin.
+
+= Preliminaries =
+
+For these tests the C/C++ compiler which is part of the Visual C++ 9.0 Express package is used in Cygwin. Only the drivers which are written in C are tested here, because Intel's Visual Fortran compiler for Windows is not available for free non-commercial use. This is also the case with Intel's C/C++ compilers, which are only available freely for Linux. These linux versions will not install in Cygwin.
+
+Also for these tests the modifications in blopex-1.1.1-petsc_abstract.tar.gz and the recent test changes made to blopex.py are used.
+
+The basic system info:
+
+{{{
+>> uname -a
+CYGWIN_NT-6.0 HomePC 1.7.5(0.225/5/3) 2010-04-12 19:07 i686 Cywing
+}}}
+
+Before starting the PETSc configure process, it is necessary to launch Cygwin from the Visual Studio 2008 Command Prompt.  To do this open the VS 2008 folder, then go into the VS 2008 tools folder, and then launch the command prompt.  
+
+Once the terminal window is up, input 'c:\cygwin\bin\bash.exe --login' to launch a Cygwin shell.  Type 'cl' to verify the Microsoft compiler is recognized. If a Microsoft Fortran compiler is available this can also be verified by inputting 'ifort'. For more information see: http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html#Windows
+
+Now the PETSc installation process may begin.
+
+
+= Setup Petsc =
+
+First download the latest PETSc distribution from http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p5.tar.gz.  Decompress the file and then enter the newly created petsc-lite-p5 directory.
+
+Once there, set the PETSC_DIR environment variable.
+{{{
+>> export PETSC_DIR=$PWD
+}}}
+
+Now start the configuration process, with the petsc-3.1-p/blopex-1.1.1-petsc_abstract_tar.gz in the home directory, with the blopex.py file replaced in the config/PETSc/packages directory, and with the Microsoft compiler as follows:
+
+{{{
+>> ./config/configure.py --with-shared --with-debugging=1 --download-blopex=/blopex-1.1.1-petsc_abstract_tar.gz 
+>> --with-mpi=0 --with-fc=0 --with-cc='win32fe cl' --download-c-blas-lapack=1
+}}}
+
+Note that it must be specified to use no Fortran compiler.  Otherwise the configuration will fail, because the Microsoft C compiler is incompatible with Cygwin's gfortran compiler, which PETSc may attempt to use.
+
+Once the configuration is complete, run
+{{{
+>> make all; make test
+}}}
+
+Assuming no errors, enter each driver directory and compile the drivers as follows:
+
+{{{
+>> cd src/contrib/blopex/driver
+>> make driver
+>> cd ../driver_fiedler
+>> make driver_fiedler
+>> cd ../driver_diag
+>> make driver_diag
+}}}
+
+
+= Compilation of Drivers and Execution of Tests =
+
+Only two of the three drivers successfully compile with the setup described above.  The output for each compilation and each test are posted below.
+
+
+== driver ==
+
+COMPILATION ERRORS:
+
+{{{
+/petsc-3.1-p5/bin/win32fe/win32fe cl -o driver.o -c -MT -wd4996 -Z7 -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include/mpiuni -D__INSDIR__=src/contrib/blopex/driver/ driver.c
+driver.c
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(284) : error C2275: 'mv_TempMultiVector' : illegal use of this type as an expression
+        C:\cygwin\PETSC-~1.1-P\CYGWIN~1\include\temp_multivector.h(21) : see declaration of 'mv_TempMultiVector'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(284) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(285) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(285) : warning C4047: '=' : 'int' differs in levels of indirection from 'mv_TempMultiVector *'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(296) : error C2275: 'PetscInt' : illegal use of this type as an expression
+        c:\cygwin\petsc-3.1-p5\include\petscsys.h(255) : see declaration of 'PetscInt'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(296) : error C2146: syntax error : missing ';' before identifier 'N'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(296) : error C2065: 'N' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(297) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(297) : error C2223: left of '->vector' must point to struct/union
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(297) : error C2065: 'N' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(297) : warning C4133: 'function' : incompatible types - from 'int *' to 'Vec'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(297) : error C2198: 'VecGetSize' : too few arguments for call
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(298) : error C2065: 'N' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(298) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(298) : warning C4022: 'mv_TempMultiVectorHeight' : pointer mismatch for actual parameter 1
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(299) : error C2275: 'PetscScalar' : illegal use of this type as an expression
+        c:\cygwin\petsc-3.1-p5\include\petscmath.h(272) : see declaration of 'PetscScalar'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(299) : error C2065: 'xx' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2223: left of '->vector' must point to struct/union
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2065: 'xx' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2223: left of '->vector' must point to struct/union
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2065: 'xe' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2223: left of '->vector' must point to struct/union
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2065: 'xx' : undeclared identifier
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : warning C4133: 'function' : incompatible types - from 'int *' to 'Vec'
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : error C2198: 'VecGetArray_Private' : too few arguments for call
+C:\cygwin\PETSC-~1.1-P\src\contrib\blopex\driver\driver.c(300) : fatal error C1903: unable to recover from previous error(s); stopping compilation
+/petsc-3.1-p5/bin/win32fe/win32fe cl -MT -wd4996 -Z7  -o driver driver.o  -L/petsc-3.1-p5/cygwin-c-debug/lib -L/petsc-3.1-p5/cygwin-c-debug/lib -lpetsc   -L/petsc-3.1-p5/cygwin-c-debug/lib -lBLOPEX -lf2clapack -lf2cblas Gdi32.lib User32.lib Advapi32.lib Kernel32.lib Ws2_32.lib 
+LINK : fatal error LNK1181: cannot open input file 'C:\Users\Andrew\AppData\Local\Temp\driver.obj'
+/usr/bin/rm -f driver.o
+}}}
+
+
+== driver_fiedler ==
+
+Compilation:
+{{{
+/petsc-3.1-p5/bin/win32fe/win32fe cl -o driver_fiedler.o -c -MT -wd4996 -Z7 -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include/mpiuni -D__INSDIR__=src/contrib/blopex/driver_fiedler/ driver_fiedler.c
+driver_fiedler.c
+/petsc-3.1-p5/bin/win32fe/win32fe cl -MT -wd4996 -Z7  -o driver_fiedler driver_fiedler.o  -L/petsc-3.1-p5/cygwin-c-debug/lib -L/petsc-3.1-p5/cygwin-c-debug/lib -lpetsc   -L/petsc-3.1-p5/cygwin-c-debug/lib -lBLOPEX -lf2clapack -lf2cblas Gdi32.lib User32.lib Advapi32.lib Kernel32.lib Ws2_32.lib 
+/usr/bin/rm -f driver_fiedler.o
+}}}
+
+Tests:
+
+=== driver_fiedler L-matrix-double.petsc ===
+
+./driver_fiedler -matrix L-matrix-double.petsc -n_eigs 3 -itr 20
+
+Eigenvalues Computed
+{{{
+Eigenvalue lambda       Residual              
+ 3.24057709006772e-006   3.92795742665550e-007
+ 9.46022732748744e-006   2.96997618354929e-007
+ 2.01382183477503e-005   8.37520409262231e-007
+
+9 iterations
+Solution process, seconds: 7.295006e+002
+Final eigenvalues:
+-1.164745e+237
+-1.164745e+237
+-1.164745e+237
+}}}
+
+=== driver_fiedler DL-matrix-double.petsc ===
+
+./driver_fiedler -matrix DL-matrix-double.petsc -n_eigs 3 -itr 20
+
+Eigenvalues Computed
+{{{
+Eigenvalue lambda       Residual              
+ 4.02294086070923e-005   2.52391967813606e-005
+ 4.02851331019773e-005   5.18341778370455e-005
+ 4.10501336404873e-005   2.60231262538613e-005
+
+20 iterations
+Solution process, seconds: 5.561320e+000
+Final eigenvalues:
+-9.366182e+236
+-9.366182e+236
+-9.366182e+236
+}}}
+
+
+== driver_diag ==
+
+Compilation:
+{{{
+/petsc-3.1-p5/bin/win32fe/win32fe cl -o driver_diag.o -c -MT -wd4996 -Z7 -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include -I/petsc-3.1-p5/cygwin-c-debug/include -I/petsc-3.1-p5/include/mpiuni -D__INSDIR__=src/contrib/blopex/driver_diag/ driver_diag.c
+driver_diag.c
+/petsc-3.1-p5/bin/win32fe/win32fe cl -MT -wd4996 -Z7  -o driver_diag driver_diag.o  -L/petsc-3.1-p5/cygwin-c-debug/lib -L/petsc-3.1-p5/cygwin-c-debug/lib -lpetsc   -L/petsc-3.1-p5/cygwin-c-debug/lib -lBLOPEX -lf2clapack -lf2cblas Gdi32.lib User32.lib Advapi32.lib Kernel32.lib Ws2_32.lib 
+/usr/bin/rm -f driver_diag.o
+}}}
+
+Tests:
+
+./driver_diag -n_eigs 3 -tol 1e-6 -itr 20
+
+Eigenvalues computed
+{{{
+Eigenvalue lambda       Residual              
+ 9.99999999999997e-001   1.73485905891287e-007
+ 1.99999999999996e+000   6.13649638134699e-007
+ 3.00000000000007e+000   7.29867606007022e-007
+
+15 iterations
+Solution process, seconds: 4.102232e-002
+Final eigenvalues:
+1.000000e+000
+2.000000e+000
+3.000000e+000
+}}}
