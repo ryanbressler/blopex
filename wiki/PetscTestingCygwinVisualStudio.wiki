@@ -86,11 +86,11 @@ Eigenvalue lambda       Residual
  2.01382183477503e-005   8.37520409262231e-007
 
 9 iterations
-Solution process, seconds: 7.295006e+002
+Solution process, seconds: 7.300088e+002
 Final eigenvalues:
--1.164745e+237
--1.164745e+237
--1.164745e+237
+3.240577e-006
+9.460227e-006
+2.013822e-005
 }}}
 
 === driver_fiedler DL-matrix-double.petsc ===
@@ -105,11 +105,11 @@ Eigenvalue lambda       Residual
  4.03559186288959e-005   1.63298888631709e-005
 
 20 iterations
-Solution process, seconds: 5.414555e+000
+Solution process, seconds: 5.353354e+000
 Final eigenvalues:
--1.923807e+270
--1.923807e+270
--1.923807e+270
+4.015379e-005
+4.022872e-005
+4.035592e-005
 }}}
 
 
