@@ -22,7 +22,7 @@ Now the PETSc installation process may begin.
 
 = Setup Petsc =
 
-First download the latest PETSc distribution from http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.1-p5.tar.gz.  Decompress the file and then enter the newly created petsc-lite-p5 directory.
+First download the latest PETSc distribution from http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.1.tar.gz  which currently links to petsc-3.1-p6.tar.gz.  Decompress the file and then enter the newly created directory.
 
 Once there, set the PETSC_DIR environment variable.
 {{{
