@@ -32,8 +32,7 @@ Once there, set the PETSC_DIR environment variable.
 Now start the configuration process, with the petsc-3.1-p/blopex-1.1.1-petsc_abstract_tar.gz in the home directory, with the blopex.py file replaced in the config/PETSc/packages directory, and with the Microsoft compiler as follows:
 
 {{{
->> ./config/configure.py --with-shared --with-debugging=1 --download-blopex=/blopex-1.1.1-petsc_abstract_tar.gz 
->> --with-mpi=0 --with-fc=0 --with-cc='win32fe cl' --download-c-blas-lapack=1
+>> ./config/configure.py --with-shared --with-debugging=1 --download-blopex=1  --with-mpi=0 --with-fc=0 --with-cc='win32fe cl' --download-c-blas-lapack=1
 }}}
 
 Note that it must be specified to use no Fortran compiler.  Otherwise the configuration will fail, because the Microsoft C compiler is incompatible with Cygwin's gfortran compiler, which PETSc may attempt to use.
