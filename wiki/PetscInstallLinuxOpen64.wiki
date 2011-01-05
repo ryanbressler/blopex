@@ -428,3 +428,43 @@ For this install the latest distribution of PETSc is used, and at the configure 
 }}} 
 
 With this setup, all of the blopex drivers compile and run without errors.
+
+=Testing of the Latest Distribution, petsc-3.1-p7=
+
+The basic system info:
+
+{{{
+>> uname -a
+Linux xvia.ucdenver.edu 2.6.34.7-61.fc13.x86_64 #1 SMP Tue Oct 19 04:06:30 UTC 2010 x86_64 x86_64 x86_64 GNU/Linux
+}}}
+
+In the latest distribution of petsc, configuration fails if the options '--download-hypre=1' and '--download-openmpi=1' are both specified.  The following output is generated:
+
+{{{
+*******************************************************************************
+         UNABLE to CONFIGURE with GIVEN OPTIONS    (see configure.log for details):
+-------------------------------------------------------------------------------
+Cannot use BLOPEX with --download-hypre aswell as --download-openmpi.
+Suggest using --download-mpich or install openmpi separately - and specify mpicc etc to petsc configure.
+*******************************************************************************
+
+
+  File "./configure", line 254, in petsc_configure
+    framework = config.framework.Framework(['--configModules=PETSc.Configure','--optionsModule=PETSc.compilerOptions']+sys.argv[1:], loadArgDB = 0)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/BuildSystem/config/framework.py", line 106, in __init__
+    self.createChildren()
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/BuildSystem/config/framework.py", line 349, in createChildren
+    self.getChild(moduleName)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/BuildSystem/config/framework.py", line 334, in getChild
+    config.setupDependencies(self)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/PETSc/Configure.py", line 50, in setupDependencies
+    utilityObj                    = self.framework.require('PETSc.'+d+'.'+utilityName, self)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/BuildSystem/config/framework.py", line 354, in require
+    config = self.getChild(moduleName, keywordArgs)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/BuildSystem/config/framework.py", line 334, in getChild
+    config.setupDependencies(self)
+  File "/home/guests/adougher/petsc-3.1-p7_hypre/config/PETSc/packages/blopex.py", line 22, in setupDependencies
+    Suggest using --download-mpich or install openmpi separately - and specify mpicc etc to petsc configure.\n')
+}}}
+
+Otherwise, the latest distribution compiles and runs as usual with the open 64 compilers and either no MPI, or MPI and no Hypre.
