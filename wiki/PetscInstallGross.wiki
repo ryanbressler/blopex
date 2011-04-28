@@ -86,19 +86,12 @@ cd $PBS_O_WORKDIR
 # Execute the program through mpi with the machine file specified by PBS.
 # If the binary supports OpenMP, we should specify the number of thread to use
 # per process using the OMP_NUM_THREADS variable.
-mpirun_rsh -np 2 -hostfile /home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/hostfile /home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/driver
+mpirun_rsh -np 2 -hostfile $PBS_NODEFILE OMP_NUM_THREADS=1/home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/driver
 }}}
 
-In the last line, edit the location of the files to match your location. 
+In the last line, edit the location of the file "run" to match your location. 
 The "np" parameter must be equal to the product of the "nodes" and "ppn". 
 
-Create a file called "hostfile" with the following lines: 
-
-{{{
-node01
-node01
-}}}
-The "hostfile" should have at least as many entries as the number of np in the "run" script. 
 
   * Submit the job by running 
 
