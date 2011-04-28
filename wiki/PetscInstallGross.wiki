@@ -1,0 +1,107 @@
+#summary Howto install PETSc on UCDenver CC gross cluster
+
+= Introduction =
+
+Howto install PETSc on UCDenver CC gross cluster
+
+= Details =
+
+  * Choose the working MPI interface---run
+
+`mpi-selector-menu` 
+
+and choose item 2. mvapich2_gcc44-1.4.1. Log out and log in back. 
+
+  * remove your previous install of PETSc completely
+
+`rm -rf name_of_the PETSc-directory`
+
+  * If you have not done it yet, download the PETSc source 
+
+`wget  http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.1-p8.tar.gz`
+
+  *  Uncompress it by running
+
+`tar xzvf  petsc-3.1-p8.tar.gz`
+
+  * Rename the newly created PETSc directory by 
+
+`mv petsc-3.1-p8 petsc-3.1-p8--mvapich2-gcc44`
+
+  * Get inside, configure, and make PETSc by running
+
+`cd petsc-3.1-p8--mvapich2-gcc44`
+
+`./config/configure.py --download-f-blas-lapack=1 --download-hypre=1 --download-blopex=1`
+
+`make all`
+
+`make test`
+
+  * If requested, start the MPD service by running 
+
+`mpd &`
+
+If this does not work, follow the instructions on the screen to make it to work.
+
+  * Go to the driver and make it 
+
+`cd src/contrib/blopex/driver`
+
+`make driver`
+
+  * Now, you have the executable binary, which you can run. The simple run is 
+
+`./driver`
+
+  * To run on the frontend with several cores, use 
+
+`mpirun -np 2 ./driver`
+  
+  * To use the cluster node, use the submitter. Create the file called "run" with the following lines 
+
+{{{
+# Reserve nodes and cores per node
+# each node contains 12 processing cores, so ppn<13
+#PBS -l nodes=1:ppn=2
+
+# Set the maximum amount of the time the job will run (HH:MM:SS)
+#PBS -l walltime=01:00:00
+
+# Give the job a name
+#PBS -N test_pbs
+
+# Keep all environment variables from the current session (PATH, LD_LIBRARY_PATH, etc)
+#PBS -V
+
+# Merge stderr and stdout
+#PBS -j oe
+
+# Set log file
+#PBS -o test.log
+
+# Change to the run directory (where job was submitted)
+cd $PBS_O_WORKDIR
+
+# Execute the program through mpi with the machine file specified by PBS.
+# If the binary supports OpenMP, we should specify the number of thread to use
+# per process using the OMP_NUM_THREADS variable.
+mpirun_rsh -np 2 -hostfile /home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/hostfile /home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/driver
+}}}
+
+In the last line, edit the location of the files to match your location. 
+The "np" parameter must be equal to the product of the "nodes" and "ppn". 
+
+Create a file called "hostfile" with the following lines: 
+
+{{{
+node01
+node01
+}}}
+The "hostfile" should have at least as many entries as the number of np in the "run" script. 
+
+  * Submit the job by running 
+
+`qsub run`
+
+  * Enjoy the result!
