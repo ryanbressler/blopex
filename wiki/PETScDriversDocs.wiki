@@ -61,10 +61,10 @@ Eigenvalue lambda       Residual
 22 iterations
 }}}
 
-It is also possible to adjust the mesh dimensions via the Petsc command line options  `-da_grid_x <integer>`, `-da_grid_y <integer>`, and `-da_grix_z <integer>`, e.g., 
+It is also possible to adjust the mesh dimensions via the Petsc command line options  `-da_grid_x <integer>`, `-da_grid_y <integer>`, and `-da_grid_z <integer>`, e.g., 
 
 {{{
-./driver -da_grid_x 100 -da_grid_y 100 -da_grix_z 100
+./driver -da_grid_x 100 -da_grid_y 100 -da_grid_z 100
 }}}
 
 = *driver_diag* =
