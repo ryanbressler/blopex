@@ -64,7 +64,7 @@ Eigenvalue lambda       Residual
 It is also possible to adjust the mesh dimensions via the Petsc command line options  `-da_grid_x <integer>`, `-da_grid_y <integer>`, and `-da_grid_z <integer>`, e.g., 
 
 {{{
-./driver -da_grid_x 100 -da_grid_y 100 -da_grid_z 100
+mpirun -np 10 ./driver -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -freepart
 }}}
 
 = *driver_diag* =
