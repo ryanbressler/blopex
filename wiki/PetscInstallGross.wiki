@@ -28,9 +28,11 @@ and choose item 2. mvapich2_gcc44-1.4.1. Log out and log in back.
 
 `mv petsc-3.1-p8 petsc-3.1-p8--mvapich2-gcc44`
 
-  * Get inside, configure, and make PETSc by running
+  * Get inside, setup PETSC_DIR, configure, and make PETSc by running
 
 `cd petsc-3.1-p8--mvapich2-gcc44`
+
+`export PETSC_DIR=$PWD`
 
 `./config/configure.py --download-f-blas-lapack=1 --download-hypre=1 --download-blopex=1`
 
