@@ -50,11 +50,31 @@ If this does not work, follow the instructions on the screen to make it to work.
 
 `make driver`
 
-  * Now, you have the executable binary, which you can run. The simple run is 
+  * Now, you have the executable binary, which you can run. The simplest run is 
 
 `./driver`
 
-  * To run on the frontend with several cores, use 
+
+  * To control the number of the seeking eigenvalues, the tolerance, the max number of iterations, and the random generation of the initial approximation, try  
+
+`./driver -n_eigs 2  -tol 1e-3 -itr 50 -seed 2`
+
+  * The driver code finds the smallest eigenvalues of the 3D negative Laplacian with Dirichlet boundary conditions, approximated by the standard 7-point finite-difference scheme with the step size one in all 3 directions. The default problem size is 10x10x10. You can redefine the problem size, e.g., to 20x20x20 by running 
+
+`./driver -da_grid_x 20 -da_grid_y 20 -da_grid_z 20` 
+
+The exact eigenvalues for such problems are explicitly known. Download the MATLAB code [http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d] and run it in MATLAB such as 
+
+`[A,lambda] = laplacian([20 20 20],{'DD' 'DD' 'DD'}, 1);`
+
+to see the exact eigenvalue lambda for the 20x20x20 grid. Compare it with the value obtained by the driver varying the tolerance. 
+
+  * Since we also have hypre installed, one can use it by  
+
+`./driver -pc_type hypre -pc_hypre_type boomeramg`
+
+
+  * To run on the frontend with several (2 in this example) cores, use 
 
 `mpirun -np 2 ./driver`
   
