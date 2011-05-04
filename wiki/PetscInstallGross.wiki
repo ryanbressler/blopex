@@ -99,7 +99,23 @@ For large problems, these options are mandatory, since they significantly improv
   * To run on the frontend with several (2 in this example) cores, use 
 
 `mpirun -np 2 ./driver`
-  
+
+The frontend has only 2x6=12 cores. NEVER run with mpirun with more than -np 12 on the frontend! Be considered to other users and limit yourself to -np 6 on the frontend or less as a general rule. 
+
+  * If you ssh to gross using the -X option:
+
+`ssh -X gross` 
+ 
+you can open another terminal window by running 
+
+`gnome-terminal &`
+
+In this separate terminal, run 
+
+`top` 
+
+to see how busy the frontend is at the moment and what other users and you are currently running. You can get out of the "top" window by pressing "q". 
+ 
   * To use the cluster node, use the submitter, called PBS. Create the file called "run" with the following lines 
 
 {{{
@@ -134,20 +150,9 @@ mpirun_rsh -np 2 -hostfile $PBS_NODEFILE OMP_NUM_THREADS=1/home/aknyazev/work/pe
 In the last line, edit the location of the file "run" to match your location. 
 The "np" parameter must be equal to the product of the "nodes" and "ppn". 
 
+The gross cluster has 12 compute nodes with 2x6=12 cores each, i.e. 144 cores total. So you use all nodes by taking "nodes=12:ppn=12" and "-np 144" 
 
-  * Submit the job by running 
-
-`qsub run`
-
-  * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
-
-  * If you run 
-
-{{{
-mpirun -np 12 ./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg
-}}}
-
-you get the following error:
+  * If you get the following error:
 
 {{{
 [5]PETSC ERROR: --------------------- Error Message ------------------------------------
@@ -155,10 +160,20 @@ you get the following error:
 [5]PETSC ERROR: Partition in y direction is too fine! 10 12!
 }}}
 
-This means that you use too many cores (12 in this case) for the default partitioning (which is in the y direction only). Either reduce the number     of cores, e.g., the following runs fine: 
+this means that you use too many cores (12 in this case) for the default partitioning, which is in the y direction only (10 points in this case). Either reduce the number of cores requested, or use the new option "-freepart" In the latter case, the partitioning will be done automatically, which should work for most practical cases. 
 
-{{{
-mpirun -np 10 ./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg
-}}}
+  * Submit the job by running 
 
-or use the new option -freepart 
+`qsub run`
+
+You can check the status of your and other runs by 
+
+`qstat`
+
+`qstat -n`
+
+`qstat -f`
+
+  * Use http://ccm.ucdenver.edu/ganglia/gross/ to check which nodes are up and how busy they are. 
+
+  * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
