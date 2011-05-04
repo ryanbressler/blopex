@@ -64,7 +64,7 @@ If this gives no errors, the installation is successfully completed.
 
   * After logging in, go to the right directory: 
 
-`cd work/petsc/petsc-3.1-p8--mvapich2-gcc44/src/contrib/blopex/driver`
+`cd work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver`
 
 where the driver is located. If you call the directory differently, modify the line above. 
 
