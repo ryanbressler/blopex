@@ -174,6 +174,12 @@ You can check the status of your and other runs by
 
 `qstat -f`
 
+To delete your job from the queue, if it is not running yet, use 
+
+`qdel 1578.frontend`
+
+where you need to put your actual job ID number instead of 1578
+
   * Use http://ccm.ucdenver.edu/ganglia/gross/ to check which nodes are up and how busy they are. 
 
   * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
