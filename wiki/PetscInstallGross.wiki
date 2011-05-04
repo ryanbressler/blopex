@@ -1,10 +1,12 @@
-#summary Howto install PETSc on UCDenver CC gross cluster
+#summary Howto install and run PETSc on UCDenver gross cluster
 
 = Introduction =
 
-Howto install PETSc on UCDenver CC gross cluster
+Howto install and run PETSc on UCDenver gross cluster. The installation is only required once. The installation procedure is completely described in the next section. 
 
-= Details =
+After successful installation of PETSc and compilation of the driver, one does not need to repeat any installation steps, but should rather simply run the compiled *driver* code with different command line options, described in Section "Running". 
+
+= Installation =
 
   * Choose the working MPI interface---run
 
@@ -56,10 +58,27 @@ If this does not work, follow the instructions on the screen to make it to work.
 
 `./driver`
 
+If this gives no errors, the installation is successfully completed. 
+
+= Running = 
+
+  * After logging in, go to the right directory: 
+
+`cd work/petsc/petsc-3.1-p8--mvapich2-gcc44/src/contrib/blopex/driver`
+
+where the driver is located. If you call the directory differently, modify the line above. 
+
+  * Running the driver does not require repeating any installation steps, except that you might need, if requested, to start the MPD service by running 
+
+`mpd &` 
+
+  * Driver possibilities are controlled by the command line options, which could be set in any sequence. If you misspell the required name of the option, the code will give you a warning and use the default value instead. Use copy-paste to avoid the typos.
 
   * To control the number of the seeking eigenvalues, the tolerance, the max number of iterations, and the random generation of the initial approximation, try  
 
 `./driver -n_eigs 2  -tol 1e-3 -itr 50 -seed 2`
+
+  * For the "seed" parameter, always use the number assigned to you in class. 
 
   * The driver code finds the smallest eigenvalues of the 3D negative Laplacian with Dirichlet boundary conditions, approximated by the standard 7-point finite-difference scheme with the step size one in all 3 directions. The default problem size is 10x10x10. You can redefine the problem size, e.g., to 20x20x20 by running 
 
@@ -75,12 +94,13 @@ to see the exact eigenvalue lambda for the 20x20x20 grid. Compare it with the va
 
 `./driver -pc_type hypre -pc_hypre_type boomeramg`
 
+For large problems, these options are mandatory, since they significantly improve the code performance.  
 
   * To run on the frontend with several (2 in this example) cores, use 
 
 `mpirun -np 2 ./driver`
   
-  * To use the cluster node, use the submitter. Create the file called "run" with the following lines 
+  * To use the cluster node, use the submitter, called PBS. Create the file called "run" with the following lines 
 
 {{{
 # Reserve nodes and cores per node
@@ -119,4 +139,4 @@ The "np" parameter must be equal to the product of the "nodes" and "ppn".
 
 `qsub run`
 
-  * Enjoy the result!
+  * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
