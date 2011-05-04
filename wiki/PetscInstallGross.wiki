@@ -140,3 +140,25 @@ The "np" parameter must be equal to the product of the "nodes" and "ppn".
 `qsub run`
 
   * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
+
+  * If you run 
+
+{{{
+mpirun -np 12 ./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg
+}}}
+
+you get the following error:
+
+{{{
+[5]PETSC ERROR: --------------------- Error Message ------------------------------------
+[5]PETSC ERROR: Argument out of range!
+[5]PETSC ERROR: Partition in y direction is too fine! 10 12!
+}}}
+
+This means that you use too many cores (12 in this case) for the default partitioning (which is in the y direction only). Either reduce the number     of cores, e.g., the following runs fine: 
+
+{{{
+mpirun -np 10 ./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg
+}}}
+
+or use the new option -freepart 
