@@ -124,13 +124,40 @@ In this separate terminal, run
 `top` 
 
 to see how busy the frontend is at the moment and what other users and you are currently running. You can get out of the "top" window by pressing "q". 
+
+  * Compare the timing and the results of the following 3 runs: 
+
+{{{
+./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128
+}}}
+
+{{{
+./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg -pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard
+}}}
+
+
+{{{
+mpirun -np 6 ./driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg -pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard
+}}}
  
-  * To use the cluster node, use the submitter, called PBS. Create the file called "run" with the following lines 
+to see advantages of using hypre and running the code in parallel.
+
+  * If you get the following error:
+
+{{{
+[5]PETSC ERROR: --------------------- Error Message ------------------------------------
+[5]PETSC ERROR: Argument out of range!
+[5]PETSC ERROR: Partition in y direction is too fine! 10 12!
+}}}
+
+this means that you use too many cores (12 in this case) for the default partitioning, which is in the y direction only (10 points in this case). Either reduce the number of cores requested, or use the new option "-freepart" In the latter case, the partitioning will be done automatically, which should work for most practical cases. 
+
+  * To run on the cluster nodes, use the submitter, called PBS. Create the file called "run" with the following lines 
 
 {{{
 # Reserve nodes and cores per node
 # each node contains 12 processing cores, so ppn<13
-#PBS -l nodes=1:ppn=2
+#PBS -l nodes=6:ppn=12
 
 # Set the maximum amount of the time the job will run (HH:MM:SS)
 #PBS -l walltime=01:00:00
@@ -153,23 +180,14 @@ cd $PBS_O_WORKDIR
 # Execute the program through mpi with the machine file specified by PBS.
 # If the binary supports OpenMP, we should specify the number of thread to use
 # per process using the OMP_NUM_THREADS variable.
-mpirun_rsh -np 2 -hostfile $PBS_NODEFILE OMP_NUM_THREADS=1/home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/driver
+mpirun_rsh -np 72 -hostfile $PBS_NODEFILE OMP_NUM_THREADS=1/home/aknyazev/work/petsc/petsc-3.1-p8-mvapich2-gcc44/src/contrib/blopex/driver/driver -da_grid_x 128 -da_grid_y 128 -da_grid_z 128 -pc_type hypre -pc_hypre_type boomeramg -pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard -freepart
+
 }}}
 
 In the last line, edit the location of the file "run" to match your location. 
 The "np" parameter must be equal to the product of the "nodes" and "ppn". 
 
-The gross cluster has 12 compute nodes with 2x6=12 cores each, i.e. 144 cores total. So you use all nodes by taking "nodes=12:ppn=12" and "-np 144" 
-
-  * If you get the following error:
-
-{{{
-[5]PETSC ERROR: --------------------- Error Message ------------------------------------
-[5]PETSC ERROR: Argument out of range!
-[5]PETSC ERROR: Partition in y direction is too fine! 10 12!
-}}}
-
-this means that you use too many cores (12 in this case) for the default partitioning, which is in the y direction only (10 points in this case). Either reduce the number of cores requested, or use the new option "-freepart" In the latter case, the partitioning will be done automatically, which should work for most practical cases. 
+The gross cluster has 12 compute nodes with 2x6=12 cores each, i.e. 144 cores total. So you use all nodes by taking "nodes=12:ppn=12" and "-np 144" In the example above, half of the nodes are used. 
 
   * Submit the job by running 
 
@@ -202,5 +220,7 @@ and
 `ssh node01`
 
 `top`
+
+If a code run goes out of memory, it crashes and generates a cryptic looking error. 
 
   * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
