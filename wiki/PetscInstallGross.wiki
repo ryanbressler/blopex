@@ -221,6 +221,10 @@ and
 
 `top`
 
-If a code run goes out of memory, it crashes and generates a cryptic looking error. 
+  * If a run goes out of memory, it crashes, disappears from "qstat", and may generates a cryptic looking error. Unfortunately, a check at http://ccm.ucdenver.edu/ganglia/gross/ may show that your processes are still running on the nodes, on their own. To play it safe, if anything strange  happens to your run, make sure clean after yourself, i.e. to kill all your jobs after that, by running
+
+{{{
+pdsh -a killall -u $USER
+}}}
 
   * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
