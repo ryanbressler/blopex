@@ -72,7 +72,7 @@ where the driver is located. If you call the directory differently, modify the l
 
 `mpd &` 
 
-  * Driver possibilities are controlled by the command line options, which could be set in any sequence. If you misspell the required name of the option, the code will give you a warning and use the default value instead. Use copy-paste to avoid the typos.
+  * Driver possibilities are controlled by command line options, which could be set in any sequence. If you misspell the required name of the option, the code will give you a warning and use the default value instead. Use copy-paste to avoid the typos.
 
   * To control the number of the seeking eigenvalues, the tolerance, the max number of iterations, and the random generation of the initial approximation, try  
 
@@ -84,7 +84,7 @@ where the driver is located. If you call the directory differently, modify the l
 
 `./driver -da_grid_x 20 -da_grid_y 20 -da_grid_z 20` 
 
-The exact eigenvalues for such problems are explicitly known. According to http://en.wikipedia.org/wiki/Kronecker_sum_of_discrete_Laplacians#Example:_3D_discrete_Laplacian_on_a_regular_grid_with_the_homogeneous_Dirichlet_boundary_condition , the smallest eigenvalue here is 
+  * The exact eigenvalues for such problems are explicitly known. According to http://en.wikipedia.org/wiki/Kronecker_sum_of_discrete_Laplacians#Example:_3D_discrete_Laplacian_on_a_regular_grid_with_the_homogeneous_Dirichlet_boundary_condition , the smallest eigenvalue here is 
 
 {{{
 lambda = 12*(sin(pi/(2*n+2)))^2
@@ -93,7 +93,7 @@ lambda = 12*(sin(pi/(2*n+2)))^2
 where n is the number of grid points in one direction, i.e., n=20 in the command above.
 Compare it with the value obtained by the driver varying the tolerance. 
 
-In a general case, download the MATLAB code [http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d] and run it in MATLAB such as 
+In a general case (not needed for the project), download the MATLAB code [http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d] and run it in MATLAB such as 
 
 `[A,lambda] = laplacian([20 20 20],{'DD' 'DD' 'DD'}, 1);`
 
