@@ -84,7 +84,13 @@ where the driver is located. If you call the directory differently, modify the l
 
 `./driver -da_grid_x 20 -da_grid_y 20 -da_grid_z 20` 
 
-The exact eigenvalues for such problems are explicitly known. The smallest eigenvalue is lambda = 12*(sin(pi/(2*n+2)))^2, where n is the number of grid points in one direction, i.e., n=20 in the command above.
+The exact eigenvalues for such problems are explicitly known. The smallest eigenvalue is 
+
+{{{
+lambda = 12*(sin(pi/(2*n+2)))^2
+}}}
+
+where n is the number of grid points in one direction, i.e., n=20 in the command above.
 Compare it with the value obtained by the driver varying the tolerance. 
 
 In a general case, download the MATLAB code [http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d] and run it in MATLAB such as 
