@@ -92,7 +92,7 @@ to see the exact eigenvalue lambda for the 20x20x20 grid. Compare it with the va
 
   * Since we also have hypre installed, one can use it by  
 
-`./driver -pc_type hypre -pc_hypre_type boomeramg`
+`./driver -pc_type hypre -pc_hypre_type boomeramg -pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard`
 
 For large problems, these options are mandatory, since they significantly improve the code performance.  
 
@@ -183,5 +183,15 @@ where you need to put your actual job ID number instead of 1578
   * Use http://ccm.ucdenver.edu/ganglia/gross/ to check which nodes are up and how busy they are. A more reliable, but not so nice looking check is by running 
 
 `pbsnodes`
+
+and
+
+`uptimetest0`
+
+  * You can also login to one of the nodes that the qsub has used for your code and monitor the execution on this node by running the "top" command: 
+
+`ssh node01`
+
+`top`
 
   * Check the directory for the error and output files, produced by the qsub. The files have the ID number of the run as a part of their filename. If you use the script above, the main output file will be called test.log. It will be overwritten by every new qsub run. 
