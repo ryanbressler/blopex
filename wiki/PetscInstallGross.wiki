@@ -84,7 +84,7 @@ where the driver is located. If you call the directory differently, modify the l
 
 `./driver -da_grid_x 20 -da_grid_y 20 -da_grid_z 20` 
 
-The exact eigenvalues for such problems are explicitly known. The smallest eigenvalue is 
+The exact eigenvalues for such problems are explicitly known. According to http://en.wikipedia.org/wiki/Kronecker_sum_of_discrete_Laplacians#Example:_3D_discrete_Laplacian_on_a_regular_grid_with_the_homogeneous_Dirichlet_boundary_condition , the smallest eigenvalue here is 
 
 {{{
 lambda = 12*(sin(pi/(2*n+2)))^2
