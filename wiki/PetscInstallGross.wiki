@@ -250,8 +250,7 @@ so the record for this run is
 256  4.48280009467367e-04    1.77597752359368e-06
 }}}
 
-You may want to consider simply putting all small size runs into one "run" script and run them all together, rather then doing them manually one-by-one. Just repeat the last line of the run script, changing the 
-sizes and tolerances. You can only once specify "nodes" and "ppn" values in the run script, so for all small jobs just use nodes=1:ppn=1 and -np 1.
+You may want to consider simply putting all small size jobs into one "run" script and run them all together by qsub, rather then doing them manually one-by-one. Just repeat the last line of the run script, changing only the sizes and tolerances. One can only once specify "nodes" and "ppn" values in the run script, so for all small jobs just use nodes=1:ppn=1 and -np 1.
 
 You can also group big jobs together, as soon as you use the same "np" number for all jobs within the run script, e.g., for the same problem size just different tolerances. 
 
