@@ -250,6 +250,8 @@ so the record for this run is
 256  4.48280009467367e-04    1.77597752359368e-06
 }}}
 
+You may want to consider simply putting most/all the required runs into the "run" script and run them all together, rather then doing them manually one-by-one. If you do this, do not forget to change the "nodes" and "ppn" values prior to every mpirun with a different number of "np". I have not tested this, however. 
+
 Using a text editor, create a text file with a table with the records for all your runs. 
 The table thus looks like this
 
