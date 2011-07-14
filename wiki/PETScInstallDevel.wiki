@@ -1,0 +1,27 @@
+#summary Installing and testing the development versions of PETSc and SLEPc.
+
+= Introduction =
+
+BLOPEX is currently being in the process of move from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. 
+
+Currently, the development versions of PETSc and SLEPc need to be used to test the latest BLOPEX in SLEPc. 
+
+= Installing the development versions of PETSc (without BLOPEX) =
+
+Follow http://www.mcs.anl.gov/petsc/petsc-as/developers/index.html#Obtaining
+
+For configure, use the usual options that need to be tested. DO NOT install BLOPEX with PETSc. After configure, compile as usual. During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. They are needed in the next step, the SLEPc installation. 
+
+= Installing the development versions of SLEPc with BLOPEX =
+
+According to http://www.grycap.upv.es/slepc/download/download.htm, run
+
+svn checkout http://www.grycap.upv.es/slepc/svn/trunk slepc-dev
+
+e.g., in the same directory where the newly created petsc-dev directory is located. As suggested at http://www.grycap.upv.es/slepc/documentation/instal.htm execute 
+
+cd slepc-dev/
+export SLEPC_DIR=$PWD
+./configure --download-blopex 
+
+The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc configure must be executed first, as in the previous step. 
