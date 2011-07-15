@@ -15,13 +15,19 @@ For configure, use the usual options that need to be tested. DO NOT install BLOP
 = Installing the development versions of SLEPc with BLOPEX =
 
 According to http://www.grycap.upv.es/slepc/download/download.htm, run
-
+{{{
 svn checkout http://www.grycap.upv.es/slepc/svn/trunk slepc-dev
+}}}
+e.g., in the same directory where the newly created petsc-dev directory is located. At a later time, the repository can be refreshed simply by:
+{{{
+svn update
+}}}
 
-e.g., in the same directory where the newly created petsc-dev directory is located. As suggested at http://www.grycap.upv.es/slepc/documentation/instal.htm execute 
-
+As suggested at http://www.grycap.upv.es/slepc/documentation/instal.htm execute 
+{{{
 cd slepc-dev/
 export SLEPC_DIR=$PWD
 ./configure --download-blopex 
+}}}
 
 The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc configure must be executed first, as in the previous step. 
