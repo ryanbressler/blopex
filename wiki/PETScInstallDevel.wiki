@@ -42,7 +42,7 @@ and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples
 
 
 {{{
-./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -da_grid_x 100 -da_grid_y 100 -da_grid_z 100  
+./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_nev 2 -eps_tol 1e-11
 }}}
 
 PETSc command-line options supported, e.g., "-log_summary"
