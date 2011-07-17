@@ -47,6 +47,7 @@ and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples
 
 PETSc command-line options supported, e.g., "-log_summary"
 
-For large problems, the code may run out of memory and crash. In this case, use the extra options "
+For large problems, the code may run out of memory and crash. In this case, add the following extra options 
+{{{
 -pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard
-"
+}}}
