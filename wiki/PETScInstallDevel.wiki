@@ -34,13 +34,15 @@ make test
 
 The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc configure must be executed first, as in the previous step. 
 
+= Running SLEPc examples with BLOPEX =
+
 BLOPEX-compatible SLEPc examples are listed at 
 http://www.grycap.upv.es/slepc/documentation/current/src/examples/index.html
-and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre.
+and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre. The option "-st_ksp_type preonly" is currently (July 17, 2011) the only available. Other useful options, e.g., most importantly, "-st_ksp_type cg" are not yet supported.
 
 
 {{{
-./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg  -st_ksp_type cg -st_ksp_type preonly 
+./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -da_grid_x 100 -da_grid_y 100 -da_grid_z 100  
 }}}
 
 PETSc command-line options supported, e.g., "-log_summary"
