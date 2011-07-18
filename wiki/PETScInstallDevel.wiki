@@ -38,16 +38,29 @@ The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc c
 
 BLOPEX-compatible SLEPc examples are listed at 
 http://www.grycap.upv.es/slepc/documentation/current/src/examples/index.html
-and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre. The option "-st_ksp_type preonly" is currently (July 17, 2011) the only available. Other useful options, e.g., most importantly, "-st_ksp_type cg" are not yet supported.
+and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre. The option "-st_ksp_type preonly" is the default in the following:
 
 
 {{{
-./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_nev 2 -eps_tol 1e-11 -showtimes
+./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_nev 2 -eps_tol 1e-11 -st_pc_type hypre -st_pc_hypre_type boomeramg  -showtimes -eps_view
 }}}
-
-PETSc command-line options supported, e.g., "-log_summary"
 
 For large problems, the code may run out of memory and crash. In this case, add the following extra options 
 {{{
--pc_hypre_boomeramg_agg_nl 1 -pc_hypre_boomeramg_P_max 4 -pc_hypre_boomeramg_interp_type standard
+-st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard 
 }}}
+
+so that you run 
+
+{{{
+./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_nev 2 -eps_tol 1e-11 -st_pc_type hypre -st_pc_hypre_type boomeramg -st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
+}}}
+
+
+In the following example, the preconditioner for the BLOPEX eigensolver is supposed to be the PCG iterative method, preconditioned with hypre's boomeramg:
+
+{{{
+./ex19 -eps_type blopex -st_pc_type ksp -st_ksp_ksp_type cg -st_ksp_pc_type hypre -st_ksp_pc_hypre_type boomeramg -st_ksp_pc_hypre_boomeramg_agg_nl 1 -st_ksp_pc_hypre_boomeramg_P_max 4 -st_ksp_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
+}}}
+
+PETSc command-line options supported, e.g., "-log_summary"
