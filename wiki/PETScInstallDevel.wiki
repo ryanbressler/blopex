@@ -42,7 +42,7 @@ and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples
 
 
 {{{
-./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_nev 2 -eps_tol 1e-11 -st_pc_type hypre -st_pc_hypre_type boomeramg  -showtimes -eps_view
+./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_nev 2 -eps_tol 1e-11 -eps_max_it 10 -st_pc_type hypre -st_pc_hypre_type boomeramg  -showtimes -eps_view
 }}}
 
 For large problems, the code may run out of memory and crash. In this case, add the following extra options 
@@ -53,7 +53,7 @@ For large problems, the code may run out of memory and crash. In this case, add 
 so that you run 
 
 {{{
-./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_nev 2 -eps_tol 1e-11 -st_pc_type hypre -st_pc_hypre_type boomeramg -st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
+./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
 }}}
 
 
