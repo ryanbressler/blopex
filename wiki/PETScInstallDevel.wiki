@@ -63,8 +63,18 @@ In the following example, the preconditioner for the BLOPEX eigensolver is the P
 ./ex19 -eps_type blopex -st_ksp_type cg -st_pc_type hypre -st_pc_hypre_type boomeramg -st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
 }}}
 
-For a high quality preconditioner, such as boomeramg in this case, using PCG on the top of preconditioning is an overkill. 
+For a high quality preconditioner, such as boomeramg in this case, using PCG on the top of preconditioning is an overkill - the increase in complexity needed to setup the PCG solver does not lead to enough convergence acceleration. This is reversed if the preconditioner is cheap and poor. The direct application of Jacobi below makes lobpcg to converge in ~350 iterations:
 
+{{{
+ ./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -eps_max_it 1000 -st_pc_type jacobi  -showtimes -eps_view
+}}}
 
+while the use of Jacobi-preconditioned PCG with 7 inner iterations makes lobpcg to converge in ~50 iterations:
+
+{{{
+./ex19 -da_grid_x 100 -da_grid_y 100 -da_grid_z 100 -eps_type blopex -st_ksp_type cg -st_pc_type jacobi -st_ksp_max_it 7  -showtimes -eps_view
+}}}
+
+The total number of inner-outer iterations is the same ~350 in both runs, but the latter is almost 3 times faster in CPU time, since a single PCG iteration is cheaper than a single LOBPCG iteration. 
 
 PETSc command-line options supported, e.g., "-log_summary"
