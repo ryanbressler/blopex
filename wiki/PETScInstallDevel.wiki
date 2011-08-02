@@ -57,10 +57,14 @@ so that you run
 }}}
 
 
-In the following example, the preconditioner for the BLOPEX eigensolver is supposed to be the PCG iterative method, preconditioned with hypre's boomeramg:
+In the following example, the preconditioner for the BLOPEX eigensolver is the PCG iterative method, preconditioned with hypre's boomeramg:
 
 {{{
-./ex19 -eps_type blopex -st_pc_type ksp -st_ksp_ksp_type cg -st_ksp_pc_type hypre -st_ksp_pc_hypre_type boomeramg -st_ksp_pc_hypre_boomeramg_agg_nl 1 -st_ksp_pc_hypre_boomeramg_P_max 4 -st_ksp_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
+./ex19 -eps_type blopex -st_ksp_type cg -st_pc_type hypre -st_pc_hypre_type boomeramg -st_pc_hypre_boomeramg_agg_nl 1 -st_pc_hypre_boomeramg_P_max 4 -st_pc_hypre_boomeramg_interp_type standard -showtimes -eps_view
 }}}
+
+For a high quality preconditioner, such as boomeramg in this case, using PCG on the top of preconditioning is an overkill. 
+
+
 
 PETSc command-line options supported, e.g., "-log_summary"
