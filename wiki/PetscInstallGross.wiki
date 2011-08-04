@@ -95,9 +95,9 @@ Compare it with the value obtained by the driver varying the tolerance.
 
 In a general case (not needed for the project), download the MATLAB code [http://www.mathworks.com/matlabcentral/fileexchange/27279-laplacian-in-1d-2d-or-3d] and run it in MATLAB such as 
 
-`[A,lambda] = laplacian([20 20 20],{'DD' 'DD' 'DD'}, 1);`
+`lambda = laplacian([20 20 20],{'DD' 'DD' 'DD'}, 1);`
 
-to see the exact one eigenvalue lambda for the 20x20x20 grid. Note that the laplacian function also generates the matrix A, and this may take lots of time and memory for large matrix sizes. 
+to see the exact one eigenvalue lambda for the 20x20x20 grid. 
 
   * Since we also have hypre installed, one can use it by  
 
