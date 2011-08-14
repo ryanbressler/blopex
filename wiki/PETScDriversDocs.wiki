@@ -10,7 +10,7 @@ Let us provide the description of the drivers here, to be added to the headers
 of the c codes and/or readme files later.  
 
 
-= *driver* =
+= *driver* (being replaced by SLEPc's ex19) =
 
 driver builds a negative 3D laplacian approximated by a 7pt stencil.  In each dimension there are 10 mesh points with step size of 1. The boundary conditions are Dirichlet. This yields a 1000x1000 matrix which is then solved for some of its smallest eigenvalues via the LOBPCG solver implemented in BLOPEX.
 
@@ -108,9 +108,13 @@ Eigenvalue lambda       Residual
 19 iterations
 }}}
 
-= *driver_fiedler* =
+= *driver_fiedler* (being replaced by SLEPc's ex7)=
 
-driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, real or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64". All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz
+driver_fiedler accepts as input matrices in Petsc format. These matrices must be setup for either 32bit or 64bit arithematic, real or complex. The test matrices are setup for double (real) or complex and for 32bit or 64bit. The 64bit version have a file name containing "64". All our matrices for testing can be downloaded from http://code.google.com/p/blopex/downloads/detail?name=blopex_petsc_test.tar.gz by running 
+
+{{{
+wget http://blopex.googlecode.com/files/blopex_petsc_test.tar.gz
+}}}
 
 These test files are documented in wiki PetscDriverFiedlerTestFiles.
 
