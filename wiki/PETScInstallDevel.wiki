@@ -18,9 +18,10 @@ To test different installation options, open multiple terminal windows and run i
 
 {{{
 cd $PETSC_DIR 
-export PETSC_ARCH=arch-linux2-c-debug-complex
-./config/configure.py --with-scalar-type=complex
+export PETSC_ARCH=arch-linux2-c-debug
+./config/configure.py --download-hypre=1
 }}}
+(hypre is not available in 64-bit or complex)
 or
 {{{
 cd $PETSC_DIR
