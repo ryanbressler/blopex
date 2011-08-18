@@ -78,7 +78,11 @@ The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc c
 
 BLOPEX-compatible SLEPc examples are listed at 
 http://www.grycap.upv.es/slepc/documentation/current/src/examples/index.html
-and are located in src/eps/examples/tutorials . BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre. 
+and are located in
+{{{
+cd $SLEPC_DIR/src/eps/examples/tutorials
+}}}
+BLOPEX-compatible SLEPc examples are 1-4, 7, 11, and 19. To use BLOPEX in any BLOPEX-compatible SLEPc example, simply add "-eps_type blopex" to the command line. In order to call hypre preconditioning, add also -"st_pc_type hypre -st_pc_hypre_type boomeramg" assuming that PETSc has been configured with hypre. 
 
 ==ex4 - reading a PETSc matrix from a file==
 
