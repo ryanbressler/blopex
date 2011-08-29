@@ -59,6 +59,8 @@ export PETSC_ARCH=arch-linux2-c-debug-complex-64
 ./config/configure.py --with-scalar-type=complex --with-64-bit-indices
 }}}
 
+Note that there is also a PETSc option `--with-precision=single`, which is supported by SLEPc, but but yet by BLOPEX. 
+
 For configure, add the other usual options that need to be tested. DO NOT install BLOPEX with PETSc. After configure, compile as usual. During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. PETSC_ARCH must be used to compile PETSc with different configure options uising a single source directory.  PETSC_DIR and PETSC_ARCH are also needed in the next step, the SLEPc installation. 
 
 = Installing the development versions of SLEPc with BLOPEX =
