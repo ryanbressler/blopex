@@ -24,7 +24,7 @@ cd  $PETSC_DIR
 hg clone http://petsc.cs.iit.edu/petsc/BuildSystem config/BuildSystem
 }}}
 
-This need to be done only once. After this initial setup, all changes in potsc-dev source can be obtained by
+This needs to be done only once. After this initial setup, all changes in potsc-dev source can be obtained by
 {{{
 cd  $PETSC_DIR
 hg pull -u
