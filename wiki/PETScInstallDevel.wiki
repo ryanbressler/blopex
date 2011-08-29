@@ -6,7 +6,7 @@ BLOPEX is currently being in the process of move from PETSc to SLEPc. The SLEPc 
 
 Currently, the development versions of PETSc and SLEPc need to be used to test the latest BLOPEX in SLEPc. 
 
-It is easiest to test the development versions, if source control packages "MERCURIAL" and "SVN". In my instructions below, I assume that they are. 
+It is easiest to test the development versions, if source control packages "MERCURIAL" and "SVN" have been installed on the test system. In my instructions below, I assume that they are. 
 
 = Installing the development versions of PETSc (without BLOPEX) =
 
