@@ -6,6 +6,8 @@ BLOPEX is currently being in the process of move from PETSc to SLEPc. The SLEPc 
 
 Currently, the development versions of PETSc and SLEPc need to be used to test the latest BLOPEX in SLEPc. 
 
+It is easiest to test the development versions, if source control packages "MERCURIAL" and "SVN". In my instructions below, I assume that they are. 
+
 = Installing the development versions of PETSc (without BLOPEX) =
 
 Follow http://www.mcs.anl.gov/petsc/petsc-as/developers/index.html#Obtaining
@@ -14,7 +16,23 @@ One must set up PETSC_DIR, e.g., in my case
 {{{ 
 export PETSC_DIR=/home/aknyazev/work/petsc/petsc-dev
 }}}
-To test different installation options, open multiple terminal windows and run in separately in an individual window one of the following: 
+
+Once Mercurial is installed, obtain petsc-dev with the following:
+{{{
+hg clone http://petsc.cs.iit.edu/petsc/petsc-dev
+cd  $PETSC_DIR
+hg clone http://petsc.cs.iit.edu/petsc/BuildSystem config/BuildSystem
+}}}
+
+This need to be done only once. After this initial setup, all changes in potsc-dev source can be obtained by
+{{{
+cd  $PETSC_DIR
+hg pull -u
+cd config/BuildSystem
+hg pull -u
+}}}
+
+To test different installation options on only one source directory pets-dev, open multiple terminal windows and run in separately in an individual window one of the following: 
 
 {{{
 cd $PETSC_DIR 
