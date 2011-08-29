@@ -92,6 +92,7 @@ export SLEPC_DIR=/home/aknyazev/work/petsc/slepc-dev
 
 Then configure and make SLEPc with BLOPEX:
 {{{
+cd $SLEPC_DIR
 ./configure --download-blopex 
 make
 make test
