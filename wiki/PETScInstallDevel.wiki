@@ -100,6 +100,9 @@ make test
 
 The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc configure must be executed first, as in the previous step. 
 
+*It is NOT safe to run SLEPSc configure in different PETSC_ARCH's in separate terminal windows at the same time! Do it one-by-one.* 
+
+
 = Running SLEPc examples with BLOPEX =
 
 BLOPEX-compatible SLEPc examples are listed at 
