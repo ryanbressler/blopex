@@ -104,6 +104,7 @@ The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc c
 
 = Installation and Compiling shell script = 
 
+{{{
  #!/bin/bash  
 export PETSC_DIR=/home/aknyazev/work/petsc/petsc-dev
 export SLEPC_DIR=/home/aknyazev/work/petsc/slepc-dev
@@ -113,7 +114,15 @@ cd config/BuildSystem
 hg pull -u
 cd $SLEPC_DIR
 svn update
-
+export PETSC_ARCH=arch-linux2-c-debug-real-int32-float64
+./config/configure.py --download-hypre=1
+make
+make test
+cd $SLEPC_DIR
+./configure --download-blopex 
+make
+make test
+}}}
 
 = Running SLEPc examples with BLOPEX =
 
