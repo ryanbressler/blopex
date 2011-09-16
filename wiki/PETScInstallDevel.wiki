@@ -114,6 +114,7 @@ cd config/BuildSystem
 hg pull -u
 cd $SLEPC_DIR
 svn update
+cd  $PETSC_DIR
 export PETSC_ARCH=arch-linux2-c-debug-real-int32-float64
 ./config/configure.py --download-hypre=1
 make
@@ -122,6 +123,16 @@ cd $SLEPC_DIR
 ./configure --download-blopex 
 make
 make test
+make testblopex
+cd $SLEPC_DIR/src/eps/examples/tutorials
+mkdir $PETSC_ARCH
+make ex7
+mv ex7 $PETSC_ARCH
+make ex19
+mv ex19 $PETSC_ARCH
+cd $PETSC_ARCH
+./ex7 -f1 $PETSC_DIR/share/petsc/datafiles/matrices/spd-real-int32-float64 -eps_gen_hermitian -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg > output.txt
+./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg >> output.txt
 }}}
 
 = Running SLEPc examples with BLOPEX =
