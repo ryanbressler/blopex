@@ -32,6 +32,14 @@ cd config/BuildSystem
 hg pull -u
 }}}
 
+During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. PETSC_ARCH must be used to compile PETSc with different configure options uising a single source directory.  PETSC_DIR and PETSC_ARCH are also needed in the next step, the SLEPc installation. 
+
+To double-check your environment variables, run 
+{{{
+env | grep PETSC
+env | grep SLEPC
+}}}
+
 To test different installation options on only one source directory pets-dev, open multiple terminal windows and run in separately in an individual window one of the following: 
 
 {{{
@@ -61,13 +69,9 @@ export PETSC_ARCH=arch-linux2-c-debug-complex-int64-float64
 
 Note that there is also a PETSc option `--with-precision=single`, which is supported by SLEPc, but but yet by BLOPEX. 
 
-For configure, add the other usual options that need to be tested. DO NOT attempt to install BLOPEX within PETSc (BLOPEX has already been removed from the latest PETSc version). After configure, compile as usual. During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. PETSC_ARCH must be used to compile PETSc with different configure options uising a single source directory.  PETSC_DIR and PETSC_ARCH are also needed in the next step, the SLEPc installation. 
+For configure, add the other usual options that need to be tested. DO NOT attempt to install BLOPEX within PETSc (BLOPEX has already been removed from the latest PETSc version). After configure, compile as usual. 
 
-To double-check your environment variables, run 
-{{{
-env | grep PETSC
-env | grep SLEPC
-}}}
+*It is NOT safe to run PETSc configure and make in different PETSC_ARCH's in separate terminal windows at the same time! Do it one-by-one.* 
 
 = Installing the development versions of SLEPc with BLOPEX =
 
@@ -97,11 +101,15 @@ cd $SLEPC_DIR
 ./configure --download-blopex 
 make
 make test
+make alltest
 }}}
+
+*It is NOT safe to run SLEPc configure and make in different PETSC_ARCH's in separate terminal windows at the same time! Do it one-by-one.* 
 
 The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc configure must be executed first, as in the previous step. 
 
-*It is NOT safe to run SLEPSc configure in different PETSC_ARCH's in separate terminal windows at the same time! Do it one-by-one.* 
+SLEPCs's `make test ` and `make alltest` pick up from the SLEPSc configure if `--download-blopex` has been used, and if so, run BLOPEX tests. If everything runs correctly, `make test ` should produce no errors, while `make alltest` should not produce any output at all, ideally. 
+
 
 = Installation and Compiling shell script = 
 
@@ -124,7 +132,12 @@ cd $SLEPC_DIR
 ./configure --download-blopex 
 make
 make test
-make testblopex
+make alltest
+}}}
+
+
+{{{
+ #!/bin/bash
 cd $SLEPC_DIR/src/eps/examples/tutorials
 mkdir $PETSC_ARCH
 make ex7
