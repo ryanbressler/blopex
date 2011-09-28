@@ -2,13 +2,13 @@
 
 = Introduction =
 
-BLOPEX is currently being in the process of move from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. 
+BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. 
 
-Currently, the development versions of PETSc and SLEPc need to be used to test the latest BLOPEX in SLEPc. 
+Currently, the development version of SLEPc and development or 3.2 versions of PETSc need to be used to test the latest BLOPEX in SLEPc. In these instructions, we use the development versions of both SLEPc and PETSc 
 
 It is easiest to test the development versions, if source control packages "MERCURIAL" and "SVN" have been installed on the test system. In my instructions below, I assume that they are. 
 
-= Installing the development versions of PETSc (without BLOPEX) =
+= Installing the development versions of PETSc (now without BLOPEX) =
 
 Follow http://www.mcs.anl.gov/petsc/petsc-as/developers/index.html#Obtaining
 
@@ -61,13 +61,14 @@ export PETSC_ARCH=arch-linux2-c-debug-complex-int64-float64
 
 Note that there is also a PETSc option `--with-precision=single`, which is supported by SLEPc, but but yet by BLOPEX. 
 
-For configure, add the other usual options that need to be tested. DO NOT install BLOPEX with PETSc. After configure, compile as usual. During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. PETSC_ARCH must be used to compile PETSc with different configure options uising a single source directory.  PETSC_DIR and PETSC_ARCH are also needed in the next step, the SLEPc installation. 
+For configure, add the other usual options that need to be tested. DO NOT attempt to install BLOPEX within PETSc (BLOPEX has already been removed from the latest PETSc version). After configure, compile as usual. During the PETSc installation, you must have set up both PETSC_DIR and PETSC_ARCH enviroment variables. PETSC_ARCH must be used to compile PETSc with different configure options uising a single source directory.  PETSC_DIR and PETSC_ARCH are also needed in the next step, the SLEPc installation. 
 
 To double-check your environment variables, run 
 {{{
 env | grep PETSC
 env | grep SLEPC
 }}}
+
 = Installing the development versions of SLEPc with BLOPEX =
 
 According to http://www.grycap.upv.es/slepc/download/download.htm, run
