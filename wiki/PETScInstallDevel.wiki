@@ -111,7 +111,7 @@ The SLEPc configure reads PETSc configure parameters using PETSC_DIR, so PETSc c
 SLEPCs's `make test ` and `make alltest` pick up from the SLEPSc configure if `--download-blopex` has been used, and if so, run BLOPEX tests. If everything runs correctly, `make test ` should produce no errors, while `make alltest` should not produce any output at all, ideally. 
 
 
-= Installation and Compiling shell script = 
+= Installation and Compiling shell script example = 
 
 {{{
  #!/bin/bash  
@@ -135,19 +135,6 @@ make test
 make alltest
 }}}
 
-
-{{{
- #!/bin/bash
-cd $SLEPC_DIR/src/eps/examples/tutorials
-mkdir $PETSC_ARCH
-make ex7
-mv ex7 $PETSC_ARCH
-make ex19
-mv ex19 $PETSC_ARCH
-cd $PETSC_ARCH
-./ex7 -f1 $PETSC_DIR/share/petsc/datafiles/matrices/spd-real-int32-float64 -eps_gen_hermitian -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg > output.txt
-./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg >> output.txt
-}}}
 
 = Running SLEPc examples with BLOPEX =
 
@@ -231,3 +218,18 @@ while the use of Jacobi-preconditioned PCG with 7 inner iterations makes lobpcg 
 The total number of inner-outer iterations is the same ~350 in both runs, but the latter is almost 3 times faster in CPU time, since a single PCG iteration is cheaper than a single LOBPCG iteration. 
 
 PETSc command-line options supported, e.g., "-log_summary"
+
+You can compile and run multiple examples and redirect the screen output to a text file run running a script like the following: 
+  
+{{{
+ #!/bin/bash
+cd $SLEPC_DIR/src/eps/examples/tutorials
+mkdir $PETSC_ARCH
+make ex7
+mv ex7 $PETSC_ARCH
+make ex19
+mv ex19 $PETSC_ARCH
+cd $PETSC_ARCH
+./ex7 -f1 $PETSC_DIR/share/petsc/datafiles/matrices/spd-real-int32-float64 -eps_gen_hermitian -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg > output.txt
+./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg >> output.txt
+}}}
