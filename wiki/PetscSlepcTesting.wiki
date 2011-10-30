@@ -2,11 +2,11 @@
 
 = Introduction =
 
-BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. This applies to PETSc and SLEPC both revision 3.2. 
+BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. This applies to PETSc and SLEPc both revision 3.2. 
 
 = Installation =
 
-Install PETSc revision 3.2 and then SLEPC revision 3.2 according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://www.grycap.upv.es/slepc/documentation/instal.htm
+Install PETSc revision 3.2 and then SLEPc revision 3.2 according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://www.grycap.upv.es/slepc/documentation/instal.htm
 
 In the SLEPc installation, use
 {{{
@@ -15,4 +15,6 @@ In the SLEPc installation, use
 
 = Testing procedures = 
 
-SLEPCs's make test and make alltest pick up from the SLEPSc configure if --download-blopex has been used, and if so, run BLOPEX tests. If everything runs correctly, make test should produce no errors, while make alltest should not produce any output at all, ideally.
+SLEPc's make test will pick up from the SLEPc configure if --download-blopex has been used, and if so, run one BLOPEX test. If everything runs correctly, make test should produce no errors.
+
+Additionally, it is possible to carry out a more comprehensive testing with make alltest. While make alltest should not produce any output at all, ideally, it is unfinished in 3.2, and only one test is run with Blopex. It will be developed further in future versions.
