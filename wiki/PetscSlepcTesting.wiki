@@ -2,11 +2,11 @@
 
 = Introduction =
 
-BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. This applies to PETSc and SLEPc both revision 3.2. 
+BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be tested. This applies to PETSc and SLEPc both version 3.2. 
 
 = Installation =
 
-Install PETSc revision 3.2 and then SLEPc revision 3.2 according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://www.grycap.upv.es/slepc/documentation/instal.htm
+Install PETSc 3.2 and then SLEPc 3.2 according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://www.grycap.upv.es/slepc/documentation/instal.htm
 
 In the SLEPc installation, use
 {{{
