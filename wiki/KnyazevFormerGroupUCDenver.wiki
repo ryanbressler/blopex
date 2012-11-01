@@ -1,12 +1,7 @@
 #summary Knyazev's former group at UC Denver
 
-We are working on preconditioned solvers for eigenvalue and singular value problems: develop corresponding software, work on the theoretical issues, and contribute to applications.
-
 ==Current status==
 The group leader, Andrew Knyazev, has moved to [http://www.merl.com MERL] as of Fall 2012.
-
-==Major results==
-* The [[BLOPEX]] software has been developed for solving eigenvalue problems
 
 ==Members==
 ===Group Leader===  
