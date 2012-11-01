@@ -82,15 +82,3 @@ Research Interests:
 * [http://www.nsf.gov NSF] Award [https://www.fastlane.nsf.gov/servlet/showaward?award=1115734 DMS 1115734], Parallel Preconditioned Eigenvalue and Singular Value Solvers, 2011-2014, $180,000
 * [http://www.nsf.gov NSF] Award [https://www.fastlane.nsf.gov/servlet/showaward?award=0612751 DMS 0612751], Locally Optimal Preconditioned Eigenvalue Solvers, 2006-2010, $249,542
 * [http://www.nsf.gov NSF] Award [https://www.fastlane.nsf.gov/servlet/showaward?award=0728941 DMS 0728941], Analysis of Microarray Gene Expression Data, 2007-2008, $99,973
-
-==External links==
-
-* [http://math.ucdenver.edu/~aknyazev/ Andrew Knyazev Official homepage]
-* [http://code.google.com/p/blopex/ BLOPEX Official homepage]
-
-==See also==
-* [[Eigenvalue Group seminar]]
-
-[[Category:Gross cluster projects]]
-[[Category:Janus cluster projects]]
-[[Category:Projects]]
