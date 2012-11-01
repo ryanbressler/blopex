@@ -2,8 +2,6 @@
 
 We are working on preconditioned solvers for eigenvalue and singular value problems: develop corresponding software, work on the theoretical issues, and contribute to applications.
 
-[[Gross cluster]] is used as a test supercomputer, to debug the codes and run test examples. 
-
 ==Current status==
 The group leader, Andrew Knyazev, has moved to [http://www.merl.com MERL] as of Fall 2012.
 
