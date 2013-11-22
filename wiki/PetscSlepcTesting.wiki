@@ -36,3 +36,6 @@ SLEPc's Example 19 is for the 3D Laplacian. The user can specify the number of t
 {{{
  ./ex19 -eps_type blopex -st_pc_type hypre -st_pc_hypre_type boomeramg -eps_view -eps_tol 1e-6 -eps_nev 10 -eps_monitor -eps_conv_abs -da_grid_x 40 -da_grid_y 40 -da_grid_z 40
 }}}
+
+The -eps_conv_abs option is not really necessary since BLOPEX will do absolute residual anyway.
+To obtain timings one has to add -log_summary
