@@ -6,7 +6,7 @@ BLOPEX has been moved from PETSc to SLEPc. The SLEPc BLOPEX install needs to be 
 
 = Installation =
 
-Install PETSc and then SLEPc according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://www.grycap.upv.es/slepc/documentation/instal.htm
+Install PETSc and then SLEPc according to the instructions from http://www.mcs.anl.gov/petsc/petsc-as/documentation/installation.html and http://slepc.upv.es/documentation/instal.htm
 
 In the SLEPc installation, use
 {{{
